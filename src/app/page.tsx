@@ -69,8 +69,8 @@ export default function Home() {
 
       {/* HERO */}
       <section style={{ height: "100vh", display: "flex", alignItems: "center", justifyContent: "center", position: "relative", overflow: "hidden" }}>
-        <div ref={heroRef} style={{ position: "absolute", inset: "-20px", backgroundImage: "url('https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=1920&q=80')", backgroundSize: "cover", backgroundPosition: "center", transition: "transform 0.1s ease-out" }} />
-        <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to bottom, rgba(10,10,10,0.6) 0%, rgba(10,10,10,0.75) 50%, rgba(10,10,10,1) 100%)" }} />
+        <div ref={heroRef} style={{ position: "absolute", inset: "-20px", backgroundImage: "url('https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=1920&q=80')", backgroundSize: "cover", backgroundPosition: "center", transition: "transform 0.1s ease-out", opacity: 0.6 }} />
+        <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to bottom, rgba(10,10,10,0.75) 0%, rgba(10,10,10,0.85) 50%, rgba(10,10,10,1) 100%)" }} />
         <div style={{ position: "relative", textAlign: "center", padding: "0 24px", width: "100%" }}>
           <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.2 }} style={{ color: "var(--gold)", fontSize: "11px", letterSpacing: "4px", textTransform: "uppercase", marginBottom: "20px" }}>Chandigarh Tricity · Est. 2009</motion.p>
           <motion.h1 initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1, delay: 0.4 }} style={{ fontSize: "clamp(36px, 8vw, 96px)", fontWeight: 300, lineHeight: 1.1, marginBottom: "24px" }}>
