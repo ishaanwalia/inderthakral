@@ -1,13 +1,20 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { useState } from "react";
 
 export default function Home() {
   const heroRef = useRef<HTMLDivElement>(null);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth <= 768);
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
@@ -24,56 +31,53 @@ export default function Home() {
     <main style={{ background: "var(--dark)", minHeight: "100vh", overflowX: "hidden" }}>
 
       {/* NAV */}
-      <motion.nav
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8 }}
-        style={{ position: "fixed", top: 0, left: 0, right: 0, zIndex: 100, backdropFilter: "blur(12px)", background: "rgba(10,10,10,0.9)", borderBottom: "1px solid rgba(201,168,76,0.1)" }}
-      >
+      <nav style={{ position: "fixed", top: 0, left: 0, right: 0, zIndex: 100, backdropFilter: "blur(12px)", background: "rgba(10,10,10,0.95)", borderBottom: "1px solid rgba(201,168,76,0.1)" }}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "20px 24px" }}>
-          <div style={{ display: "flex", flexDirection: "column" }}>
+          <Link href="/" style={{ textDecoration: "none", display: "flex", flexDirection: "column" }}>
             <span style={{ color: "var(--gold)", fontSize: "11px", letterSpacing: "4px", textTransform: "uppercase" }}>Inder Thakral</span>
             <span style={{ color: "var(--text-muted)", fontSize: "10px", letterSpacing: "2px" }}>Tricity Land Advisory</span>
-          </div>
+          </Link>
 
-          {/* Desktop links */}
-          <div className="desktop-nav" style={{ display: "flex", gap: "40px" }}>
-            <Link href="/properties" style={{ color: "var(--text-muted)", fontSize: "11px", letterSpacing: "2px", textTransform: "uppercase", textDecoration: "none" }}>Properties</Link>
-            <Link href="/about" style={{ color: "var(--text-muted)", fontSize: "11px", letterSpacing: "2px", textTransform: "uppercase", textDecoration: "none" }}>About</Link>
-            <Link href="/services" style={{ color: "var(--text-muted)", fontSize: "11px", letterSpacing: "2px", textTransform: "uppercase", textDecoration: "none" }}>Services</Link>
-            <a href="#contact" style={{ color: "var(--text-muted)", fontSize: "11px", letterSpacing: "2px", textTransform: "uppercase", textDecoration: "none" }}>Contact</a>
-          </div>
+          {!isMobile && (
+            <div style={{ display: "flex", gap: "40px" }}>
+              <Link href="/properties" style={{ color: "var(--text-muted)", fontSize: "11px", letterSpacing: "2px", textTransform: "uppercase", textDecoration: "none" }}>Properties</Link>
+              <Link href="/about" style={{ color: "var(--text-muted)", fontSize: "11px", letterSpacing: "2px", textTransform: "uppercase", textDecoration: "none" }}>About</Link>
+              <Link href="/services" style={{ color: "var(--text-muted)", fontSize: "11px", letterSpacing: "2px", textTransform: "uppercase", textDecoration: "none" }}>Services</Link>
+              <a href="#contact" style={{ color: "var(--text-muted)", fontSize: "11px", letterSpacing: "2px", textTransform: "uppercase", textDecoration: "none" }}>Contact</a>
+            </div>
+          )}
 
-          {/* Desktop enquire */}
-          <a href="#contact" className="desktop-nav" style={{ border: "1px solid var(--gold)", color: "var(--gold)", padding: "10px 24px", fontSize: "10px", letterSpacing: "3px", textTransform: "uppercase", textDecoration: "none" }}>Enquire</a>
+          {!isMobile && (
+            <a href="#contact" style={{ border: "1px solid var(--gold)", color: "var(--gold)", padding: "10px 24px", fontSize: "10px", letterSpacing: "3px", textTransform: "uppercase", textDecoration: "none" }}>Enquire</a>
+          )}
 
-          {/* Mobile hamburger */}
-          <button onClick={() => setMenuOpen(!menuOpen)} className="mobile-nav" style={{ background: "none", border: "none", cursor: "pointer", padding: "4px", display: "flex", flexDirection: "column", gap: "5px" }}>
-            <span style={{ display: "block", width: "24px", height: "1px", background: "var(--gold)", transition: "all 0.3s", transform: menuOpen ? "rotate(45deg) translate(4px, 4px)" : "none" }} />
-            <span style={{ display: "block", width: "24px", height: "1px", background: "var(--gold)", opacity: menuOpen ? 0 : 1, transition: "all 0.3s" }} />
-            <span style={{ display: "block", width: "24px", height: "1px", background: "var(--gold)", transition: "all 0.3s", transform: menuOpen ? "rotate(-45deg) translate(4px, -4px)" : "none" }} />
-          </button>
+          {isMobile && (
+            <button onClick={() => setMenuOpen(!menuOpen)} style={{ background: "none", border: "none", cursor: "pointer", padding: "4px", display: "flex", flexDirection: "column", gap: "5px" }}>
+              <span style={{ display: "block", width: "24px", height: "1px", background: "var(--gold)", transition: "all 0.3s", transform: menuOpen ? "rotate(45deg) translate(4px, 4px)" : "none" }} />
+              <span style={{ display: "block", width: "24px", height: "1px", background: "var(--gold)", opacity: menuOpen ? 0 : 1, transition: "all 0.3s" }} />
+              <span style={{ display: "block", width: "24px", height: "1px", background: "var(--gold)", transition: "all 0.3s", transform: menuOpen ? "rotate(-45deg) translate(4px, -4px)" : "none" }} />
+            </button>
+          )}
         </div>
 
-        {/* Mobile menu */}
-        {menuOpen && (
-          <div style={{ padding: "24px", borderTop: "1px solid rgba(201,168,76,0.1)", display: "flex", flexDirection: "column", gap: "24px" }}>
-            {[["Properties", "/properties"], ["About", "/about"], ["Services", "/services"]].map(([item, href]) => (
-              <Link key={item} href={href} onClick={() => setMenuOpen(false)} style={{ color: "var(--text-muted)", fontSize: "13px", letterSpacing: "3px", textTransform: "uppercase", textDecoration: "none" }}>{item}</Link>
-            ))}
+        {isMobile && menuOpen && (
+          <div style={{ padding: "24px", borderTop: "1px solid rgba(201,168,76,0.1)", display: "flex", flexDirection: "column", gap: "24px", background: "rgba(10,10,10,0.98)" }}>
+            <Link href="/properties" onClick={() => setMenuOpen(false)} style={{ color: "var(--text-muted)", fontSize: "13px", letterSpacing: "3px", textTransform: "uppercase", textDecoration: "none" }}>Properties</Link>
+            <Link href="/about" onClick={() => setMenuOpen(false)} style={{ color: "var(--text-muted)", fontSize: "13px", letterSpacing: "3px", textTransform: "uppercase", textDecoration: "none" }}>About</Link>
+            <Link href="/services" onClick={() => setMenuOpen(false)} style={{ color: "var(--text-muted)", fontSize: "13px", letterSpacing: "3px", textTransform: "uppercase", textDecoration: "none" }}>Services</Link>
             <a href="#contact" onClick={() => setMenuOpen(false)} style={{ color: "var(--text-muted)", fontSize: "13px", letterSpacing: "3px", textTransform: "uppercase", textDecoration: "none" }}>Contact</a>
-            <a href="#contact" onClick={() => setMenuOpen(false)} style={{ display: "inline-block", border: "1px solid var(--gold)", color: "var(--gold)", padding: "12px 24px", fontSize: "11px", letterSpacing: "3px", textTransform: "uppercase", textDecoration: "none", textAlign: "center" }}>Enquire Now</a>
+            <a href="#contact" onClick={() => setMenuOpen(false)} style={{ display: "block", border: "1px solid var(--gold)", color: "var(--gold)", padding: "14px 24px", fontSize: "11px", letterSpacing: "3px", textTransform: "uppercase", textDecoration: "none", textAlign: "center" }}>Enquire Now</a>
           </div>
         )}
-      </motion.nav>
+      </nav>
 
       {/* HERO */}
       <section style={{ height: "100vh", display: "flex", alignItems: "center", justifyContent: "center", position: "relative", overflow: "hidden" }}>
-        <div ref={heroRef} style={{ position: "absolute", inset: "-20px", backgroundImage: "url('https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=1920&q=80')", backgroundSize: "cover", backgroundPosition: "center", transition: "transform 0.1s ease-out", opacity: 0.6 }} />
-        <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to bottom, rgba(10,10,10,0.75) 0%, rgba(10,10,10,0.85) 50%, rgba(10,10,10,1) 100%)" }} />
+        <div ref={heroRef} style={{ position: "absolute", inset: "-20px", backgroundImage: "url('https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=1920&q=80')", backgroundSize: "cover", backgroundPosition: "center", transition: "transform 0.1s ease-out", opacity: 0.5 }} />
+        <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to bottom, rgba(10,10,10,0.7) 0%, rgba(10,10,10,0.8) 50%, rgba(10,10,10,1) 100%)" }} />
         <div style={{ position: "relative", textAlign: "center", padding: "0 24px", width: "100%" }}>
           <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.2 }} style={{ color: "var(--gold)", fontSize: "11px", letterSpacing: "4px", textTransform: "uppercase", marginBottom: "20px" }}>Chandigarh Tricity · Est. 2009</motion.p>
-          <motion.h1 initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1, delay: 0.4 }} style={{ fontSize: "clamp(36px, 8vw, 96px)", fontWeight: 300, lineHeight: 1.1, marginBottom: "24px" }}>
+          <motion.h1 initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1, delay: 0.4 }} style={{ fontSize: "clamp(36px, 8vw, 96px)", fontWeight: 300, lineHeight: 1.1, marginBottom: "24px", color: "var(--text-primary)" }}>
             Verified Plots.<br />
             <em style={{ color: "var(--gold)", fontStyle: "italic" }}>Premium</em> Advisory.
           </motion.h1>
