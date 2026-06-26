@@ -43,3 +43,19 @@ body {
 ::-webkit-scrollbar-thumb {
   background: var(--gold);
 }
+.desktop-nav {
+  display: flex;
+}
+
+.mobile-nav {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .desktop-nav {
+    display: none !important;
+  }
+  .mobile-nav {
+    display: flex !important;
+  }
+}
