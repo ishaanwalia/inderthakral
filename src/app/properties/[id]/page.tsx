@@ -6,6 +6,13 @@ import { useParams } from "next/navigation";
 import { useState } from "react";
 import Nav from "@/components/Nav";
 
+// REQUIRED for static export - pre-builds all property pages
+export function generateStaticParams() {
+  return properties.map((property) => ({
+    id: property.id,
+  }));
+}
+
 export default function PropertyDetailPage() {
   const { id } = useParams();
   const property = properties.find(p => p.id === id);
@@ -80,13 +87,13 @@ export default function PropertyDetailPage() {
                     </div>
                   ))}
                 </div>
-                <a href={whatsappLink} target="_blank" rel="noopener noreferrer" style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "12px", background: "#25D366", color: "#fff", padding: "16px", fontSize: "12px", letterSpacing: "2px", textTransform: "uppercase", textDecoration: "none", fontWeight: 600, marginBottom: "12px" }}>
+                <a href={whatsappLink} target="_blank" rel="noopener noreferrer" style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "12px", background: "#25D366", color: "#fff", padding: "16px", fontSize: "12px", letterSpacing: "2px", textTransform: "uppercase", textDecoration: "none", fontWeight: 600, marginBottom: "12px", transition: "all 0.3s ease" }}>
                   WhatsApp Enquiry
                 </a>
-                <a href={"mailto:care@inderthakral.com?subject=Enquiry: " + property.title} style={{ display: "flex", alignItems: "center", justifyContent: "center", border: "1px solid rgba(201,168,76,0.3)", color: "var(--text-muted)", padding: "16px", fontSize: "12px", letterSpacing: "2px", textTransform: "uppercase", textDecoration: "none", marginBottom: "12px" }}>
+                <a href={"mailto:care@inderthakral.com?subject=Enquiry: " + property.title} style={{ display: "flex", alignItems: "center", justifyContent: "center", border: "1px solid rgba(201,168,76,0.3)", color: "var(--text-muted)", padding: "16px", fontSize: "12px", letterSpacing: "2px", textTransform: "uppercase", textDecoration: "none", marginBottom: "12px", transition: "all 0.3s ease" }}>
                   Send Email Enquiry
                 </a>
-                <a href="tel:+919815901234" style={{ display: "flex", alignItems: "center", justifyContent: "center", border: "1px solid rgba(201,168,76,0.3)", color: "var(--gold)", padding: "16px", fontSize: "12px", letterSpacing: "2px", textTransform: "uppercase", textDecoration: "none", marginBottom: "24px" }}>
+                <a href="tel:+919815901234" style={{ display: "flex", alignItems: "center", justifyContent: "center", border: "1px solid rgba(201,168,76,0.3)", color: "var(--gold)", padding: "16px", fontSize: "12px", letterSpacing: "2px", textTransform: "uppercase", textDecoration: "none", marginBottom: "24px", transition: "all 0.3s ease" }}>
                   Call Inder Directly
                 </a>
                 <div style={{ padding: "20px", background: "rgba(201,168,76,0.05)", border: "1px solid rgba(201,168,76,0.1)" }}>
