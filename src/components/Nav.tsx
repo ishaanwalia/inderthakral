@@ -5,7 +5,7 @@ import Link from "next/link";
 
 export default function Nav({ active }: { active?: string }) {
   const [menuOpen, setMenuOpen] = useState(false);
-  const [mobile, setMobile] = useState(true);
+  const [mobile, setMobile] = useState(false);
 
   useEffect(() => {
     const update = () => setMobile(window.innerWidth < 769);
@@ -23,17 +23,17 @@ export default function Nav({ active }: { active?: string }) {
         </Link>
 
         {!mobile && (
-          <button onClick={() => setMenuOpen(o => !o)} style={{ cursor: "pointer", padding: "10px", display: "flex", flexDirection: "column", gap: "5px", background: "none", border: "none", WebkitAppearance: "none" }}>            {[["Properties", "/properties"], ["About", "/about"], ["Services", "/services"]].map(([label, href]) => (
+          <div style={{ display: "flex", gap: "40px", alignItems: "center" }}>
+            {[["Properties", "/properties"], ["About", "/about"], ["Services", "/services"]].map(([label, href]) => (
               <Link key={label} href={href} style={{ color: active === label ? "var(--gold)" : "var(--text-muted)", fontSize: "11px", letterSpacing: "2px", textTransform: "uppercase", textDecoration: "none" }}>{label}</Link>
             ))}
             <a href="/#contact" style={{ color: "var(--text-muted)", fontSize: "11px", letterSpacing: "2px", textTransform: "uppercase", textDecoration: "none" }}>Contact</a>
             <a href="/#contact" style={{ border: "1px solid var(--gold)", color: "var(--gold)", padding: "10px 24px", fontSize: "10px", letterSpacing: "3px", textTransform: "uppercase", textDecoration: "none" }}>Enquire</a>
-          </button>
+          </div>
         )}
 
         {mobile && (
-          <div onClick={() => setMenuOpen(o => !o)} style={{ cursor: "pointer", padding: "10px", display: "flex", flexDirection: "column", gap: "5px" }}>
-            <div style={{ width: "25px", height: "2px", background: "var(--gold)", transition: "all 0.3s", transform: menuOpen ? "rotate(45deg) translateY(7px)" : "none" }} />
+          <button onClick={() => setMenuOpen(o => !o)} style={{ cursor: "pointer", padding: "10px", display: "flex", flexDirection: "column", gap: "5px", background: "none", border: "none", WebkitAppearance: "none" }}>            <div style={{ width: "25px", height: "2px", background: "var(--gold)", transition: "all 0.3s", transform: menuOpen ? "rotate(45deg) translateY(7px)" : "none" }} />
             <div style={{ width: "25px", height: "2px", background: "var(--gold)", opacity: menuOpen ? 0 : 1, transition: "all 0.3s" }} />
             <div style={{ width: "25px", height: "2px", background: "var(--gold)", transition: "all 0.3s", transform: menuOpen ? "rotate(-45deg) translateY(-7px)" : "none" }} />
           </div>
