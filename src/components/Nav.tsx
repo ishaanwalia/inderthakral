@@ -1,10 +1,18 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 
 export default function Nav({ active }: { active?: string }) {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth <= 768);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
 
   return (
     <nav style={{ position: "fixed", top: 0, left: 0, right: 0, zIndex: 100, backdropFilter: "blur(12px)", background: "rgba(10,10,10,0.95)", borderBottom: "1px solid rgba(201,168,76,0.1)" }}>
@@ -14,35 +22,38 @@ export default function Nav({ active }: { active?: string }) {
           <span style={{ color: "var(--text-muted)", fontSize: "10px", letterSpacing: "2px" }}>Tricity Land Advisory</span>
         </Link>
 
-        {/* Desktop */}
-        <div className="desktop-nav" style={{ gap: "40px" }}>
-          {[["Properties", "/properties"], ["About", "/about"], ["Services", "/services"]].map(([label, href]) => (
-            <Link key={label} href={href} style={{ color: active === label ? "var(--gold)" : "var(--text-muted)", fontSize: "11px", letterSpacing: "2px", textTransform: "uppercase", textDecoration: "none" }}>{label}</Link>
-          ))}
-          <a href="/#contact" style={{ color: "var(--text-muted)", fontSize: "11px", letterSpacing: "2px", textTransform: "uppercase", textDecoration: "none" }}>Contact</a>
-        </div>
-        <a href="/#contact" className="desktop-nav" style={{ border: "1px solid var(--gold)", color: "var(--gold)", padding: "10px 24px", fontSize: "10px", letterSpacing: "3px", textTransform: "uppercase", textDecoration: "none" }}>Enquire</a>
+        {!isMobile && (
+          <div style={{ display: "flex", gap: "40px" }}>
+            {[["Properties", "/properties"], ["About", "/about"], ["Services", "/services"]].map(([label, href]) => (
+              <Link key={label} href={href} style={{ color: active === label ? "var(--gold)" : "var(--text-muted)", fontSize: "11px", letterSpacing: "2px", textTransform: "uppercase", textDecoration: "none" }}>{label}</Link>
+            ))}
+            <a href="/#contact" style={{ color: "var(--text-muted)", fontSize: "11px", letterSpacing: "2px", textTransform: "uppercase", textDecoration: "none" }}>Contact</a>
+          </div>
+        )}
 
-        {/* Hamburger */}
-        <button
-          onClick={() => setMenuOpen(o => !o)}
-          style={{ background: "none", border: "none", cursor: "pointer", padding: "8px", display: "flex", flexDirection: "column", gap: "5px" }}
-          className="mobile-menu-btn"
-        >
-          <span style={{ display: "block", width: "24px", height: "2px", background: "var(--gold)", transition: "all 0.3s", transform: menuOpen ? "rotate(45deg) translate(0px, 7px)" : "none" }} />
-          <span style={{ display: "block", width: "24px", height: "2px", background: "var(--gold)", opacity: menuOpen ? 0 : 1, transition: "all 0.3s" }} />
-          <span style={{ display: "block", width: "24px", height: "2px", background: "var(--gold)", transition: "all 0.3s", transform: menuOpen ? "rotate(-45deg) translate(0px, -7px)" : "none" }} />
-        </button>
+        {!isMobile && (
+          <a href="/#contact" style={{ border: "1px solid var(--gold)", color: "var(--gold)", padding: "10px 24px", fontSize: "10px", letterSpacing: "3px", textTransform: "uppercase", textDecoration: "none" }}>Enquire</a>
+        )}
+
+        {isMobile && (
+          <button
+            onClick={() => setMenuOpen(o => !o)}
+            style={{ background: "none", border: "none", cursor: "pointer", padding: "8px", display: "flex", flexDirection: "column", gap: "6px" }}
+          >
+            <span style={{ display: "block", width: "26px", height: "2px", background: "var(--gold)", transition: "all 0.3s", transform: menuOpen ? "rotate(45deg) translate(0px, 8px)" : "none" }} />
+            <span style={{ display: "block", width: "26px", height: "2px", background: "var(--gold)", opacity: menuOpen ? 0 : 1, transition: "all 0.3s" }} />
+            <span style={{ display: "block", width: "26px", height: "2px", background: "var(--gold)", transition: "all 0.3s", transform: menuOpen ? "rotate(-45deg) translate(0px, -8px)" : "none" }} />
+          </button>
+        )}
       </div>
 
-      {/* Mobile menu */}
-      {menuOpen && (
-        <div style={{ padding: "24px", borderTop: "1px solid rgba(201,168,76,0.1)", display: "flex", flexDirection: "column", gap: "24px", background: "rgba(10,10,10,0.98)" }}>
+      {isMobile && menuOpen && (
+        <div style={{ padding: "32px 24px", borderTop: "1px solid rgba(201,168,76,0.1)", display: "flex", flexDirection: "column", gap: "28px", background: "rgba(10,10,10,0.98)" }}>
           <Link href="/properties" onClick={() => setMenuOpen(false)} style={{ color: "var(--text-muted)", fontSize: "14px", letterSpacing: "3px", textTransform: "uppercase", textDecoration: "none" }}>Properties</Link>
           <Link href="/about" onClick={() => setMenuOpen(false)} style={{ color: "var(--text-muted)", fontSize: "14px", letterSpacing: "3px", textTransform: "uppercase", textDecoration: "none" }}>About</Link>
           <Link href="/services" onClick={() => setMenuOpen(false)} style={{ color: "var(--text-muted)", fontSize: "14px", letterSpacing: "3px", textTransform: "uppercase", textDecoration: "none" }}>Services</Link>
           <a href="/#contact" onClick={() => setMenuOpen(false)} style={{ color: "var(--text-muted)", fontSize: "14px", letterSpacing: "3px", textTransform: "uppercase", textDecoration: "none" }}>Contact</a>
-          <a href="/#contact" onClick={() => setMenuOpen(false)} style={{ display: "block", background: "var(--gold)", color: "var(--dark)", padding: "14px 24px", fontSize: "11px", letterSpacing: "3px", textTransform: "uppercase", textDecoration: "none", textAlign: "center", fontWeight: 600 }}>Enquire Now</a>
+          <a href="/#contact" onClick={() => setMenuOpen(false)} style={{ display: "block", background: "var(--gold)", color: "var(--dark)", padding: "16px 24px", fontSize: "11px", letterSpacing: "3px", textTransform: "uppercase", textDecoration: "none", textAlign: "center", fontWeight: 600 }}>Enquire Now</a>
         </div>
       )}
     </nav>
