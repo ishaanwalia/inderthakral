@@ -76,7 +76,17 @@ export default function Nav({ active }: { active?: string }) {
         </button>
       </div>
 
-      <div className={`mobile-dropdown ${open ? "mobile-dropdown-open" : ""}`}>
+      {/* Mobile dropdown with proper z-index and visibility handling */}
+      <div 
+        className={`mobile-dropdown ${open ? "mobile-dropdown-open" : ""}`}
+        style={{
+          position: "absolute",
+          top: "100%",
+          left: 0,
+          right: 0,
+          zIndex: 999,
+        }}
+      >
         {navLinks.map(([label, href]) => (
           <Link
             key={label}

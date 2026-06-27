@@ -36,7 +36,7 @@ export default function HomePage() {
   const featuredProperties = properties.slice(0, 3);
 
   return (
-    <main style={{ background: "var(--dark)", minHeight: "100vh" }}>
+    <main style={{ background: "var(--dark)", minHeight: "100vh", overflowX: "hidden", width: "100%" }}>
       <Nav />
 
       {/* HERO */}
@@ -156,6 +156,7 @@ export default function HomePage() {
             gridTemplateColumns: "repeat(4, 1fr)",
             gap: "2px",
           }}
+          className="stats-grid-mobile"
         >
           {[
             { num: "15+", label: "Years Experience" },
@@ -201,7 +202,7 @@ export default function HomePage() {
       </section>
 
       {/* FEATURED PROPERTIES */}
-      <section style={{ padding: "120px 48px" }}>
+      <section style={{ padding: "80px 48px" }} className="section-mobile">
         <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
           <div
             ref={addRef}
@@ -210,7 +211,7 @@ export default function HomePage() {
               display: "flex",
               justifyContent: "space-between",
               alignItems: "flex-end",
-              marginBottom: "64px",
+              marginBottom: "48px",
               flexWrap: "wrap",
               gap: "24px",
             }}
@@ -386,13 +387,14 @@ export default function HomePage() {
       {/* SERVICES PREVIEW */}
       <section
         style={{
-          padding: "120px 48px",
+          padding: "80px 48px",
           background: "var(--dark-2)",
           borderTop: "1px solid var(--border-gold)",
         }}
+        className="section-mobile"
       >
         <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
-          <div ref={addRef} className="reveal" style={{ textAlign: "center", marginBottom: "80px" }}>
+          <div ref={addRef} className="reveal" style={{ textAlign: "center", marginBottom: "48px" }}>
             <p
               style={{
                 color: "var(--gold)",
@@ -434,6 +436,7 @@ export default function HomePage() {
               gridTemplateColumns: "repeat(2, 1fr)",
               gap: "2px",
             }}
+            className="stats-grid-mobile"
           >
             {[
               {
@@ -533,8 +536,8 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ABOUT PREVIEW - WITH inder.jpeg */}
-      <section style={{ padding: "120px 48px" }}>
+      {/* ABOUT PREVIEW */}
+      <section style={{ padding: "80px 48px" }} className="section-mobile">
         <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
           <div className="about-grid">
             <div ref={addRef} className="reveal">
@@ -667,11 +670,12 @@ export default function HomePage() {
       {/* TESTIMONIAL */}
       <section
         style={{
-          padding: "120px 48px",
+          padding: "80px 48px",
           background: "var(--dark-2)",
           borderTop: "1px solid var(--border-gold)",
           borderBottom: "1px solid var(--border-gold)",
         }}
+        className="section-mobile"
       >
         <div
           style={{ maxWidth: "800px", margin: "0 auto", textAlign: "center" }}
@@ -717,7 +721,8 @@ export default function HomePage() {
       {/* CONTACT SECTION */}
       <section
         id="contact"
-        style={{ padding: "120px 48px", position: "relative", overflow: "hidden" }}
+        style={{ padding: "80px 48px", position: "relative", overflow: "hidden" }}
+        className="section-mobile"
       >
         <div
           style={{
@@ -733,7 +738,7 @@ export default function HomePage() {
         <div
           style={{ maxWidth: "1000px", margin: "0 auto", position: "relative" }}
         >
-          <div ref={addRef} className="reveal" style={{ textAlign: "center", marginBottom: "64px" }}>
+          <div ref={addRef} className="reveal" style={{ textAlign: "center", marginBottom: "48px" }}>
             <p
               style={{
                 color: "var(--gold)",
@@ -771,7 +776,7 @@ export default function HomePage() {
 
           <div
             ref={addRef}
-            className="reveal"
+            className="reveal contact-grid-mobile"
             style={{
               display: "grid",
               gridTemplateColumns: "1fr 1fr",

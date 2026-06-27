@@ -22,6 +22,7 @@
 
 html {
   scroll-behavior: smooth;
+  overflow-x: hidden;
 }
 
 body {
@@ -31,6 +32,8 @@ body {
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  width: 100%;
+  max-width: 100vw;
 }
 
 ::selection {
@@ -168,6 +171,7 @@ body {
   -webkit-tap-highlight-color: transparent;
   touch-action: manipulation;
   z-index: 1001;
+  position: relative;
 }
 
 .hamburger-line {
@@ -200,6 +204,8 @@ body {
   background: rgba(10, 10, 10, 0.99);
   flex-direction: column;
   gap: 0;
+  z-index: 999;
+  position: relative;
 }
 
 .mobile-dropdown-open {
@@ -412,6 +418,7 @@ body {
   align-items: center;
   justify-content: center;
   overflow: hidden;
+  width: 100%;
 }
 
 .hero-bg {
@@ -434,6 +441,7 @@ body {
   text-align: center;
   max-width: 900px;
   padding: 0 24px;
+  width: 100%;
 }
 
 /* SCROLL REVEAL */
@@ -515,6 +523,23 @@ body {
   .service-image-wrap {
     aspect-ratio: 16/9;
   }
+
+  /* Mobile stats grid fix */
+  .stats-grid-mobile {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+
+  /* Mobile contact grid fix */
+  .contact-grid-mobile {
+    grid-template-columns: 1fr !important;
+    gap: 40px !important;
+  }
+
+  /* Reduced section padding for mobile */
+  .section-mobile {
+    padding-left: 24px !important;
+    padding-right: 24px !important;
+  }
 }
 
 @media (max-width: 480px) {
@@ -528,5 +553,11 @@ body {
 
   .service-image-wrap {
     aspect-ratio: 3/2;
+  }
+
+  /* Further reduce padding on very small screens */
+  .section-mobile {
+    padding-left: 20px !important;
+    padding-right: 20px !important;
   }
 }

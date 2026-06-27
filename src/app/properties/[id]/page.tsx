@@ -1,14 +1,20 @@
 import { properties } from "@/data/properties";
 import PropertyDetailClient from "./PropertyDetailClient";
 
+// For static export, we need to handle the id with trailing slash
 export function generateStaticParams() {
   return properties.map((property) => ({
     id: property.id,
   }));
 }
 
+// This ensures the page works with trailingSlash: true
+export const dynamicParams = false;
+
 export default function PropertyDetailPage({ params }: { params: { id: string } }) {
-  const property = properties.find(p => p.id === params.id);
+  // Handle both with and without trailing slash
+  const cleanId = params.id.replace(/\/$/, '');
+  const property = properties.find(p => p.id === cleanId);
   
   if (!property) {
     return (

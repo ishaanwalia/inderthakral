@@ -6,6 +6,8 @@ const nextConfig: NextConfig = {
     unoptimized: true,
   },
   trailingSlash: true,
+  // Add this to ensure clean URLs for dynamic routes
+  distDir: 'dist',
 };
 
 export default nextConfig;

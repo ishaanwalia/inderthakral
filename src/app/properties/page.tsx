@@ -10,10 +10,10 @@ export default function PropertiesPage() {
   const filtered = filter === "All" ? properties : properties.filter(p => p.type === filter);
 
   return (
-    <main style={{ background: "var(--dark)", minHeight: "100vh" }}>
+    <main style={{ background: "var(--dark)", minHeight: "100vh", overflowX: "hidden", width: "100%" }}>
       <Nav active="Properties" />
 
-      <section style={{ paddingTop: "140px", paddingBottom: "60px", paddingLeft: "48px", paddingRight: "48px", borderBottom: "1px solid rgba(201,168,76,0.1)" }}>
+      <section style={{ paddingTop: "140px", paddingBottom: "60px", paddingLeft: "48px", paddingRight: "48px", borderBottom: "1px solid rgba(201,168,76,0.1)" }} className="section-mobile">
         <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
           <p style={{ color: "var(--gold)", fontSize: "11px", letterSpacing: "4px", textTransform: "uppercase", marginBottom: "16px" }}>Verified Listings</p>
           <h1 style={{ fontSize: "clamp(32px, 6vw, 72px)", fontWeight: 300, marginBottom: "40px" }}>Available Properties</h1>
@@ -25,7 +25,7 @@ export default function PropertiesPage() {
         </div>
       </section>
 
-      <section style={{ padding: "60px 48px" }}>
+      <section style={{ padding: "60px 48px" }} className="section-mobile">
         <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
           <div className="properties-grid">
             {filtered.map((property) => (
