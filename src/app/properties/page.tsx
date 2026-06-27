@@ -13,7 +13,7 @@ export default function PropertiesPage() {
     <main style={{ background: "var(--dark)", minHeight: "100vh" }}>
       <Nav active="Properties" />
 
-      <section style={{ paddingTop: "140px", paddingBottom: "60px", paddingLeft: "24px", paddingRight: "24px", borderBottom: "1px solid rgba(201,168,76,0.1)" }}>
+      <section style={{ paddingTop: "140px", paddingBottom: "60px", paddingLeft: "48px", paddingRight: "48px", borderBottom: "1px solid rgba(201,168,76,0.1)" }}>
         <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
           <p style={{ color: "var(--gold)", fontSize: "11px", letterSpacing: "4px", textTransform: "uppercase", marginBottom: "16px" }}>Verified Listings</p>
           <h1 style={{ fontSize: "clamp(32px, 6vw, 72px)", fontWeight: 300, marginBottom: "40px" }}>Available Properties</h1>
@@ -25,16 +25,15 @@ export default function PropertiesPage() {
         </div>
       </section>
 
-      <section style={{ padding: "60px 24px" }}>
+      <section style={{ padding: "60px 48px" }}>
         <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
           <div className="properties-grid">
             {filtered.map((property) => (
               <Link key={property.id} href={`/properties/${property.id}`} style={{ textDecoration: "none" }}>
-                <div style={{ background: "var(--dark-2)", border: "1px solid rgba(201,168,76,0.08)", overflow: "hidden", transition: "border-color 0.3s" }}>
-                  <div style={{ width: "100%", height: "220px", backgroundImage: `url('${property.image}')`, backgroundSize: "cover", backgroundPosition: "center", position: "relative" }}>
-                    <div style={{ position: "absolute", top: "16px", left: "16px", background: property.type === "Commercial" ? "var(--gold)" : "rgba(10,10,10,0.8)", color: property.type === "Commercial" ? "var(--dark)" : "var(--gold)", border: "1px solid var(--gold)", padding: "4px 12px", fontSize: "10px", letterSpacing: "2px", textTransform: "uppercase" }}>{property.type}</div>
-                  </div>
+                <div style={{ background: "var(--dark-2)", border: "1px solid rgba(201,168,76,0.08)", overflow: "hidden", transition: "border-color 0.3s", height: "100%" }}>
+                  <img src={property.image} alt={property.title} style={{ width: "100%", height: "220px", objectFit: "cover", display: "block", position: "relative" }} />
                   <div style={{ padding: "24px" }}>
+                    <div style={{ display: "inline-block", background: property.type === "Commercial" ? "var(--gold)" : "transparent", color: property.type === "Commercial" ? "var(--dark)" : "var(--gold)", border: "1px solid var(--gold)", padding: "3px 10px", fontSize: "10px", letterSpacing: "2px", textTransform: "uppercase", marginBottom: "12px" }}>{property.type}</div>
                     <p style={{ color: "var(--text-muted)", fontSize: "11px", letterSpacing: "2px", textTransform: "uppercase", marginBottom: "8px" }}>{property.location}</p>
                     <h3 style={{ color: "var(--text-primary)", fontSize: "17px", fontWeight: 300, marginBottom: "12px", lineHeight: 1.3 }}>{property.title}</h3>
                     <p style={{ color: "var(--text-muted)", fontSize: "13px", marginBottom: "20px", lineHeight: 1.6 }}>{property.highlight}</p>
@@ -56,9 +55,11 @@ export default function PropertiesPage() {
         </div>
       </section>
 
-      <footer style={{ padding: "40px 24px", borderTop: "1px solid rgba(201,168,76,0.1)" }}>
-        <div style={{ color: "var(--gold)", fontSize: "11px", letterSpacing: "3px", textTransform: "uppercase", marginBottom: "8px" }}>Inder Thakral Properties</div>
-        <div style={{ color: "var(--text-muted)", fontSize: "11px", marginBottom: "8px" }}>2026 · Independent Advisory · Mohali, Chandigarh Tricity</div>
+      <footer style={{ padding: "40px 48px", borderTop: "1px solid rgba(201,168,76,0.1)", display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "16px" }}>
+        <div>
+          <div style={{ color: "var(--gold)", fontSize: "11px", letterSpacing: "3px", textTransform: "uppercase" }}>Inder Thakral Properties</div>
+          <div style={{ color: "var(--text-muted)", fontSize: "11px", marginTop: "4px" }}>2026 · Independent Advisory · Mohali, Chandigarh Tricity</div>
+        </div>
         <div style={{ color: "var(--text-muted)", fontSize: "10px", letterSpacing: "2px", textTransform: "uppercase" }}>Verified Title Deeds · By Appointment Only</div>
       </footer>
     </main>

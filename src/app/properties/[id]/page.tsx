@@ -37,22 +37,11 @@ export default function PropertyDetailPage() {
         <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
           <div className="detail-grid">
 
-            {/* LEFT */}
             <div>
-              <img
-                src={property.gallery[activeImage]}
-                alt={property.title}
-                style={{ width: "100%", height: "480px", objectFit: "cover", marginBottom: "12px", display: "block", cursor: "pointer" }}
-              />
-              <div style={{ display: "flex", gap: "8px", marginBottom: "48px" }}>
+              <img src={property.gallery[activeImage]} alt={property.title} style={{ width: "100%", height: "480px", objectFit: "cover", display: "block", marginBottom: "12px" }} />
+              <div style={{ display: "flex", gap: "8px", marginBottom: "48px", overflowX: "auto", paddingBottom: "4px" }}>
                 {property.gallery.map((img, i) => (
-                  <img
-                    key={i}
-                    src={img}
-                    alt=""
-                    onClick={() => setActiveImage(i)}
-                    style={{ width: "120px", height: "80px", objectFit: "cover", cursor: "pointer", border: activeImage === i ? "2px solid var(--gold)" : "2px solid transparent", opacity: activeImage === i ? 1 : 0.6, transition: "all 0.3s" }}
-                  />
+                  <img key={i} src={img} alt="" onClick={() => setActiveImage(i)} style={{ width: "100px", height: "70px", objectFit: "cover", cursor: "pointer", flexShrink: 0, border: activeImage === i ? "2px solid var(--gold)" : "2px solid transparent", opacity: activeImage === i ? 1 : 0.6, transition: "all 0.3s", display: "block" }} />
                 ))}
               </div>
 
@@ -74,7 +63,6 @@ export default function PropertyDetailPage() {
               </div>
             </div>
 
-            {/* RIGHT */}
             <div>
               <div style={{ position: "sticky", top: "100px", background: "var(--dark-2)", border: "1px solid rgba(201,168,76,0.15)", padding: "40px" }}>
                 <div style={{ display: "inline-block", border: "1px solid var(--gold)", color: "var(--gold)", padding: "4px 16px", fontSize: "10px", letterSpacing: "3px", textTransform: "uppercase", marginBottom: "24px" }}>{property.type}</div>
@@ -95,7 +83,7 @@ export default function PropertyDetailPage() {
                 <a href={whatsappLink} target="_blank" rel="noopener noreferrer" style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "12px", background: "#25D366", color: "#fff", padding: "16px", fontSize: "12px", letterSpacing: "2px", textTransform: "uppercase", textDecoration: "none", fontWeight: 600, marginBottom: "12px" }}>
                   WhatsApp Enquiry
                 </a>
-                <a href={"mailto:care@inderthakral.com?subject=Enquiry: " + property.title} style={{ display: "flex", alignItems: "center", justifyContent: "center", border: "1px solid rgba(201,168,76,0.3)", color: "var(--text-muted)", padding: "16px", fontSize: "12px", letterSpacing: "2px", textTransform: "uppercase", textDecoration: "none", marginBottom: "24px" }}>
+                <a href={"mailto:care@inderthakral.com?subject=Enquiry: " + property.title} style={{ display: "flex", alignItems: "center", justifyContent: "center", border: "1px solid rgba(201,168,76,0.3)", color: "var(--text-muted)", padding: "16px", fontSize: "12px", letterSpacing: "2px", textTransform: "uppercase", textDecoration: "none", marginBottom: "12px" }}>
                   Send Email Enquiry
                 </a>
                 <a href="tel:+919815901234" style={{ display: "flex", alignItems: "center", justifyContent: "center", border: "1px solid rgba(201,168,76,0.3)", color: "var(--gold)", padding: "16px", fontSize: "12px", letterSpacing: "2px", textTransform: "uppercase", textDecoration: "none", marginBottom: "24px" }}>
