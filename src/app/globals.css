@@ -171,7 +171,6 @@ body {
   -webkit-tap-highlight-color: transparent;
   touch-action: manipulation;
   z-index: 1001;
-  position: relative;
 }
 
 .hamburger-line {
@@ -204,8 +203,6 @@ body {
   background: rgba(10, 10, 10, 0.99);
   flex-direction: column;
   gap: 0;
-  z-index: 999;
-  position: relative;
 }
 
 .mobile-dropdown-open {
@@ -444,7 +441,7 @@ body {
   width: 100%;
 }
 
-/* SCROLL REVEAL */
+/* SCROLL REVEAL - with fallback for mobile */
 .reveal {
   opacity: 0;
   transform: translateY(24px);
@@ -456,6 +453,14 @@ body {
   transform: translateY(0);
 }
 
+/* Fallback: ensure content is visible if JS fails or on mobile */
+@media (max-width: 768px) {
+  .reveal {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 /* FOOTER */
 .site-footer {
   padding: 40px 48px;
@@ -465,6 +470,27 @@ body {
   align-items: center;
   flex-wrap: wrap;
   gap: 16px;
+}
+
+/* PROPERTY DETAIL MOBILE FIXES */
+.property-gallery-thumb {
+  width: 100px;
+  height: 70px;
+  object-fit: cover;
+  cursor: pointer;
+  flex-shrink: 0;
+  border: 2px solid transparent;
+  transition: all 0.3s;
+  display: block;
+}
+
+.property-gallery-thumb.active {
+  border-color: var(--gold);
+  opacity: 1;
+}
+
+.property-gallery-thumb.inactive {
+  opacity: 0.6;
 }
 
 /* RESPONSIVE */
@@ -483,11 +509,11 @@ body {
     padding: 16px 24px;
   }
 
-  .nav-links {
+  .nav-desktop-links {
     display: none !important;
   }
 
-  .hamburger {
+  .hamburger-btn {
     display: flex !important;
   }
 
@@ -540,24 +566,46 @@ body {
     padding-left: 24px !important;
     padding-right: 24px !important;
   }
+
+  /* Property detail mobile fixes */
+  .property-detail-main-img {
+    height: 280px !important;
+  }
+
+  .property-gallery-row {
+    gap: 6px !important;
+  }
+
+  .property-gallery-thumb {
+    width: 70px !important;
+    height: 50px !important;
+  }
+
+  .property-sticky-sidebar {
+    position: relative !important;
+    top: 0 !important;
+  }
 }
 
 @media (max-width: 480px) {
-  .nav-inner {
-    padding: 14px 20px;
+  .nav-inner-mobile {
+    padding: 14px 20px !important;
   }
 
-  .mobile-dropdown {
-    padding: 20px 24px;
+  .mobile-menu-overlay {
+    padding: 80px 20px 40px !important;
   }
 
   .service-image-wrap {
     aspect-ratio: 3/2;
   }
 
-  /* Further reduce padding on very small screens */
   .section-mobile {
     padding-left: 20px !important;
     padding-right: 20px !important;
+  }
+
+  .property-detail-main-img {
+    height: 220px !important;
   }
 }
