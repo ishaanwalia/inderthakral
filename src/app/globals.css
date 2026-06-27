@@ -1,17 +1,33 @@
 @import "tailwindcss";
 
 :root {
-  --gold: #00D4FF;
-  --gold-light: #66E5FF;
-  --gold-dim: rgba(0, 212, 255, 0.15);
+  /* Zera-inspired ultra premium palette */
+  --accent: #00D4FF;
+  --accent-glow: rgba(0, 212, 255, 0.4);
+  --accent-dim: rgba(0, 212, 255, 0.08);
+  --accent-subtle: rgba(0, 212, 255, 0.03);
+
   --dark: #000000;
-  --dark-2: #0A0A0A;
-  --dark-3: #111111;
-  --text-primary: #F0F0F0;
-  --text-muted: rgba(240, 240, 240, 0.6);
-  --text-faint: rgba(240, 240, 240, 0.3);
-  --border-gold: rgba(0, 212, 255, 0.1);
-  --border-gold-hover: rgba(0, 212, 255, 0.3);
+  --dark-1: #030303;
+  --dark-2: #060606;
+  --dark-3: #0A0A0A;
+  --dark-4: #0F0F0F;
+  --dark-5: #141414;
+  --dark-6: #1A1A1A;
+
+  --text-primary: #FFFFFF;
+  --text-secondary: rgba(255, 255, 255, 0.85);
+  --text-muted: rgba(255, 255, 255, 0.5);
+  --text-faint: rgba(255, 255, 255, 0.25);
+  --text-ghost: rgba(255, 255, 255, 0.1);
+
+  --border-subtle: rgba(255, 255, 255, 0.06);
+  --border-light: rgba(255, 255, 255, 0.1);
+  --border-accent: rgba(0, 212, 255, 0.2);
+  --border-accent-hover: rgba(0, 212, 255, 0.5);
+
+  --font-mono: 'SF Mono', 'Fira Code', 'JetBrains Mono', monospace;
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
 }
 
 * {
@@ -28,8 +44,8 @@ html {
 
 body {
   background-color: #000000;
-  color: #F0F0F0;
-  font-family: system-ui, -apple-system, sans-serif;
+  color: var(--text-primary);
+  font-family: var(--font-sans);
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -38,12 +54,12 @@ body {
 }
 
 ::selection {
-  background: #00D4FF;
+  background: var(--accent);
   color: #000000;
 }
 
 ::-webkit-scrollbar {
-  width: 6px;
+  width: 4px;
 }
 
 ::-webkit-scrollbar-track {
@@ -51,19 +67,19 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(0, 212, 255, 0.3);
-  border-radius: 3px;
+  background: rgba(0, 212, 255, 0.2);
+  border-radius: 2px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(0, 212, 255, 0.5);
+  background: rgba(0, 212, 255, 0.4);
 }
 
 /* SCROLL REVEAL */
 .reveal {
   opacity: 0;
-  transform: translateY(30px);
-  transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  transform: translateY(40px);
+  transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .reveal.visible {
@@ -71,16 +87,110 @@ body {
   transform: translateY(0);
 }
 
-/* Fallback for mobile */
-@media (max-width: 768px) {
-  .reveal {
+.reveal-delay-1 { transition-delay: 0.1s; }
+.reveal-delay-2 { transition-delay: 0.2s; }
+.reveal-delay-3 { transition-delay: 0.3s; }
+.reveal-delay-4 { transition-delay: 0.4s; }
+.reveal-delay-5 { transition-delay: 0.5s; }
+
+/* Kinetic text effect */
+.kinetic-text {
+  display: inline-block;
+  overflow: hidden;
+}
+
+.kinetic-text span {
+  display: inline-block;
+  animation: kineticSlide 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  opacity: 0;
+  transform: translateY(100%);
+}
+
+@keyframes kineticSlide {
+  to {
     opacity: 1;
     transform: translateY(0);
   }
 }
 
-/* NAV - Mobile overrides */
+/* Glow effects */
+.glow-text {
+  text-shadow: 0 0 40px rgba(0, 212, 255, 0.3), 0 0 80px rgba(0, 212, 255, 0.1);
+}
+
+.glow-box {
+  box-shadow: 0 0 60px rgba(0, 212, 255, 0.08), inset 0 0 60px rgba(0, 212, 255, 0.02);
+}
+
+/* Grid background */
+.grid-bg {
+  background-image: 
+    linear-gradient(rgba(0, 212, 255, 0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 212, 255, 0.02) 1px, transparent 1px);
+  background-size: 80px 80px;
+}
+
+/* Noise texture overlay */
+.noise-overlay::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  opacity: 0.03;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Progress bar animation */
+@keyframes progressFill {
+  from { width: 0%; }
+  to { width: 100%; }
+}
+
+/* Pulse glow */
+@keyframes pulseGlow {
+  0%, 100% { 
+    opacity: 0.6; 
+    transform: scale(1); 
+  }
+  50% { 
+    opacity: 1; 
+    transform: scale(1.05); 
+  }
+}
+
+/* Smooth scroll indicator */
+@keyframes scrollPulse {
+  0%, 100% { opacity: 1; transform: scaleY(1) translateY(0); }
+  50% { opacity: 0.3; transform: scaleY(0.6) translateY(8px); }
+}
+
+/* Floating particles */
+@keyframes float {
+  0%, 100% { transform: translateY(0) translateX(0); }
+  25% { transform: translateY(-20px) translateX(10px); }
+  50% { transform: translateY(-10px) translateX(-5px); }
+  75% { transform: translateY(-30px) translateX(5px); }
+}
+
+/* Line draw animation */
+@keyframes lineDraw {
+  from { width: 0; }
+  to { width: 100%; }
+}
+
+/* Counter animation */
+@keyframes countUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Mobile overrides */
 @media (max-width: 768px) {
+  .reveal {
+    opacity: 1;
+    transform: translateY(0);
+  }
   .desktop-nav-links {
     display: none !important;
   }
@@ -96,4 +206,30 @@ body {
   .nav-inner-wrap {
     padding: 14px 20px !important;
   }
+}
+
+/* Responsive grids */
+@media (max-width: 1024px) {
+  .stats-grid-desktop { grid-template-columns: repeat(2, 1fr) !important; }
+  .properties-grid-desktop { grid-template-columns: repeat(2, 1fr) !important; }
+  .about-grid-desktop { grid-template-columns: 1fr !important; gap: 48px !important; }
+  .detail-grid-desktop { grid-template-columns: 1fr !important; }
+  .services-grid-desktop { grid-template-columns: 1fr !important; }
+}
+
+@media (max-width: 768px) {
+  .stats-grid-desktop { grid-template-columns: repeat(2, 1fr) !important; }
+  .properties-grid-desktop { grid-template-columns: 1fr !important; }
+  .services-grid-desktop { grid-template-columns: 1fr !important; }
+  .about-grid-desktop { grid-template-columns: 1fr !important; gap: 40px !important; }
+  .contact-grid-desktop { grid-template-columns: 1fr !important; gap: 40px !important; }
+  .detail-grid-desktop { grid-template-columns: 1fr !important; }
+  .section-pad { padding-left: 24px !important; padding-right: 24px !important; }
+  .hero-pad { padding-left: 20px !important; padding-right: 20px !important; }
+}
+
+@media (max-width: 480px) {
+  .section-pad { padding-left: 16px !important; padding-right: 16px !important; }
+  .hero-pad { padding-left: 16px !important; padding-right: 16px !important; }
+  .stats-grid-desktop { grid-template-columns: 1fr 1fr !important; }
 }

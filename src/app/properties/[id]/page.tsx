@@ -12,19 +12,16 @@ export default async function PropertyDetailPage({
 }: { 
   params: Promise<{ id: string }> 
 }) {
-  // Next.js 15+ params is a Promise — must await it
   const { id } = await params;
-  
-  // Handle both with and without trailing slash
   const cleanId = id.replace(/\/$/, '');
   const property = properties.find(p => p.id === cleanId);
-  
+
   if (!property) {
     return (
-      <main style={{ background: "var(--dark)", minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center" }}>
+      <main style={{ background: "#000000", minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", color: "#FFFFFF" }}>
         <div style={{ textAlign: "center" }}>
-          <p style={{ color: "var(--gold)", letterSpacing: "4px", textTransform: "uppercase", marginBottom: "16px" }}>Property Not Found</p>
-          <a href="/properties" style={{ color: "var(--text-muted)", textDecoration: "none", fontSize: "11px", letterSpacing: "2px", textTransform: "uppercase" }}>← Back to Properties</a>
+          <p style={{ color: "#00D4FF", letterSpacing: "4px", textTransform: "uppercase", marginBottom: "24px", fontFamily: "var(--font-mono)", fontSize: "11px" }}>Property Not Found</p>
+          <a href="/properties/" style={{ color: "rgba(255,255,255,0.4)", textDecoration: "none", fontSize: "11px", letterSpacing: "2px", textTransform: "uppercase", fontFamily: "var(--font-mono)" }}>← Back to Properties</a>
         </div>
       </main>
     );

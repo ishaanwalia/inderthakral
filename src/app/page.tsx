@@ -1,11 +1,11 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 import Link from "next/link";
 import Nav from "@/components/Nav";
 import { properties } from "@/data/properties";
 
-function AnimatedCounter({ end, suffix = "", duration = 2000 }: { end: number; suffix?: string; duration?: number }) {
+function AnimatedCounter({ end, suffix = "", duration = 2500 }: { end: number; suffix?: string; duration?: number }) {
   const [count, setCount] = useState(0);
   const ref = useRef<HTMLDivElement>(null);
   const hasAnimated = useRef(false);
@@ -19,22 +19,87 @@ function AnimatedCounter({ end, suffix = "", duration = 2000 }: { end: number; s
           const animate = () => {
             const elapsed = Date.now() - startTime;
             const progress = Math.min(elapsed / duration, 1);
-            const eased = 1 - Math.pow(1 - progress, 3);
+            const eased = 1 - Math.pow(1 - progress, 4);
             setCount(Math.floor(eased * end));
             if (progress < 1) requestAnimationFrame(animate);
           };
           requestAnimationFrame(animate);
         }
       },
-      { threshold: 0.5 }
+      { threshold: 0.3 }
     );
     if (ref.current) observer.observe(ref.current);
     return () => observer.disconnect();
   }, [end, duration]);
 
   return (
-    <div ref={ref} style={{ color: "#00D4FF", fontSize: "clamp(36px, 5vw, 64px)", fontWeight: 300, fontFamily: "monospace", letterSpacing: "-2px" }}>
+    <div ref={ref} style={{ 
+      color: "#00D4FF", 
+      fontSize: "clamp(40px, 5vw, 72px)", 
+      fontWeight: 300, 
+      fontFamily: "var(--font-mono)", 
+      letterSpacing: "-2px",
+      lineHeight: 1,
+    }}>
       {count}{suffix}
+    </div>
+  );
+}
+
+function ScrollText({ text, speed = 50 }: { text: string; speed?: number }) {
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+
+    let animationId: number;
+    let position = 0;
+
+    const animate = () => {
+      position -= 0.5;
+      const firstChild = container.firstElementChild as HTMLElement;
+      if (firstChild && Math.abs(position) >= firstChild.offsetWidth / 2) {
+        position = 0;
+      }
+      container.style.transform = `translateX(${position}px)`;
+      animationId = requestAnimationFrame(animate);
+    };
+
+    animationId = requestAnimationFrame(animate);
+    return () => cancelAnimationFrame(animationId);
+  }, [speed]);
+
+  return (
+    <div style={{ overflow: "hidden", width: "100%", whiteSpace: "nowrap" }}>
+      <div ref={containerRef} style={{ display: "inline-flex", willChange: "transform" }}>
+        <span style={{ 
+          display: "inline-flex", 
+          gap: "80px",
+          paddingRight: "80px",
+          fontSize: "clamp(48px, 8vw, 120px)",
+          fontWeight: 300,
+          letterSpacing: "-3px",
+          color: "rgba(255, 255, 255, 0.03)",
+          textTransform: "uppercase",
+          fontFamily: "var(--font-sans)",
+        }}>
+          {text}
+        </span>
+        <span style={{ 
+          display: "inline-flex", 
+          gap: "80px",
+          paddingRight: "80px",
+          fontSize: "clamp(48px, 8vw, 120px)",
+          fontWeight: 300,
+          letterSpacing: "-3px",
+          color: "rgba(255, 255, 255, 0.03)",
+          textTransform: "uppercase",
+          fontFamily: "var(--font-sans)",
+        }}>
+          {text}
+        </span>
+      </div>
     </div>
   );
 }
@@ -42,6 +107,7 @@ function AnimatedCounter({ end, suffix = "", duration = 2000 }: { end: number; s
 export default function HomePage() {
   const revealRefs = useRef<(HTMLElement | null)[]>([]);
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+  const heroRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
@@ -60,7 +126,7 @@ export default function HomePage() {
           }
         });
       },
-      { threshold: 0.1, rootMargin: "0px 0px -50px 0px" }
+      { threshold: 0.1, rootMargin: "0px 0px -80px 0px" }
     );
     revealRefs.current.forEach((el) => {
       if (el) observer.observe(el);
@@ -75,245 +141,435 @@ export default function HomePage() {
   };
 
   const featuredProperties = properties.slice(0, 3);
+  const scrollText = "Verified Land • Trusted Advisory • Personal Service • Mohali • Chandigarh • Panchkula • Premium Properties • Verified Land • Trusted Advisory • Personal Service • Mohali • Chandigarh • Panchkula • Premium Properties";
 
   return (
-    <main style={{ background: "#000000", minHeight: "100vh", overflowX: "hidden", width: "100%", color: "#F0F0F0", fontFamily: "system-ui, -apple-system, sans-serif" }}>
-      {/* Cursor glow effect */}
+    <main style={{ background: "#000000", minHeight: "100vh", overflowX: "hidden", width: "100%", color: "#FFFFFF", fontFamily: "var(--font-sans)" }}>
+
+      {/* Cursor glow - premium subtle effect */}
       <div style={{
         position: "fixed",
-        width: "400px",
-        height: "400px",
+        width: "500px",
+        height: "500px",
         borderRadius: "50%",
-        background: "radial-gradient(circle, rgba(0,212,255,0.08) 0%, transparent 70%)",
+        background: "radial-gradient(circle, rgba(0,212,255,0.06) 0%, transparent 60%)",
         pointerEvents: "none",
         zIndex: 1,
-        transform: `translate(${mousePos.x - 200}px, ${mousePos.y - 200}px)`,
-        transition: "transform 0.1s ease-out",
+        transform: `translate(${mousePos.x - 250}px, ${mousePos.y - 250}px)`,
+        transition: "transform 0.15s ease-out",
+        mixBlendMode: "screen",
       }} />
 
       <Nav />
 
-      {/* HERO */}
-      <section style={{ position: "relative", minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden", paddingTop: "80px" }}>
-        {/* Animated background grid */}
+      {/* ===== HERO SECTION ===== */}
+      <section ref={heroRef} style={{ position: "relative", minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden", paddingTop: "80px" }}>
+        {/* Subtle grid background */}
         <div style={{
           position: "absolute",
           inset: 0,
-          backgroundImage: "linear-gradient(rgba(0,212,255,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0,212,255,0.03) 1px, transparent 1px)",
-          backgroundSize: "60px 60px",
-          opacity: 0.5,
-        }} />
-        
-        {/* Glowing orb */}
-        <div style={{
-          position: "absolute",
-          top: "50%",
-          left: "50%",
-          transform: "translate(-50%, -50%)",
-          width: "600px",
-          height: "600px",
-          borderRadius: "50%",
-          background: "radial-gradient(circle, rgba(0,212,255,0.15) 0%, rgba(0,100,200,0.05) 40%, transparent 70%)",
-          filter: "blur(40px)",
-          animation: "pulse 4s ease-in-out infinite",
+          backgroundImage: "linear-gradient(rgba(0,212,255,0.015) 1px, transparent 1px), linear-gradient(90deg, rgba(0,212,255,0.015) 1px, transparent 1px)",
+          backgroundSize: "80px 80px",
+          maskImage: "radial-gradient(ellipse at 50% 50%, black 0%, transparent 70%)",
+          WebkitMaskImage: "radial-gradient(ellipse at 50% 50%, black 0%, transparent 70%)",
         }} />
 
-        <div style={{ position: "relative", zIndex: 2, textAlign: "center", maxWidth: "900px", padding: "0 24px", width: "100%" }}>
-          <div style={{ display: "inline-flex", gap: "16px", marginBottom: "40px", flexWrap: "wrap", justifyContent: "center" }}>
+        {/* Central glow orb */}
+        <div style={{
+          position: "absolute",
+          top: "45%",
+          left: "50%",
+          transform: "translate(-50%, -50%)",
+          width: "700px",
+          height: "700px",
+          borderRadius: "50%",
+          background: "radial-gradient(circle, rgba(0,212,255,0.12) 0%, rgba(0,100,200,0.03) 40%, transparent 70%)",
+          filter: "blur(60px)",
+          animation: "pulseGlow 6s ease-in-out infinite",
+        }} />
+
+        {/* Floating particles */}
+        {[...Array(6)].map((_, i) => (
+          <div key={i} style={{
+            position: "absolute",
+            width: "2px",
+            height: "2px",
+            background: "rgba(0, 212, 255, 0.4)",
+            borderRadius: "50%",
+            top: `${20 + i * 15}%`,
+            left: `${10 + i * 15}%`,
+            animation: `float ${8 + i * 2}s ease-in-out infinite`,
+            animationDelay: `${i * 0.5}s`,
+            boxShadow: "0 0 10px rgba(0, 212, 255, 0.6)",
+          }} />
+        ))}
+
+        <div style={{ position: "relative", zIndex: 2, textAlign: "center", maxWidth: "1000px", padding: "0 24px", width: "100%" }}>
+          {/* Tags */}
+          <div style={{ display: "inline-flex", gap: "16px", marginBottom: "48px", flexWrap: "wrap", justifyContent: "center" }}>
             {["Verified", "Trusted", "Personal"].map((tag, i) => (
               <span key={i} style={{
-                padding: "8px 20px",
-                border: "1px solid rgba(0,212,255,0.3)",
+                padding: "10px 24px",
+                border: "1px solid rgba(0,212,255,0.2)",
                 color: "#00D4FF",
-                fontSize: "11px",
-                letterSpacing: "3px",
+                fontSize: "10px",
+                letterSpacing: "4px",
                 textTransform: "uppercase",
-                fontFamily: "monospace",
-                background: "rgba(0,212,255,0.05)",
-              }}>
+                fontFamily: "var(--font-mono)",
+                background: "rgba(0,212,255,0.03)",
+                backdropFilter: "blur(10px)",
+                transition: "all 0.4s ease",
+                cursor: "default",
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.borderColor = "rgba(0,212,255,0.5)";
+                e.currentTarget.style.background = "rgba(0,212,255,0.08)";
+                e.currentTarget.style.boxShadow = "0 0 30px rgba(0,212,255,0.1)";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.borderColor = "rgba(0,212,255,0.2)";
+                e.currentTarget.style.background = "rgba(0,212,255,0.03)";
+                e.currentTarget.style.boxShadow = "none";
+              }}
+              >
                 {tag}
               </span>
             ))}
           </div>
 
+          {/* Main headline - Zera style */}
           <h1 style={{
-            fontSize: "clamp(40px, 8vw, 96px)",
-            fontWeight: 700,
+            fontSize: "clamp(42px, 9vw, 100px)",
+            fontWeight: 300,
             lineHeight: 1.05,
-            marginBottom: "24px",
-            letterSpacing: "-3px",
-            background: "linear-gradient(135deg, #FFFFFF 0%, #00D4FF 50%, #0088FF 100%)",
-            WebkitBackgroundClip: "text",
-            WebkitTextFillColor: "transparent",
-            backgroundClip: "text",
+            marginBottom: "32px",
+            letterSpacing: "-4px",
+            color: "#FFFFFF",
           }}>
-            Verified Land.
-            <br />
-            Trusted Advisor.
+            <span style={{ display: "block" }}>Verified Land.</span>
+            <span style={{ 
+              display: "block", 
+              background: "linear-gradient(135deg, #00D4FF 0%, #0088FF 50%, #00D4FF 100%)",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+              backgroundClip: "text",
+            }}>Trusted Advisor.</span>
           </h1>
 
+          {/* Subtitle */}
           <p style={{
-            color: "rgba(240,240,240,0.6)",
-            fontSize: "clamp(16px, 2vw, 20px)",
-            lineHeight: 1.7,
-            maxWidth: "600px",
-            margin: "0 auto 48px",
+            color: "rgba(255,255,255,0.4)",
+            fontSize: "clamp(15px, 2vw, 18px)",
+            lineHeight: 1.8,
+            maxWidth: "560px",
+            margin: "0 auto 56px",
             fontWeight: 400,
+            letterSpacing: "0.5px",
           }}>
             Personal real estate advisory for residential plots, commercial showrooms, and NRI investments across Mohali, New Chandigarh, and Panchkula.
           </p>
 
-          <div style={{ display: "flex", gap: "16px", justifyContent: "center", flexWrap: "wrap" }}>
-            <Link href="/properties" style={{
+          {/* CTA Buttons */}
+          <div style={{ display: "flex", gap: "20px", justifyContent: "center", flexWrap: "wrap" }}>
+            <Link href="/properties/" style={{
               display: "inline-flex",
               alignItems: "center",
-              gap: "8px",
+              gap: "12px",
               background: "#00D4FF",
               color: "#000000",
-              padding: "16px 40px",
-              fontSize: "13px",
-              letterSpacing: "2px",
+              padding: "18px 44px",
+              fontSize: "12px",
+              letterSpacing: "3px",
               textTransform: "uppercase",
               textDecoration: "none",
               fontWeight: 600,
-              transition: "all 0.3s ease",
-              borderRadius: "4px",
-            }}>
+              transition: "all 0.4s cubic-bezier(0.16, 1, 0.3, 1)",
+              borderRadius: "2px",
+              fontFamily: "var(--font-mono)",
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = "translateY(-2px)";
+              e.currentTarget.style.boxShadow = "0 20px 60px rgba(0, 212, 255, 0.3)";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = "translateY(0)";
+              e.currentTarget.style.boxShadow = "none";
+            }}
+            >
               View Properties
-              <span>→</span>
+              <span style={{ fontSize: "16px" }}>→</span>
             </Link>
             <a href="/#contact" style={{
               display: "inline-flex",
               alignItems: "center",
-              gap: "8px",
-              border: "1px solid rgba(0,212,255,0.4)",
-              color: "#00D4FF",
-              padding: "16px 40px",
-              fontSize: "13px",
-              letterSpacing: "2px",
+              gap: "12px",
+              border: "1px solid rgba(255,255,255,0.15)",
+              color: "rgba(255,255,255,0.8)",
+              padding: "18px 44px",
+              fontSize: "12px",
+              letterSpacing: "3px",
               textTransform: "uppercase",
               textDecoration: "none",
-              transition: "all 0.3s ease",
-              borderRadius: "4px",
-              background: "rgba(0,212,255,0.05)",
-            }}>
+              transition: "all 0.4s cubic-bezier(0.16, 1, 0.3, 1)",
+              borderRadius: "2px",
+              fontFamily: "var(--font-mono)",
+              background: "rgba(255,255,255,0.02)",
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.borderColor = "rgba(0,212,255,0.4)";
+              e.currentTarget.style.color = "#00D4FF";
+              e.currentTarget.style.background = "rgba(0,212,255,0.05)";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.borderColor = "rgba(255,255,255,0.15)";
+              e.currentTarget.style.color = "rgba(255,255,255,0.8)";
+              e.currentTarget.style.background = "rgba(255,255,255,0.02)";
+            }}
+            >
               Book Consultation
             </a>
           </div>
         </div>
 
-        {/* Scroll indicator */}
+        {/* Scroll indicator - refined */}
         <div style={{
           position: "absolute",
-          bottom: "40px",
+          bottom: "48px",
           left: "50%",
           transform: "translateX(-50%)",
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
-          gap: "8px",
-          color: "rgba(0,212,255,0.5)",
-          fontSize: "11px",
-          letterSpacing: "3px",
+          gap: "12px",
+          color: "rgba(0,212,255,0.4)",
+          fontSize: "10px",
+          letterSpacing: "4px",
           textTransform: "uppercase",
+          fontFamily: "var(--font-mono)",
         }}>
           <span>Scroll</span>
-          <div style={{ width: "1px", height: "40px", background: "linear-gradient(to bottom, #00D4FF, transparent)", animation: "scrollPulse 2s ease-in-out infinite" }} />
+          <div style={{ width: "1px", height: "50px", background: "linear-gradient(to bottom, rgba(0,212,255,0.5), transparent)", animation: "scrollPulse 2.5s ease-in-out infinite" }} />
         </div>
       </section>
 
-      {/* STATS BAR */}
-      <section style={{ borderTop: "1px solid rgba(0,212,255,0.1)", borderBottom: "1px solid rgba(0,212,255,0.1)", background: "rgba(0,212,255,0.02)" }}>
-        <div style={{ maxWidth: "1200px", margin: "0 auto", display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "2px" }} className="stats-grid-mobile">
+      {/* ===== KINETIC SCROLL TEXT ===== */}
+      <section style={{ 
+        padding: "80px 0", 
+        borderTop: "1px solid rgba(255,255,255,0.03)", 
+        borderBottom: "1px solid rgba(255,255,255,0.03)",
+        background: "linear-gradient(180deg, transparent 0%, rgba(0,212,255,0.01) 50%, transparent 100%)",
+        overflow: "hidden",
+      }}>
+        <ScrollText text={scrollText} />
+      </section>
+
+      {/* ===== STATS BAR ===== */}
+      <section style={{ 
+        borderTop: "1px solid rgba(255,255,255,0.04)", 
+        borderBottom: "1px solid rgba(255,255,255,0.04)", 
+        background: "rgba(0,212,255,0.015)",
+        position: "relative",
+      }}>
+        <div style={{ maxWidth: "1200px", margin: "0 auto", display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "1px" }} className="stats-grid-desktop">
           {[
             { end: 15, suffix: "+", label: "Years Experience" },
             { end: 450, suffix: "Cr+", label: "Transactions" },
             { end: 500, suffix: "+", label: "Clients Served" },
             { end: 100, suffix: "%", label: "Title Verified" },
           ].map((stat, i) => (
-            <div key={i} ref={addRef} className="reveal" style={{ padding: "60px 24px", textAlign: "center", borderRight: i < 3 ? "1px solid rgba(0,212,255,0.08)" : "none" }}>
+            <div key={i} ref={addRef} className="reveal" style={{ 
+              padding: "80px 24px", 
+              textAlign: "center", 
+              borderRight: i < 3 ? "1px solid rgba(255,255,255,0.04)" : "none",
+              position: "relative",
+            }}>
               <AnimatedCounter end={stat.end} suffix={stat.suffix} />
-              <div style={{ color: "rgba(240,240,240,0.4)", fontSize: "11px", letterSpacing: "3px", textTransform: "uppercase", marginTop: "12px", fontFamily: "monospace" }}>
+              <div style={{ 
+                color: "rgba(255,255,255,0.3)", 
+                fontSize: "10px", 
+                letterSpacing: "4px", 
+                textTransform: "uppercase", 
+                marginTop: "16px", 
+                fontFamily: "var(--font-mono)",
+                fontWeight: 400,
+              }}>
                 {stat.label}
               </div>
+              {/* Subtle accent line */}
+              <div style={{
+                position: "absolute",
+                bottom: 0,
+                left: "50%",
+                transform: "translateX(-50%)",
+                width: "40px",
+                height: "1px",
+                background: "linear-gradient(90deg, transparent, rgba(0,212,255,0.3), transparent)",
+              }} />
             </div>
           ))}
         </div>
       </section>
 
-      {/* FEATURED PROPERTIES */}
-      <section style={{ padding: "120px 48px" }} className="section-mobile">
+      {/* ===== FEATURED PROPERTIES ===== */}
+      <section style={{ padding: "140px 48px" }} className="section-pad">
         <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
-          <div ref={addRef} className="reveal" style={{ marginBottom: "64px" }}>
-            <p style={{ color: "#00D4FF", fontSize: "12px", letterSpacing: "4px", textTransform: "uppercase", fontFamily: "monospace", marginBottom: "16px" }}>
-              Featured Listings
-            </p>
-            <h2 style={{ fontSize: "clamp(32px, 5vw, 56px)", fontWeight: 700, lineHeight: 1.1, letterSpacing: "-2px" }}>
-              Available <span style={{ color: "#00D4FF" }}>Properties</span>
-            </h2>
+          <div ref={addRef} className="reveal" style={{ marginBottom: "80px", display: "flex", justifyContent: "space-between", alignItems: "flex-end", flexWrap: "wrap", gap: "24px" }}>
+            <div>
+              <p style={{ 
+                color: "#00D4FF", 
+                fontSize: "11px", 
+                letterSpacing: "4px", 
+                textTransform: "uppercase", 
+                fontFamily: "var(--font-mono)", 
+                marginBottom: "20px",
+                display: "flex",
+                alignItems: "center",
+                gap: "12px",
+              }}>
+                <span style={{ width: "30px", height: "1px", background: "#00D4FF" }} />
+                Featured Listings
+              </p>
+              <h2 style={{ 
+                fontSize: "clamp(32px, 5vw, 56px)", 
+                fontWeight: 300, 
+                lineHeight: 1.1, 
+                letterSpacing: "-3px",
+                color: "#FFFFFF",
+              }}>
+                Available <span style={{ color: "#00D4FF", fontWeight: 400 }}>Properties</span>
+              </h2>
+            </div>
+            <Link href="/properties/" style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: "8px",
+              border: "1px solid rgba(255,255,255,0.1)",
+              color: "rgba(255,255,255,0.5)",
+              padding: "14px 32px",
+              fontSize: "11px",
+              letterSpacing: "2px",
+              textTransform: "uppercase",
+              textDecoration: "none",
+              transition: "all 0.4s ease",
+              borderRadius: "2px",
+              background: "transparent",
+              fontFamily: "var(--font-mono)",
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.borderColor = "rgba(0,212,255,0.4)";
+              e.currentTarget.style.color = "#00D4FF";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.borderColor = "rgba(255,255,255,0.1)";
+              e.currentTarget.style.color = "rgba(255,255,255,0.5)";
+            }}
+            >
+              View All →
+            </Link>
           </div>
 
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "24px" }} className="properties-grid-mobile">
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "32px" }} className="properties-grid-desktop">
             {featuredProperties.map((property, i) => (
-              <Link key={property.id} href={`/properties/${property.id}`} ref={addRef} className="reveal" style={{ textDecoration: "none" }}>
+              <Link key={property.id} href={`/properties/${property.id}/`} ref={addRef} className="reveal" style={{ textDecoration: "none" }}>
                 <div style={{
-                  background: "rgba(255,255,255,0.03)",
-                  border: "1px solid rgba(0,212,255,0.1)",
-                  borderRadius: "12px",
+                  background: "rgba(255,255,255,0.02)",
+                  border: "1px solid rgba(255,255,255,0.06)",
+                  borderRadius: "16px",
                   overflow: "hidden",
-                  transition: "all 0.4s ease",
+                  transition: "all 0.5s cubic-bezier(0.16, 1, 0.3, 1)",
                   height: "100%",
                   display: "flex",
                   flexDirection: "column",
+                  position: "relative",
                 }}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.borderColor = "rgba(0,212,255,0.3)";
-                  e.currentTarget.style.transform = "translateY(-8px)";
-                  e.currentTarget.style.boxShadow = "0 20px 60px rgba(0,212,255,0.1)";
+                  e.currentTarget.style.borderColor = "rgba(0,212,255,0.2)";
+                  e.currentTarget.style.transform = "translateY(-12px)";
+                  e.currentTarget.style.boxShadow = "0 30px 80px rgba(0,0,0,0.4), 0 0 60px rgba(0,212,255,0.06)";
                 }}
                 onMouseLeave={(e) => {
-                  e.currentTarget.style.borderColor = "rgba(0,212,255,0.1)";
+                  e.currentTarget.style.borderColor = "rgba(255,255,255,0.06)";
                   e.currentTarget.style.transform = "translateY(0)";
                   e.currentTarget.style.boxShadow = "none";
                 }}
                 >
-                  <div style={{ position: "relative", overflow: "hidden" }}>
-                    <img src={property.image} alt={property.title} style={{ width: "100%", height: "240px", objectFit: "cover", display: "block", transition: "transform 0.6s ease" }} />
+                  {/* Image container with overlay */}
+                  <div style={{ position: "relative", overflow: "hidden", aspectRatio: "4/3" }}>
+                    <img src={property.image} alt={property.title} style={{ width: "100%", height: "100%", objectFit: "cover", display: "block", transition: "transform 0.8s cubic-bezier(0.16, 1, 0.3, 1)" }} />
                     <div style={{
                       position: "absolute",
-                      top: "16px",
-                      left: "16px",
-                      padding: "6px 14px",
-                      background: property.type === "Commercial" ? "#00D4FF" : "rgba(0,0,0,0.6)",
+                      inset: 0,
+                      background: "linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 60%)",
+                    }} />
+                    <div style={{
+                      position: "absolute",
+                      top: "20px",
+                      left: "20px",
+                      padding: "8px 16px",
+                      background: property.type === "Commercial" ? "#00D4FF" : "rgba(0,0,0,0.5)",
                       color: property.type === "Commercial" ? "#000" : "#00D4FF",
-                      fontSize: "10px",
-                      letterSpacing: "2px",
+                      fontSize: "9px",
+                      letterSpacing: "3px",
                       textTransform: "uppercase",
                       fontWeight: 600,
                       borderRadius: "4px",
                       backdropFilter: "blur(10px)",
+                      fontFamily: "var(--font-mono)",
                     }}>
                       {property.type}
                     </div>
+                    {/* Price tag on image */}
+                    <div style={{
+                      position: "absolute",
+                      bottom: "20px",
+                      right: "20px",
+                      color: "#00D4FF",
+                      fontSize: "22px",
+                      fontWeight: 300,
+                      fontFamily: "var(--font-mono)",
+                      textShadow: "0 2px 20px rgba(0,0,0,0.5)",
+                    }}>
+                      {property.price}
+                    </div>
                   </div>
-                  <div style={{ padding: "28px", flex: 1, display: "flex", flexDirection: "column" }}>
-                    <p style={{ color: "rgba(240,240,240,0.4)", fontSize: "11px", letterSpacing: "2px", textTransform: "uppercase", marginBottom: "8px", fontFamily: "monospace" }}>
+                  <div style={{ padding: "32px", flex: 1, display: "flex", flexDirection: "column" }}>
+                    <p style={{ 
+                      color: "rgba(255,255,255,0.3)", 
+                      fontSize: "10px", 
+                      letterSpacing: "3px", 
+                      textTransform: "uppercase", 
+                      marginBottom: "10px", 
+                      fontFamily: "var(--font-mono)",
+                    }}>
                       {property.location}
                     </p>
-                    <h3 style={{ color: "#F0F0F0", fontSize: "20px", fontWeight: 600, marginBottom: "12px", lineHeight: 1.3 }}>
+                    <h3 style={{ 
+                      color: "#FFFFFF", 
+                      fontSize: "18px", 
+                      fontWeight: 500, 
+                      marginBottom: "12px", 
+                      lineHeight: 1.3,
+                      letterSpacing: "-0.5px",
+                    }}>
                       {property.title}
                     </h3>
-                    <p style={{ color: "rgba(240,240,240,0.5)", fontSize: "14px", marginBottom: "20px", lineHeight: 1.6, flex: 1 }}>
+                    <p style={{ 
+                      color: "rgba(255,255,255,0.4)", 
+                      fontSize: "14px", 
+                      marginBottom: "24px", 
+                      lineHeight: 1.6, 
+                      flex: 1,
+                    }}>
                       {property.highlight}
                     </p>
-                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", paddingTop: "20px", borderTop: "1px solid rgba(0,212,255,0.1)" }}>
+                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", paddingTop: "20px", borderTop: "1px solid rgba(255,255,255,0.05)" }}>
                       <div>
-                        <div style={{ color: "rgba(240,240,240,0.3)", fontSize: "10px", letterSpacing: "2px", textTransform: "uppercase", marginBottom: "4px" }}>Size</div>
-                        <div style={{ color: "#F0F0F0", fontSize: "14px", fontFamily: "monospace" }}>{property.size}</div>
+                        <div style={{ color: "rgba(255,255,255,0.2)", fontSize: "9px", letterSpacing: "2px", textTransform: "uppercase", marginBottom: "6px", fontFamily: "var(--font-mono)" }}>Size</div>
+                        <div style={{ color: "rgba(255,255,255,0.7)", fontSize: "13px", fontFamily: "var(--font-mono)" }}>{property.size}</div>
                       </div>
                       <div style={{ textAlign: "right" }}>
-                        <div style={{ color: "rgba(240,240,240,0.3)", fontSize: "10px", letterSpacing: "2px", textTransform: "uppercase", marginBottom: "4px" }}>Price</div>
-                        <div style={{ color: "#00D4FF", fontSize: "22px", fontWeight: 600, fontFamily: "monospace" }}>{property.price}</div>
+                        <div style={{ color: "rgba(255,255,255,0.2)", fontSize: "9px", letterSpacing: "2px", textTransform: "uppercase", marginBottom: "6px", fontFamily: "var(--font-mono)" }}>Status</div>
+                        <div style={{ color: "#00D4FF", fontSize: "13px", fontFamily: "var(--font-mono)" }}>{property.status}</div>
                       </div>
                     </div>
                   </div>
@@ -321,45 +577,56 @@ export default function HomePage() {
               </Link>
             ))}
           </div>
-
-          <div ref={addRef} className="reveal" style={{ textAlign: "center", marginTop: "48px" }}>
-            <Link href="/properties" style={{
-              display: "inline-flex",
-              alignItems: "center",
-              gap: "8px",
-              border: "1px solid rgba(0,212,255,0.3)",
-              color: "#00D4FF",
-              padding: "14px 36px",
-              fontSize: "12px",
-              letterSpacing: "2px",
-              textTransform: "uppercase",
-              textDecoration: "none",
-              transition: "all 0.3s ease",
-              borderRadius: "4px",
-              background: "rgba(0,212,255,0.05)",
-            }}>
-              View All Properties →
-            </Link>
-          </div>
         </div>
       </section>
 
-      {/* SERVICES */}
-      <section style={{ padding: "120px 48px", background: "rgba(0,212,255,0.02)", borderTop: "1px solid rgba(0,212,255,0.08)" }} className="section-mobile">
+      {/* ===== SERVICES ===== */}
+      <section style={{ 
+        padding: "140px 48px", 
+        background: "rgba(0,212,255,0.015)", 
+        borderTop: "1px solid rgba(255,255,255,0.03)",
+        borderBottom: "1px solid rgba(255,255,255,0.03)",
+        position: "relative",
+      }} className="section-pad">
         <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
-          <div ref={addRef} className="reveal" style={{ textAlign: "center", marginBottom: "64px" }}>
-            <p style={{ color: "#00D4FF", fontSize: "12px", letterSpacing: "4px", textTransform: "uppercase", fontFamily: "monospace", marginBottom: "16px" }}>
+          <div ref={addRef} className="reveal" style={{ textAlign: "center", marginBottom: "80px" }}>
+            <p style={{ 
+              color: "#00D4FF", 
+              fontSize: "11px", 
+              letterSpacing: "4px", 
+              textTransform: "uppercase", 
+              fontFamily: "var(--font-mono)", 
+              marginBottom: "20px",
+              display: "inline-flex",
+              alignItems: "center",
+              gap: "12px",
+            }}>
+              <span style={{ width: "30px", height: "1px", background: "#00D4FF" }} />
               What We Offer
+              <span style={{ width: "30px", height: "1px", background: "#00D4FF" }} />
             </p>
-            <h2 style={{ fontSize: "clamp(32px, 5vw, 56px)", fontWeight: 700, lineHeight: 1.1, letterSpacing: "-2px", marginBottom: "16px" }}>
-              Advisory <span style={{ color: "#00D4FF" }}>Services</span>
+            <h2 style={{ 
+              fontSize: "clamp(32px, 5vw, 56px)", 
+              fontWeight: 300, 
+              lineHeight: 1.1, 
+              letterSpacing: "-3px", 
+              marginBottom: "20px",
+              color: "#FFFFFF",
+            }}>
+              Advisory <span style={{ color: "#00D4FF", fontWeight: 400 }}>Services</span>
             </h2>
-            <p style={{ color: "rgba(240,240,240,0.5)", fontSize: "16px", lineHeight: 1.7, maxWidth: "600px", margin: "0 auto" }}>
+            <p style={{ 
+              color: "rgba(255,255,255,0.4)", 
+              fontSize: "16px", 
+              lineHeight: 1.8, 
+              maxWidth: "560px", 
+              margin: "0 auto",
+            }}>
               End-to-end real estate advisory with personal oversight on every transaction.
             </p>
           </div>
 
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: "24px" }} className="services-grid-mobile">
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: "24px" }} className="services-grid-desktop">
             {[
               { num: "01", title: "Residential Plots & Homes", desc: "Buying residential plots, flats, and built-up houses across Mohali, New Chandigarh, and Panchkula." },
               { num: "02", title: "Commercial Showroom Advisory", desc: "High-footfall commercial showroom plots on arterial roads in Mohali IT City, Aerocity, and JLPL corridors." },
@@ -367,29 +634,55 @@ export default function HomePage() {
               { num: "04", title: "NRI Investment Advisory", desc: "Specialized advisory for NRIs with power of attorney support and remote transaction management." },
             ].map((service, i) => (
               <div key={i} ref={addRef} className="reveal" style={{
-                padding: "40px",
-                background: "rgba(255,255,255,0.03)",
-                border: "1px solid rgba(0,212,255,0.1)",
-                borderRadius: "12px",
-                transition: "all 0.4s ease",
+                padding: "48px",
+                background: "rgba(255,255,255,0.02)",
+                border: "1px solid rgba(255,255,255,0.05)",
+                borderRadius: "16px",
+                transition: "all 0.5s cubic-bezier(0.16, 1, 0.3, 1)",
                 cursor: "default",
+                position: "relative",
+                overflow: "hidden",
               }}
               onMouseEnter={(e) => {
-                e.currentTarget.style.borderColor = "rgba(0,212,255,0.3)";
-                e.currentTarget.style.background = "rgba(0,212,255,0.05)";
+                e.currentTarget.style.borderColor = "rgba(0,212,255,0.2)";
+                e.currentTarget.style.background = "rgba(0,212,255,0.03)";
+                e.currentTarget.style.transform = "translateY(-4px)";
+                e.currentTarget.style.boxShadow = "0 20px 60px rgba(0,0,0,0.3)";
               }}
               onMouseLeave={(e) => {
-                e.currentTarget.style.borderColor = "rgba(0,212,255,0.1)";
-                e.currentTarget.style.background = "rgba(255,255,255,0.03)";
+                e.currentTarget.style.borderColor = "rgba(255,255,255,0.05)";
+                e.currentTarget.style.background = "rgba(255,255,255,0.02)";
+                e.currentTarget.style.transform = "translateY(0)";
+                e.currentTarget.style.boxShadow = "none";
               }}
               >
-                <div style={{ color: "#00D4FF", fontSize: "14px", fontFamily: "monospace", letterSpacing: "2px", marginBottom: "16px", opacity: 0.6 }}>
+                {/* Subtle corner accent */}
+                <div style={{
+                  position: "absolute",
+                  top: 0,
+                  right: 0,
+                  width: "60px",
+                  height: "60px",
+                  background: "linear-gradient(135deg, transparent 50%, rgba(0,212,255,0.05) 50%)",
+                }} />
+                <div style={{ color: "rgba(0,212,255,0.3)", fontSize: "13px", fontFamily: "var(--font-mono)", letterSpacing: "2px", marginBottom: "20px" }}>
                   {service.num}
                 </div>
-                <h3 style={{ color: "#F0F0F0", fontSize: "22px", fontWeight: 600, marginBottom: "12px", lineHeight: 1.3 }}>
+                <h3 style={{ 
+                  color: "#FFFFFF", 
+                  fontSize: "22px", 
+                  fontWeight: 500, 
+                  marginBottom: "14px", 
+                  lineHeight: 1.3,
+                  letterSpacing: "-0.5px",
+                }}>
                   {service.title}
                 </h3>
-                <p style={{ color: "rgba(240,240,240,0.5)", fontSize: "15px", lineHeight: 1.7 }}>
+                <p style={{ 
+                  color: "rgba(255,255,255,0.4)", 
+                  fontSize: "15px", 
+                  lineHeight: 1.7,
+                }}>
                   {service.desc}
                 </p>
               </div>
@@ -398,51 +691,89 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ABOUT */}
-      <section style={{ padding: "120px 48px" }} className="section-mobile">
+      {/* ===== ABOUT ===== */}
+      <section style={{ padding: "140px 48px" }} className="section-pad">
         <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "80px", alignItems: "center" }} className="about-grid-mobile">
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "100px", alignItems: "center" }} className="about-grid-desktop">
             <div ref={addRef} className="reveal">
-              <div style={{ position: "relative", borderRadius: "16px", overflow: "hidden", border: "1px solid rgba(0,212,255,0.15)" }}>
-                <img src="/inder.jpeg" alt="Inder Thakral" style={{ width: "100%", aspectRatio: "3/4", objectFit: "cover", display: "block", filter: "grayscale(20%) contrast(1.1)" }} />
-                <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(0,0,0,0.9) 0%, transparent 50%)" }} />
-                <div style={{ position: "absolute", bottom: "32px", left: "32px", right: "32px" }}>
-                  <p style={{ color: "#00D4FF", fontSize: "12px", letterSpacing: "3px", textTransform: "uppercase", fontFamily: "monospace", marginBottom: "8px" }}>Inder Thakral</p>
-                  <p style={{ color: "rgba(240,240,240,0.6)", fontSize: "14px" }}>Principal Advisor · 15+ Years</p>
+              <div style={{ position: "relative", borderRadius: "20px", overflow: "hidden", border: "1px solid rgba(255,255,255,0.06)" }}>
+                <img src="/inder.jpeg" alt="Inder Thakral" style={{ width: "100%", aspectRatio: "3/4", objectFit: "cover", display: "block", filter: "grayscale(30%) contrast(1.05)" }} />
+                <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(0,0,0,0.95) 0%, transparent 50%)" }} />
+                <div style={{ position: "absolute", bottom: "40px", left: "40px", right: "40px" }}>
+                  <p style={{ color: "#00D4FF", fontSize: "11px", letterSpacing: "4px", textTransform: "uppercase", fontFamily: "var(--font-mono)", marginBottom: "8px" }}>Inder Thakral</p>
+                  <p style={{ color: "rgba(255,255,255,0.5)", fontSize: "14px" }}>Principal Advisor · 15+ Years</p>
                 </div>
+                {/* Accent corner */}
+                <div style={{
+                  position: "absolute",
+                  top: "20px",
+                  right: "20px",
+                  width: "40px",
+                  height: "40px",
+                  borderTop: "2px solid rgba(0,212,255,0.3)",
+                  borderRight: "2px solid rgba(0,212,255,0.3)",
+                }} />
               </div>
             </div>
 
             <div ref={addRef} className="reveal">
-              <p style={{ color: "#00D4FF", fontSize: "12px", letterSpacing: "4px", textTransform: "uppercase", fontFamily: "monospace", marginBottom: "20px" }}>
+              <p style={{ 
+                color: "#00D4FF", 
+                fontSize: "11px", 
+                letterSpacing: "4px", 
+                textTransform: "uppercase", 
+                fontFamily: "var(--font-mono)", 
+                marginBottom: "24px",
+                display: "flex",
+                alignItems: "center",
+                gap: "12px",
+              }}>
+                <span style={{ width: "30px", height: "1px", background: "#00D4FF" }} />
                 The Principal Advisor
               </p>
-              <h2 style={{ fontSize: "clamp(28px, 4vw, 48px)", fontWeight: 700, lineHeight: 1.1, letterSpacing: "-2px", marginBottom: "24px" }}>
+              <h2 style={{ 
+                fontSize: "clamp(28px, 4vw, 48px)", 
+                fontWeight: 300, 
+                lineHeight: 1.1, 
+                letterSpacing: "-2px", 
+                marginBottom: "32px",
+                color: "#FFFFFF",
+              }}>
                 Personal Service.
                 <br />
-                <span style={{ color: "#00D4FF" }}>Verified Results.</span>
+                <span style={{ color: "#00D4FF", fontWeight: 400 }}>Verified Results.</span>
               </h2>
-              <p style={{ color: "rgba(240,240,240,0.6)", fontSize: "16px", lineHeight: 1.8, marginBottom: "20px" }}>
+              <p style={{ color: "rgba(255,255,255,0.5)", fontSize: "16px", lineHeight: 1.9, marginBottom: "24px" }}>
                 Inder Thakral is an independent real estate advisory serving the Chandigarh Tricity. Every transaction is personally overseen, every title is carefully verified.
               </p>
-              <p style={{ color: "rgba(240,240,240,0.6)", fontSize: "16px", lineHeight: 1.8, marginBottom: "32px" }}>
+              <p style={{ color: "rgba(255,255,255,0.5)", fontSize: "16px", lineHeight: 1.9, marginBottom: "40px" }}>
                 The firm provides trusted guidance for buying, selling, leasing, and investing — with a simple promise: never show a property that would not be recommended to family.
               </p>
-              <Link href="/about" style={{
+              <Link href="/about/" style={{
                 display: "inline-flex",
                 alignItems: "center",
-                gap: "8px",
+                gap: "12px",
                 background: "#00D4FF",
                 color: "#000000",
-                padding: "14px 36px",
-                fontSize: "12px",
-                letterSpacing: "2px",
+                padding: "16px 40px",
+                fontSize: "11px",
+                letterSpacing: "3px",
                 textTransform: "uppercase",
                 textDecoration: "none",
                 fontWeight: 600,
-                borderRadius: "4px",
-                transition: "all 0.3s ease",
-              }}>
+                borderRadius: "2px",
+                transition: "all 0.4s cubic-bezier(0.16, 1, 0.3, 1)",
+                fontFamily: "var(--font-mono)",
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = "translateY(-2px)";
+                e.currentTarget.style.boxShadow = "0 20px 50px rgba(0, 212, 255, 0.25)";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = "translateY(0)";
+                e.currentTarget.style.boxShadow = "none";
+              }}
+              >
                 Learn More →
               </Link>
             </div>
@@ -450,62 +781,124 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* PHILOSOPHY */}
-      <section style={{ padding: "120px 48px", background: "rgba(0,212,255,0.02)", borderTop: "1px solid rgba(0,212,255,0.08)", borderBottom: "1px solid rgba(0,212,255,0.08)" }} className="section-mobile">
+      {/* ===== PHILOSOPHY ===== */}
+      <section style={{ 
+        padding: "140px 48px", 
+        background: "rgba(0,212,255,0.015)", 
+        borderTop: "1px solid rgba(255,255,255,0.03)", 
+        borderBottom: "1px solid rgba(255,255,255,0.03)",
+        position: "relative",
+      }} className="section-pad">
         <div style={{ maxWidth: "800px", margin: "0 auto", textAlign: "center" }}>
           <div ref={addRef} className="reveal">
-            <p style={{ color: "#00D4FF", fontSize: "12px", letterSpacing: "4px", textTransform: "uppercase", fontFamily: "monospace", marginBottom: "32px" }}>
+            <p style={{ 
+              color: "#00D4FF", 
+              fontSize: "11px", 
+              letterSpacing: "4px", 
+              textTransform: "uppercase", 
+              fontFamily: "var(--font-mono)", 
+              marginBottom: "40px",
+              display: "inline-flex",
+              alignItems: "center",
+              gap: "12px",
+            }}>
+              <span style={{ width: "30px", height: "1px", background: "#00D4FF" }} />
               Our Philosophy
+              <span style={{ width: "30px", height: "1px", background: "#00D4FF" }} />
             </p>
             <p style={{
-              fontSize: "clamp(20px, 3vw, 32px)",
+              fontSize: "clamp(22px, 3vw, 34px)",
               fontWeight: 300,
               lineHeight: 1.5,
-              color: "#F0F0F0",
-              marginBottom: "32px",
+              color: "rgba(255,255,255,0.9)",
+              marginBottom: "40px",
               fontStyle: "italic",
+              letterSpacing: "-0.5px",
             }}>
               "I will never show you a property I would not recommend to my own family. Your investment is our responsibility."
             </p>
-            <p style={{ color: "#00D4FF", fontSize: "14px", letterSpacing: "2px", fontFamily: "monospace" }}>
+            <p style={{ color: "#00D4FF", fontSize: "13px", letterSpacing: "3px", fontFamily: "var(--font-mono)", fontWeight: 400 }}>
               — Inder Thakral
             </p>
           </div>
         </div>
       </section>
 
-      {/* CONTACT */}
-      <section id="contact" style={{ padding: "120px 48px", position: "relative", overflow: "hidden" }} className="section-mobile">
-        <div style={{ position: "absolute", inset: 0, background: "radial-gradient(ellipse at 50% 0%, rgba(0,212,255,0.08) 0%, transparent 50%)" }} />
+      {/* ===== CONTACT ===== */}
+      <section id="contact" style={{ padding: "140px 48px", position: "relative", overflow: "hidden" }} className="section-pad">
+        <div style={{ position: "absolute", inset: 0, background: "radial-gradient(ellipse at 50% 0%, rgba(0,212,255,0.06) 0%, transparent 60%)" }} />
         <div style={{ maxWidth: "1000px", margin: "0 auto", position: "relative" }}>
-          <div ref={addRef} className="reveal" style={{ textAlign: "center", marginBottom: "64px" }}>
-            <p style={{ color: "#00D4FF", fontSize: "12px", letterSpacing: "4px", textTransform: "uppercase", fontFamily: "monospace", marginBottom: "16px" }}>
+          <div ref={addRef} className="reveal" style={{ textAlign: "center", marginBottom: "80px" }}>
+            <p style={{ 
+              color: "#00D4FF", 
+              fontSize: "11px", 
+              letterSpacing: "4px", 
+              textTransform: "uppercase", 
+              fontFamily: "var(--font-mono)", 
+              marginBottom: "20px",
+              display: "inline-flex",
+              alignItems: "center",
+              gap: "12px",
+            }}>
+              <span style={{ width: "30px", height: "1px", background: "#00D4FF" }} />
               Get In Touch
+              <span style={{ width: "30px", height: "1px", background: "#00D4FF" }} />
             </p>
-            <h2 style={{ fontSize: "clamp(32px, 5vw, 56px)", fontWeight: 700, lineHeight: 1.1, letterSpacing: "-2px", marginBottom: "16px" }}>
-              Ready to <span style={{ color: "#00D4FF" }}>Invest?</span>
+            <h2 style={{ 
+              fontSize: "clamp(32px, 5vw, 56px)", 
+              fontWeight: 300, 
+              lineHeight: 1.1, 
+              letterSpacing: "-3px", 
+              marginBottom: "20px",
+              color: "#FFFFFF",
+            }}>
+              Ready to <span style={{ color: "#00D4FF", fontWeight: 400 }}>Invest?</span>
             </h2>
-            <p style={{ color: "rgba(240,240,240,0.5)", fontSize: "16px", lineHeight: 1.7, maxWidth: "500px", margin: "0 auto" }}>
+            <p style={{ 
+              color: "rgba(255,255,255,0.4)", 
+              fontSize: "16px", 
+              lineHeight: 1.8, 
+              maxWidth: "500px", 
+              margin: "0 auto",
+            }}>
               Every engagement begins with a personal conversation. Share your requirements and we will get back to you within 24 hours.
             </p>
           </div>
-<div ref={addRef} className="reveal contact-grid-mobile" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "64px", alignItems: "start" }}>
+
+          <div ref={addRef} className="reveal" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "80px", alignItems: "start" }} className="contact-grid-desktop">
             <div>
               {[
                 { label: "Call Directly", value: "+91 98159 01234", href: "tel:+919815901234" },
                 { label: "Email", value: "care@inderthakral.com", href: "mailto:care@inderthakral.com" },
                 { label: "Office", value: "Mohali, Chandigarh Tricity\nPunjab, India", href: null },
               ].map((item, i) => (
-                <div key={i} style={{ marginBottom: "32px" }}>
-                  <p style={{ color: "#00D4FF", fontSize: "11px", letterSpacing: "3px", textTransform: "uppercase", fontFamily: "monospace", marginBottom: "8px" }}>
+                <div key={i} style={{ marginBottom: "40px" }}>
+                  <p style={{ 
+                    color: "#00D4FF", 
+                    fontSize: "10px", 
+                    letterSpacing: "4px", 
+                    textTransform: "uppercase", 
+                    fontFamily: "var(--font-mono)", 
+                    marginBottom: "10px",
+                  }}>
                     {item.label}
                   </p>
                   {item.href ? (
-                    <a href={item.href} style={{ color: "#F0F0F0", fontSize: "18px", textDecoration: "none", fontWeight: 500, transition: "color 0.3s ease" }}>
+                    <a href={item.href} style={{ 
+                      color: "#FFFFFF", 
+                      fontSize: "18px", 
+                      textDecoration: "none", 
+                      fontWeight: 400, 
+                      transition: "color 0.3s ease",
+                      letterSpacing: "0.5px",
+                    }}
+                    onMouseEnter={(e) => e.currentTarget.style.color = "#00D4FF"}
+                    onMouseLeave={(e) => e.currentTarget.style.color = "#FFFFFF"}
+                    >
                       {item.value}
                     </a>
                   ) : (
-                    <p style={{ color: "#F0F0F0", fontSize: "18px", fontWeight: 500, whiteSpace: "pre-line" }}>
+                    <p style={{ color: "#FFFFFF", fontSize: "18px", fontWeight: 400, whiteSpace: "pre-line", letterSpacing: "0.5px" }}>
                       {item.value}
                     </p>
                   )}
@@ -518,74 +911,87 @@ export default function HomePage() {
                 style={{
                   display: "inline-flex",
                   alignItems: "center",
-                  gap: "10px",
+                  gap: "12px",
                   background: "#25D366",
                   color: "#fff",
-                  padding: "14px 28px",
-                  fontSize: "12px",
-                  letterSpacing: "2px",
+                  padding: "16px 32px",
+                  fontSize: "11px",
+                  letterSpacing: "3px",
                   textTransform: "uppercase",
                   textDecoration: "none",
                   fontWeight: 600,
-                  borderRadius: "4px",
+                  borderRadius: "2px",
+                  fontFamily: "var(--font-mono)",
+                  transition: "all 0.4s ease",
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.transform = "translateY(-2px)";
+                  e.currentTarget.style.boxShadow = "0 15px 40px rgba(37, 211, 102, 0.3)";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.transform = "translateY(0)";
+                  e.currentTarget.style.boxShadow = "none";
                 }}
               >
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
                   <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
                 </svg>
                 WhatsApp
               </a>
             </div>
 
-            <form action="https://formspree.io/f/YOUR_FORM_ID" method="POST" style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
-              <input type="text" name="name" placeholder="Your Name" required style={{
-                width: "100%",
-                background: "rgba(255,255,255,0.05)",
-                border: "1px solid rgba(0,212,255,0.15)",
-                color: "#F0F0F0",
-                padding: "16px 20px",
-                fontSize: "15px",
-                outline: "none",
-                transition: "all 0.3s ease",
-                borderRadius: "8px",
-                fontFamily: "system-ui, sans-serif",
-              }} />
-              <input type="email" name="email" placeholder="Email Address" required style={{
-                width: "100%",
-                background: "rgba(255,255,255,0.05)",
-                border: "1px solid rgba(0,212,255,0.15)",
-                color: "#F0F0F0",
-                padding: "16px 20px",
-                fontSize: "15px",
-                outline: "none",
-                transition: "all 0.3s ease",
-                borderRadius: "8px",
-                fontFamily: "system-ui, sans-serif",
-              }} />
-              <input type="tel" name="phone" placeholder="Phone Number" style={{
-                width: "100%",
-                background: "rgba(255,255,255,0.05)",
-                border: "1px solid rgba(0,212,255,0.15)",
-                color: "#F0F0F0",
-                padding: "16px 20px",
-                fontSize: "15px",
-                outline: "none",
-                transition: "all 0.3s ease",
-                borderRadius: "8px",
-                fontFamily: "system-ui, sans-serif",
-              }} />
+            <form action="https://formspree.io/f/YOUR_FORM_ID" method="POST" style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
+              {[
+                { type: "text", name: "name", placeholder: "Your Name", required: true },
+                { type: "email", name: "email", placeholder: "Email Address", required: true },
+                { type: "tel", name: "phone", placeholder: "Phone Number", required: false },
+              ].map((field) => (
+                <input key={field.name} type={field.type} name={field.name} placeholder={field.placeholder} required={field.required} style={{
+                  width: "100%",
+                  background: "rgba(255,255,255,0.03)",
+                  border: "1px solid rgba(255,255,255,0.08)",
+                  color: "#FFFFFF",
+                  padding: "18px 24px",
+                  fontSize: "15px",
+                  outline: "none",
+                  transition: "all 0.4s ease",
+                  borderRadius: "8px",
+                  fontFamily: "var(--font-sans)",
+                  letterSpacing: "0.5px",
+                }}
+                onFocus={(e) => {
+                  e.currentTarget.style.borderColor = "rgba(0,212,255,0.3)";
+                  e.currentTarget.style.background = "rgba(0,212,255,0.02)";
+                  e.currentTarget.style.boxShadow = "0 0 20px rgba(0,212,255,0.05)";
+                }}
+                onBlur={(e) => {
+                  e.currentTarget.style.borderColor = "rgba(255,255,255,0.08)";
+                  e.currentTarget.style.background = "rgba(255,255,255,0.03)";
+                  e.currentTarget.style.boxShadow = "none";
+                }}
+                />
+              ))}
               <select name="interest" style={{
                 width: "100%",
-                background: "rgba(255,255,255,0.05)",
-                border: "1px solid rgba(0,212,255,0.15)",
-                color: "rgba(240,240,240,0.5)",
-                padding: "16px 20px",
+                background: "rgba(255,255,255,0.03)",
+                border: "1px solid rgba(255,255,255,0.08)",
+                color: "rgba(255,255,255,0.5)",
+                padding: "18px 24px",
                 fontSize: "15px",
                 outline: "none",
-                transition: "all 0.3s ease",
+                transition: "all 0.4s ease",
                 borderRadius: "8px",
-                fontFamily: "system-ui, sans-serif",
-              }}>
+                fontFamily: "var(--font-sans)",
+              }}
+              onFocus={(e) => {
+                e.currentTarget.style.borderColor = "rgba(0,212,255,0.3)";
+                e.currentTarget.style.background = "rgba(0,212,255,0.02)";
+              }}
+              onBlur={(e) => {
+                e.currentTarget.style.borderColor = "rgba(255,255,255,0.08)";
+                e.currentTarget.style.background = "rgba(255,255,255,0.03)";
+              }}
+              >
                 <option value="">What are you looking for?</option>
                 <option value="residential">Residential Plot / Home</option>
                 <option value="commercial">Commercial Showroom</option>
@@ -594,36 +1000,58 @@ export default function HomePage() {
               </select>
               <textarea name="message" placeholder="Tell us about your requirements..." style={{
                 width: "100%",
-                background: "rgba(255,255,255,0.05)",
-                border: "1px solid rgba(0,212,255,0.15)",
-                color: "#F0F0F0",
-                padding: "16px 20px",
+                background: "rgba(255,255,255,0.03)",
+                border: "1px solid rgba(255,255,255,0.08)",
+                color: "#FFFFFF",
+                padding: "18px 24px",
                 fontSize: "15px",
                 outline: "none",
-                transition: "all 0.3s ease",
+                transition: "all 0.4s ease",
                 borderRadius: "8px",
-                minHeight: "120px",
+                minHeight: "140px",
                 resize: "vertical",
-                fontFamily: "system-ui, sans-serif",
-              }} />
+                fontFamily: "var(--font-sans)",
+                letterSpacing: "0.5px",
+              }}
+              onFocus={(e) => {
+                e.currentTarget.style.borderColor = "rgba(0,212,255,0.3)";
+                e.currentTarget.style.background = "rgba(0,212,255,0.02)";
+                e.currentTarget.style.boxShadow = "0 0 20px rgba(0,212,255,0.05)";
+              }}
+              onBlur={(e) => {
+                e.currentTarget.style.borderColor = "rgba(255,255,255,0.08)";
+                e.currentTarget.style.background = "rgba(255,255,255,0.03)";
+                e.currentTarget.style.boxShadow = "none";
+              }}
+              />
               <button type="submit" style={{
                 display: "inline-flex",
                 alignItems: "center",
                 justifyContent: "center",
-                gap: "8px",
+                gap: "12px",
                 background: "#00D4FF",
                 color: "#000000",
-                padding: "16px 48px",
-                fontSize: "12px",
-                letterSpacing: "2px",
+                padding: "18px 48px",
+                fontSize: "11px",
+                letterSpacing: "3px",
                 textTransform: "uppercase",
                 fontWeight: 600,
                 border: "none",
                 cursor: "pointer",
-                transition: "all 0.3s ease",
-                borderRadius: "4px",
-                fontFamily: "system-ui, sans-serif",
-              }}>
+                transition: "all 0.4s cubic-bezier(0.16, 1, 0.3, 1)",
+                borderRadius: "2px",
+                fontFamily: "var(--font-mono)",
+                marginTop: "8px",
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = "translateY(-2px)";
+                e.currentTarget.style.boxShadow = "0 20px 50px rgba(0, 212, 255, 0.3)";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = "translateY(0)";
+                e.currentTarget.style.boxShadow = "none";
+              }}
+              >
                 Send Enquiry →
               </button>
             </form>
@@ -631,38 +1059,38 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* FOOTER */}
-      <footer style={{ padding: "40px 48px", borderTop: "1px solid rgba(0,212,255,0.08)", display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "16px" }}>
+      {/* ===== FOOTER ===== */}
+      <footer style={{ 
+        padding: "48px 48px", 
+        borderTop: "1px solid rgba(255,255,255,0.04)", 
+        display: "flex", 
+        justifyContent: "space-between", 
+        alignItems: "center", 
+        flexWrap: "wrap", 
+        gap: "24px",
+        background: "rgba(0,0,0,0.5)",
+      }}>
         <div>
-          <div style={{ color: "#00D4FF", fontSize: "11px", letterSpacing: "3px", textTransform: "uppercase", fontFamily: "monospace" }}>Inder Thakral Properties</div>
-          <div style={{ color: "rgba(240,240,240,0.4)", fontSize: "12px", marginTop: "4px" }}>2026 · Independent Advisory · Mohali, Chandigarh Tricity</div>
+          <div style={{ 
+            color: "#00D4FF", 
+            fontSize: "10px", 
+            letterSpacing: "4px", 
+            textTransform: "uppercase", 
+            fontFamily: "var(--font-mono)",
+            fontWeight: 500,
+          }}>Inder Thakral Properties</div>
+          <div style={{ color: "rgba(255,255,255,0.3)", fontSize: "12px", marginTop: "6px", letterSpacing: "0.5px" }}>2026 · Independent Advisory · Mohali, Chandigarh Tricity</div>
         </div>
-        <div style={{ color: "rgba(240,240,240,0.3)", fontSize: "11px", letterSpacing: "2px", textTransform: "uppercase", fontFamily: "monospace" }}>
+        <div style={{ 
+          color: "rgba(255,255,255,0.2)", 
+          fontSize: "10px", 
+          letterSpacing: "3px", 
+          textTransform: "uppercase", 
+          fontFamily: "var(--font-mono)",
+        }}>
           Verified Title Deeds · By Appointment Only
         </div>
       </footer>
-
-      <style jsx global>{`
-        @keyframes pulse {
-          0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.8; }
-          50% { transform: translate(-50%, -50%) scale(1.1); opacity: 1; }
-        }
-        @keyframes scrollPulse {
-          0%, 100% { opacity: 1; transform: scaleY(1); }
-          50% { opacity: 0.5; transform: scaleY(0.5); }
-        }
-        @media (max-width: 768px) {
-          .stats-grid-mobile { grid-template-columns: repeat(2, 1fr) !important; }
-          .properties-grid-mobile { grid-template-columns: 1fr !important; }
-          .services-grid-mobile { grid-template-columns: 1fr !important; }
-          .about-grid-mobile { grid-template-columns: 1fr !important; gap: 40px !important; }
-          .contact-grid-mobile { grid-template-columns: 1fr !important; gap: 40px !important; }
-          .section-mobile { padding-left: 24px !important; padding-right: 24px !important; }
-        }
-        @media (max-width: 480px) {
-          .section-mobile { padding-left: 16px !important; padding-right: 16px !important; }
-        }
-      `}</style>
     </main>
   );
 }
