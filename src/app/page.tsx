@@ -1,30 +1,11 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import Link from "next/link";
 
 export default function Home() {
   const heroRef = useRef<HTMLDivElement>(null);
   const [menuOpen, setMenuOpen] = useState(false);
-  const [loaded, setLoaded] = useState(false);
-
-  useEffect(() => {
-    setLoaded(true);
-    const handleMouseMove = (e: MouseEvent) => {
-      if (!heroRef.current) return;
-      const x = (e.clientX / window.innerWidth - 0.5) * 20;
-      const y = (e.clientY / window.innerHeight - 0.5) * 20;
-      heroRef.current.style.transform = `translate(${x}px, ${y}px)`;
-    };
-    window.addEventListener("mousemove", handleMouseMove);
-    return () => window.removeEventListener("mousemove", handleMouseMove);
-  }, []);
-
-  const fadeIn = {
-    opacity: loaded ? 1 : 0,
-    transform: loaded ? "translateY(0)" : "translateY(20px)",
-    transition: "opacity 0.8s ease, transform 0.8s ease",
-  };
 
   return (
     <main style={{ background: "var(--dark)", minHeight: "100vh", overflowX: "hidden" }}>
@@ -36,8 +17,6 @@ export default function Home() {
             <span style={{ color: "var(--gold)", fontSize: "11px", letterSpacing: "4px", textTransform: "uppercase" }}>Inder Thakral</span>
             <span style={{ color: "var(--text-muted)", fontSize: "10px", letterSpacing: "2px" }}>Tricity Land Advisory</span>
           </Link>
-
-          {/* Desktop nav */}
           <div className="desktop-nav" style={{ gap: "40px" }}>
             <Link href="/properties" style={{ color: "var(--text-muted)", fontSize: "11px", letterSpacing: "2px", textTransform: "uppercase", textDecoration: "none" }}>Properties</Link>
             <Link href="/about" style={{ color: "var(--text-muted)", fontSize: "11px", letterSpacing: "2px", textTransform: "uppercase", textDecoration: "none" }}>About</Link>
@@ -45,42 +24,42 @@ export default function Home() {
             <a href="#contact" style={{ color: "var(--text-muted)", fontSize: "11px", letterSpacing: "2px", textTransform: "uppercase", textDecoration: "none" }}>Contact</a>
           </div>
           <a href="#contact" className="desktop-nav" style={{ border: "1px solid var(--gold)", color: "var(--gold)", padding: "10px 24px", fontSize: "10px", letterSpacing: "3px", textTransform: "uppercase", textDecoration: "none" }}>Enquire</a>
-
-          {/* Mobile hamburger */}
-          <button onClick={() => setMenuOpen(!menuOpen)} className="mobile-menu-btn" style={{ background: "none", border: "none", cursor: "pointer", padding: "4px", flexDirection: "column", gap: "5px" }}>
-            <span style={{ display: "block", width: "24px", height: "1px", background: "var(--gold)", transition: "all 0.3s", transform: menuOpen ? "rotate(45deg) translate(4px, 4px)" : "none" }} />
-            <span style={{ display: "block", width: "24px", height: "1px", background: "var(--gold)", opacity: menuOpen ? 0 : 1, transition: "all 0.3s" }} />
-            <span style={{ display: "block", width: "24px", height: "1px", background: "var(--gold)", transition: "all 0.3s", transform: menuOpen ? "rotate(-45deg) translate(4px, -4px)" : "none" }} />
+          <button onClick={() => setMenuOpen(!menuOpen)} className="mobile-menu-btn" style={{ background: "none", border: "none", cursor: "pointer", padding: "8px", flexDirection: "column", gap: "5px" }}>
+            <span style={{ display: "block", width: "24px", height: "2px", background: "var(--gold)", marginBottom: "5px", transition: "all 0.3s", transform: menuOpen ? "rotate(45deg) translate(0px, 7px)" : "none" }} />
+            <span style={{ display: "block", width: "24px", height: "2px", background: "var(--gold)", marginBottom: "5px", opacity: menuOpen ? 0 : 1, transition: "all 0.3s" }} />
+            <span style={{ display: "block", width: "24px", height: "2px", background: "var(--gold)", transition: "all 0.3s", transform: menuOpen ? "rotate(-45deg) translate(0px, -7px)" : "none" }} />
           </button>
         </div>
-
-        {/* Mobile dropdown */}
-        <div className="mobile-menu" style={{ display: menuOpen ? "flex" : "none", padding: "24px", borderTop: "1px solid rgba(201,168,76,0.1)", flexDirection: "column", gap: "24px", background: "rgba(10,10,10,0.98)" }}>
-          <Link href="/properties" onClick={() => setMenuOpen(false)} style={{ color: "var(--text-muted)", fontSize: "13px", letterSpacing: "3px", textTransform: "uppercase", textDecoration: "none" }}>Properties</Link>
-          <Link href="/about" onClick={() => setMenuOpen(false)} style={{ color: "var(--text-muted)", fontSize: "13px", letterSpacing: "3px", textTransform: "uppercase", textDecoration: "none" }}>About</Link>
-          <Link href="/services" onClick={() => setMenuOpen(false)} style={{ color: "var(--text-muted)", fontSize: "13px", letterSpacing: "3px", textTransform: "uppercase", textDecoration: "none" }}>Services</Link>
-          <a href="#contact" onClick={() => setMenuOpen(false)} style={{ color: "var(--text-muted)", fontSize: "13px", letterSpacing: "3px", textTransform: "uppercase", textDecoration: "none" }}>Contact</a>
-          <a href="#contact" onClick={() => setMenuOpen(false)} style={{ display: "block", border: "1px solid var(--gold)", color: "var(--gold)", padding: "14px 24px", fontSize: "11px", letterSpacing: "3px", textTransform: "uppercase", textDecoration: "none", textAlign: "center" }}>Enquire Now</a>
-        </div>
+        {menuOpen && (
+          <div style={{ padding: "24px", borderTop: "1px solid rgba(201,168,76,0.1)", display: "flex", flexDirection: "column", gap: "24px", background: "rgba(10,10,10,0.98)" }}>
+            <Link href="/properties" onClick={() => setMenuOpen(false)} style={{ color: "var(--text-muted)", fontSize: "14px", letterSpacing: "3px", textTransform: "uppercase", textDecoration: "none" }}>Properties</Link>
+            <Link href="/about" onClick={() => setMenuOpen(false)} style={{ color: "var(--text-muted)", fontSize: "14px", letterSpacing: "3px", textTransform: "uppercase", textDecoration: "none" }}>About</Link>
+            <Link href="/services" onClick={() => setMenuOpen(false)} style={{ color: "var(--text-muted)", fontSize: "14px", letterSpacing: "3px", textTransform: "uppercase", textDecoration: "none" }}>Services</Link>
+            <a href="#contact" onClick={() => setMenuOpen(false)} style={{ color: "var(--text-muted)", fontSize: "14px", letterSpacing: "3px", textTransform: "uppercase", textDecoration: "none" }}>Contact</a>
+            <a href="#contact" onClick={() => setMenuOpen(false)} style={{ display: "block", background: "var(--gold)", color: "var(--dark)", padding: "14px 24px", fontSize: "11px", letterSpacing: "3px", textTransform: "uppercase", textDecoration: "none", textAlign: "center", fontWeight: 600 }}>Enquire Now</a>
+          </div>
+        )}
       </nav>
 
       {/* HERO */}
       <section style={{ height: "100vh", display: "flex", alignItems: "center", justifyContent: "center", position: "relative", overflow: "hidden" }}>
         <div ref={heroRef} style={{ position: "absolute", inset: "-20px", backgroundImage: "url('https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=1920&q=80')", backgroundSize: "cover", backgroundPosition: "center", opacity: 0.5 }} />
         <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to bottom, rgba(10,10,10,0.7) 0%, rgba(10,10,10,0.85) 60%, rgba(10,10,10,1) 100%)" }} />
-        <div style={{ position: "relative", textAlign: "center", padding: "0 24px", width: "100%", ...fadeIn }}>
+        <div style={{ position: "relative", textAlign: "center", padding: "0 24px", width: "100%" }}>
           <p style={{ color: "var(--gold)", fontSize: "11px", letterSpacing: "4px", textTransform: "uppercase", marginBottom: "20px" }}>Chandigarh Tricity · Est. 2009</p>
           <h1 style={{ fontSize: "clamp(36px, 8vw, 96px)", fontWeight: 300, lineHeight: 1.1, marginBottom: "24px", color: "var(--text-primary)" }}>
             Verified Plots.<br />
             <em style={{ color: "var(--gold)", fontStyle: "italic" }}>Premium</em> Advisory.
           </h1>
-          <p style={{ color: "var(--text-muted)", fontSize: "15px", maxWidth: "480px", margin: "0 auto 40px", lineHeight: 1.8 }}>Independent real estate advisory across the Mohali expansion corridor. 100% verified title deeds. By appointment only.</p>
+          <p style={{ color: "var(--text-muted)", fontSize: "15px", maxWidth: "480px", margin: "0 auto 40px", lineHeight: 1.8 }}>
+            Independent real estate advisory across the Mohali expansion corridor. 100% verified title deeds. By appointment only.
+          </p>
           <div style={{ display: "flex", gap: "12px", justifyContent: "center", flexWrap: "wrap", padding: "0 16px" }}>
             <Link href="/properties" style={{ background: "var(--gold)", color: "var(--dark)", padding: "14px 32px", fontSize: "11px", letterSpacing: "3px", textTransform: "uppercase", textDecoration: "none", fontWeight: 600 }}>View Properties</Link>
             <a href="#contact" style={{ border: "1px solid rgba(201,168,76,0.4)", color: "var(--text-primary)", padding: "14px 32px", fontSize: "11px", letterSpacing: "3px", textTransform: "uppercase", textDecoration: "none" }}>Book Consultation</a>
           </div>
         </div>
-        <div style={{ position: "absolute", bottom: "40px", left: "50%", transform: "translateX(-50%)", display: "flex", flexDirection: "column", alignItems: "center", gap: "8px", opacity: loaded ? 1 : 0, transition: "opacity 1s ease 1s" }}>
+        <div style={{ position: "absolute", bottom: "40px", left: "50%", transform: "translateX(-50%)", display: "flex", flexDirection: "column", alignItems: "center", gap: "8px" }}>
           <span style={{ color: "var(--text-muted)", fontSize: "9px", letterSpacing: "4px", textTransform: "uppercase" }}>Scroll</span>
           <div style={{ width: "1px", height: "40px", background: "linear-gradient(to bottom, var(--gold), transparent)" }} />
         </div>
@@ -106,7 +85,11 @@ export default function Home() {
             <h2 style={{ fontSize: "clamp(28px, 5vw, 56px)", fontWeight: 300, lineHeight: 1.2 }}>Specialized land and commercial advisory</h2>
           </div>
           <div style={{ display: "flex", flexDirection: "column", gap: "2px" }}>
-            {[{ title: "Residential Plots", desc: "Legally vetted residential land parcels in Mohali and New Chandigarh growth corridors. Every title deed personally verified.", icon: "◈" }, { title: "Commercial Showrooms", desc: "Premium commercial spaces and showroom plots positioned along high-traffic arterial roads for maximum yield.", icon: "◉" }, { title: "Strategic Leasing", desc: "Corporate leasing and high-end rental management for premium commercial and residential assets.", icon: "◎" }].map((service, i) => (
+            {[
+              { title: "Residential Plots", desc: "Legally vetted residential land parcels in Mohali and New Chandigarh growth corridors. Every title deed personally verified.", icon: "◈" },
+              { title: "Commercial Showrooms", desc: "Premium commercial spaces and showroom plots positioned along high-traffic arterial roads for maximum yield.", icon: "◉" },
+              { title: "Strategic Leasing", desc: "Corporate leasing and high-end rental management for premium commercial and residential assets.", icon: "◎" }
+            ].map((service, i) => (
               <div key={i} style={{ padding: "40px 32px", background: "var(--dark-2)", border: "1px solid rgba(201,168,76,0.08)" }}>
                 <div style={{ color: "var(--gold)", fontSize: "24px", marginBottom: "16px" }}>{service.icon}</div>
                 <h3 style={{ fontSize: "20px", fontWeight: 300, marginBottom: "12px" }}>{service.title}</h3>
@@ -122,7 +105,7 @@ export default function Home() {
         <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
           <p style={{ color: "var(--gold)", fontSize: "11px", letterSpacing: "4px", textTransform: "uppercase", marginBottom: "16px" }}>The Principal Advisor</p>
           <h2 style={{ fontSize: "clamp(28px, 5vw, 52px)", fontWeight: 300, lineHeight: 1.2, marginBottom: "24px" }}>Direct accountability,<br /><em style={{ color: "var(--gold)" }}>proven expertise</em></h2>
-          <div style={{ width: "100%", height: "300px", backgroundImage: "url('https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=800&q=80')", backgroundSize: "cover", backgroundPosition: "center", marginBottom: "32px" }} />
+          <div style={{ width: "100%", height: "280px", backgroundImage: "url('https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=800&q=80')", backgroundSize: "cover", backgroundPosition: "center", marginBottom: "32px" }} />
           <p style={{ color: "var(--text-muted)", fontSize: "15px", lineHeight: 1.9, marginBottom: "32px" }}>Unlike transactional agencies or digital portals, Inder Thakral Properties operates on direct personal accountability. Every transaction is personally managed — ensuring 100% verified title deeds and transparent valuations.</p>
           <Link href="/about" style={{ display: "inline-block", border: "1px solid var(--gold)", color: "var(--gold)", padding: "14px 36px", fontSize: "11px", letterSpacing: "3px", textTransform: "uppercase", textDecoration: "none" }}>Learn More</Link>
         </div>

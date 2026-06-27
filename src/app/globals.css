@@ -48,11 +48,7 @@ body {
 }
 
 .mobile-menu-btn {
-  display: none;
-}
-
-.mobile-menu {
-  display: none;
+  display: none !important;
 }
 
 @media (max-width: 768px) {
@@ -61,5 +57,17 @@ body {
   }
   .mobile-menu-btn {
     display: flex !important;
+  }
+}
+
+.properties-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2px;
+}
+
+@media (max-width: 768px) {
+  .properties-grid {
+    grid-template-columns: 1fr;
   }
 }
