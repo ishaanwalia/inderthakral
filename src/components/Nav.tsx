@@ -34,18 +34,20 @@ export default function Nav({ active }: { active?: string }) {
 
         {mobile && (
           <button
+            type="button"
             onClick={() => setMenuOpen(o => !o)}
-            style={{ cursor: "pointer", padding: "10px", display: "flex", flexDirection: "column", gap: "6px", background: "none", border: "none" }}
+            style={{ cursor: "pointer", padding: "10px", display: "flex", flexDirection: "column", gap: "6px", background: "none", border: "none", WebkitTapHighlightColor: "transparent" }}
           >
-            <div style={{ width: "25px", height: "2px", background: "var(--gold)", transition: "all 0.3s", transform: menuOpen ? "rotate(45deg) translateY(8px)" : "none" }} />
+            {/* FIX: Swapped the order to translateY FIRST, then rotate */}
+            <div style={{ width: "25px", height: "2px", background: "var(--gold)", transition: "all 0.3s", transform: menuOpen ? "translateY(8px) rotate(45deg)" : "none" }} />
             <div style={{ width: "25px", height: "2px", background: "var(--gold)", opacity: menuOpen ? 0 : 1, transition: "all 0.3s" }} />
-            <div style={{ width: "25px", height: "2px", background: "var(--gold)", transition: "all 0.3s", transform: menuOpen ? "rotate(-45deg) translateY(-8px)" : "none" }} />
+            <div style={{ width: "25px", height: "2px", background: "var(--gold)", transition: "all 0.3s", transform: menuOpen ? "translateY(-8px) rotate(-45deg)" : "none" }} />
           </button>
         )}
       </div>
 
       {mobile && menuOpen && (
-        <div style={{ padding: "32px 24px", borderTop: "1px solid rgba(201,168,76,0.1)", background: "rgba(10,10,10,0.99)", display: "flex", flexDirection: "column", gap: "28px" }}>
+        <div style={{ padding: "32px 24px", borderTop: "1px solid rgba(201,168,76,0.1)", background: "rgba(10,10,10,0.99)", display: "flex", flexDirection: "column", gap: "28px", height: "100vh" }}>
           <Link href="/properties" onClick={() => setMenuOpen(false)} style={{ color: "var(--text-muted)", fontSize: "15px", letterSpacing: "3px", textTransform: "uppercase", textDecoration: "none" }}>Properties</Link>
           <Link href="/about" onClick={() => setMenuOpen(false)} style={{ color: "var(--text-muted)", fontSize: "15px", letterSpacing: "3px", textTransform: "uppercase", textDecoration: "none" }}>About</Link>
           <Link href="/services" onClick={() => setMenuOpen(false)} style={{ color: "var(--text-muted)", fontSize: "15px", letterSpacing: "3px", textTransform: "uppercase", textDecoration: "none" }}>Services</Link>
