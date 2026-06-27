@@ -865,7 +865,7 @@ export default function HomePage() {
             </p>
           </div>
 
-          <div ref={addRef} className="reveal" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "80px", alignItems: "start" }} className="contact-grid-desktop">
+          <div ref={addRef} className="reveal contact-grid-desktop" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "80px", alignItems: "start" }}>
             <div>
               {[
                 { label: "Call Directly", value: "+91 98159 01234", href: "tel:+919815901234" },
