@@ -45,15 +45,34 @@ export default function PropertyDetailClient({ property }: { property: Property 
                 className="property-detail-main-img"
                 style={{ width: "100%", height: "480px", objectFit: "cover", display: "block", marginBottom: "12px" }} 
               />
-              <div className="property-gallery-row" style={{ display: "flex", gap: "8px", marginBottom: "40px", overflowX: "auto", paddingBottom: "8px" }}>
+              <div className="property-gallery-row" style={{ display: "flex", gap: "8px", marginBottom: "40px", overflowX: "auto", WebkitOverflowScrolling: "touch", paddingBottom: "8px" }}>
                 {property.gallery.map((img, i) => (
-                  <img 
-                    key={i} 
-                    src={img} 
-                    alt="" 
-                    onClick={() => setActiveImage(i)} 
+                  <button
+                    key={i}
+                    type="button"
+                    onClick={() => setActiveImage(i)}
                     className={`property-gallery-thumb ${activeImage === i ? 'active' : 'inactive'}`}
-                  />
+                    style={{
+                      width: "100px",
+                      height: "70px",
+                      objectFit: "cover",
+                      cursor: "pointer",
+                      flexShrink: 0,
+                      border: activeImage === i ? "2px solid var(--gold)" : "2px solid transparent",
+                      opacity: activeImage === i ? 1 : 0.6,
+                      transition: "all 0.3s",
+                      display: "block",
+                      padding: 0,
+                      background: "none",
+                      overflow: "hidden",
+                    }}
+                  >
+                    <img 
+                      src={img} 
+                      alt="" 
+                      style={{ width: "100%", height: "100%", objectFit: "cover", display: "block", pointerEvents: "none" }}
+                    />
+                  </button>
                 ))}
               </div>
 

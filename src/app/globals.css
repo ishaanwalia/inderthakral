@@ -231,7 +231,7 @@ body {
   color: var(--dark);
   padding: 16px;
   font-size: 12px;
-  letter-spacing: 3px;
+  letterSpacing: 3px;
   text-transform: uppercase;
   text-decoration: none;
   text-align: center;
@@ -472,7 +472,14 @@ body {
   gap: 16px;
 }
 
-/* PROPERTY DETAIL MOBILE FIXES */
+/* SERVICES GRID - prevent overflow on mobile */
+.services-preview-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2px;
+}
+
+/* PROPERTY DETAIL GALLERY */
 .property-gallery-thumb {
   width: 100px;
   height: 70px;
@@ -509,11 +516,11 @@ body {
     padding: 16px 24px;
   }
 
-  .nav-desktop-links {
+  .nav-links {
     display: none !important;
   }
 
-  .hamburger-btn {
+  .hamburger {
     display: flex !important;
   }
 
@@ -534,6 +541,11 @@ body {
   .services-grid {
     grid-template-columns: 1fr !important;
     gap: 32px !important;
+  }
+
+  /* Services preview grid - single column on mobile */
+  .services-preview-grid {
+    grid-template-columns: 1fr !important;
   }
 
   .site-footer {
@@ -569,31 +581,44 @@ body {
 
   /* Property detail mobile fixes */
   .property-detail-main-img {
-    height: 280px !important;
+    height: 260px !important;
   }
 
   .property-gallery-row {
-    gap: 6px !important;
+    gap: 8px !important;
   }
 
   .property-gallery-thumb {
-    width: 70px !important;
-    height: 50px !important;
+    width: 80px !important;
+    height: 55px !important;
   }
 
   .property-sticky-sidebar {
     position: relative !important;
     top: 0 !important;
   }
+
+  /* MOBILE NAV */
+  .desktop-nav-links {
+    display: none !important;
+  }
+
+  .hamburger-toggle {
+    display: flex !important;
+  }
+
+  .nav-inner-wrap {
+    padding: 16px 24px !important;
+  }
 }
 
 @media (max-width: 480px) {
-  .nav-inner-mobile {
-    padding: 14px 20px !important;
+  .nav-inner {
+    padding: 14px 20px;
   }
 
-  .mobile-menu-overlay {
-    padding: 80px 20px 40px !important;
+  .mobile-dropdown {
+    padding: 20px 24px;
   }
 
   .service-image-wrap {
@@ -606,6 +631,15 @@ body {
   }
 
   .property-detail-main-img {
-    height: 220px !important;
+    height: 200px !important;
+  }
+
+  .property-gallery-thumb {
+    width: 65px !important;
+    height: 45px !important;
+  }
+
+  .nav-inner-wrap {
+    padding: 14px 20px !important;
   }
 }

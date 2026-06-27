@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 
 export default function Nav({ active }: { active?: string }) {
-  const [open, setOpen] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
@@ -14,7 +14,7 @@ export default function Nav({ active }: { active?: string }) {
   }, []);
 
   useEffect(() => {
-    if (open) {
+    if (menuOpen) {
       document.body.style.overflow = "hidden";
     } else {
       document.body.style.overflow = "";
@@ -22,7 +22,7 @@ export default function Nav({ active }: { active?: string }) {
     return () => {
       document.body.style.overflow = "";
     };
-  }, [open]);
+  }, [menuOpen]);
 
   const navLinks = [
     ["Properties", "/properties"],
@@ -30,53 +30,57 @@ export default function Nav({ active }: { active?: string }) {
     ["Services", "/services"],
   ];
 
+  const handleLinkClick = () => setMenuOpen(false);
+
   return (
     <>
-      <nav
+      <header
+        className="site-header"
         style={{
           position: "fixed",
           top: 0,
           left: 0,
           right: 0,
           zIndex: 1000,
-          background: "rgba(10, 10, 10, 0.97)",
+          background: "rgba(10, 10, 10, 0.98)",
           backdropFilter: "blur(20px)",
           WebkitBackdropFilter: "blur(20px)",
-          borderBottom: "1px solid var(--border-gold)",
-          transition: "all 0.4s ease",
+          borderBottom: "1px solid rgba(201, 168, 76, 0.1)",
           boxShadow: scrolled ? "0 4px 30px rgba(0,0,0,0.3)" : "none",
+          transition: "box-shadow 0.3s ease",
         }}
       >
         <div
           style={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            padding: "18px 48px",
             maxWidth: "1400px",
             margin: "0 auto",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            padding: "16px 48px",
           }}
-          className="nav-inner-mobile"
+          className="nav-inner-wrap"
         >
           <Link
             href="/"
-            style={{ textDecoration: "none", display: "block" }}
-            onClick={() => setOpen(false)}
+            onClick={handleLinkClick}
+            style={{ textDecoration: "none", flexShrink: 0 }}
           >
             <div
               style={{
-                color: "var(--gold)",
+                color: "#C9A84C",
                 fontSize: "13px",
                 letterSpacing: "5px",
                 textTransform: "uppercase",
                 fontWeight: 400,
+                lineHeight: 1.2,
               }}
             >
               Inder Thakral
             </div>
             <div
               style={{
-                color: "var(--text-muted)",
+                color: "#8A8578",
                 fontSize: "10px",
                 letterSpacing: "3px",
                 textTransform: "uppercase",
@@ -87,32 +91,51 @@ export default function Nav({ active }: { active?: string }) {
             </div>
           </Link>
 
-          {/* Desktop links */}
-          <div
+          <nav
+            className="desktop-nav-links"
             style={{
               display: "flex",
-              gap: "40px",
               alignItems: "center",
+              gap: "32px",
             }}
-            className="nav-desktop-links"
           >
             {navLinks.map(([label, href]) => (
               <Link
                 key={label}
                 href={href}
-                className={`nav-link ${active === label ? "nav-link-active" : ""}`}
+                style={{
+                  color: active === label ? "#C9A84C" : "#8A8578",
+                  fontSize: "11px",
+                  letterSpacing: "2.5px",
+                  textTransform: "uppercase",
+                  textDecoration: "none",
+                  transition: "color 0.3s ease",
+                  position: "relative",
+                  padding: "4px 0",
+                }}
               >
                 {label}
               </Link>
             ))}
-            <a href="/#contact" className="nav-link">
+            <a
+              href="/#contact"
+              style={{
+                color: "#8A8578",
+                fontSize: "11px",
+                letterSpacing: "2.5px",
+                textTransform: "uppercase",
+                textDecoration: "none",
+                transition: "color 0.3s ease",
+                padding: "4px 0",
+              }}
+            >
               Contact
             </a>
             <a
               href="/#contact"
               style={{
-                border: "1px solid var(--gold)",
-                color: "var(--gold)",
+                border: "1px solid #C9A84C",
+                color: "#C9A84C",
                 padding: "10px 24px",
                 fontSize: "10px",
                 letterSpacing: "3px",
@@ -124,117 +147,106 @@ export default function Nav({ active }: { active?: string }) {
             >
               Enquire
             </a>
-          </div>
+          </nav>
 
-          {/* Hamburger */}
           <button
             type="button"
-            onClick={() => setOpen((o) => !o)}
-            aria-label="Toggle menu"
-            aria-expanded={open}
+            onClick={() => setMenuOpen(!menuOpen)}
+            aria-label={menuOpen ? "Close menu" : "Open menu"}
+            aria-expanded={menuOpen}
+            className="hamburger-toggle"
             style={{
               display: "none",
-              flexDirection: "column",
               background: "none",
               border: "none",
               cursor: "pointer",
               padding: "12px",
-              gap: "5px",
-              WebkitTapHighlightColor: "transparent",
-              touchAction: "manipulation",
+              margin: "-12px",
               zIndex: 1001,
               position: "relative",
+              flexDirection: "column",
+              gap: "5px",
             }}
-            className="hamburger-btn"
           >
             <span
+              className="hamburger-line"
               style={{
                 display: "block",
                 width: "24px",
-                height: "1.5px",
-                background: "var(--gold)",
+                height: "2px",
+                background: "#C9A84C",
                 transition: "all 0.3s ease",
-                transformOrigin: "center",
-                transform: open
-                  ? "rotate(45deg) translate(4.5px, 4.5px)"
+                transform: menuOpen
+                  ? "rotate(45deg) translate(5px, 5px)"
                   : "none",
               }}
             />
             <span
+              className="hamburger-line"
               style={{
                 display: "block",
                 width: "24px",
-                height: "1.5px",
-                background: "var(--gold)",
+                height: "2px",
+                background: "#C9A84C",
                 transition: "all 0.3s ease",
-                transformOrigin: "center",
-                opacity: open ? 0 : 1,
-                transform: open ? "scaleX(0)" : "none",
+                opacity: menuOpen ? 0 : 1,
+                margin: menuOpen ? "-2px 0" : "0",
               }}
             />
             <span
+              className="hamburger-line"
               style={{
                 display: "block",
                 width: "24px",
-                height: "1.5px",
-                background: "var(--gold)",
+                height: "2px",
+                background: "#C9A84C",
                 transition: "all 0.3s ease",
-                transformOrigin: "center",
-                transform: open
-                  ? "rotate(-45deg) translate(4.5px, -4.5px)"
+                transform: menuOpen
+                  ? "rotate(-45deg) translate(5px, -5px)"
                   : "none",
               }}
             />
           </button>
         </div>
-      </nav>
+      </header>
 
-      {/* Mobile Menu Overlay */}
+      {/* Mobile Dropdown Menu */}
       <div
+        className="mobile-nav-dropdown"
         style={{
           position: "fixed",
           top: 0,
           left: 0,
           right: 0,
           bottom: 0,
-          background: "rgba(10, 10, 10, 0.99)",
           zIndex: 999,
-          display: "flex",
+          background: "rgba(10, 10, 10, 0.98)",
+          display: menuOpen ? "flex" : "none",
           flexDirection: "column",
-          justifyContent: "center",
           alignItems: "center",
+          justifyContent: "center",
           gap: "0",
-          padding: "80px 24px 40px",
-          transition: "opacity 0.3s ease, visibility 0.3s ease",
-          opacity: open ? 1 : 0,
-          visibility: open ? "visible" : "hidden",
-          pointerEvents: open ? "auto" : "none",
+          padding: "100px 24px 40px",
         }}
-        className="mobile-menu-overlay"
       >
         {navLinks.map(([label, href]) => (
           <Link
             key={label}
             href={href}
-            onClick={() => setOpen(false)}
+            onClick={handleLinkClick}
             style={{
-              color: open ? "var(--text-muted)" : "transparent",
-              fontSize: "18px",
+              color: active === label ? "#C9A84C" : "#F5F0E8",
+              fontSize: "20px",
               letterSpacing: "4px",
               textTransform: "uppercase",
               textDecoration: "none",
+              padding: "20px 24px",
+              transition: "color 0.2s ease",
               display: "block",
-              padding: "20px 0",
-              borderBottom: "1px solid rgba(201, 168, 76, 0.08)",
-              transition: "color 0.3s ease",
-              width: "100%",
               textAlign: "center",
-            }}
-            onMouseEnter={(e) => {
-              (e.target as HTMLElement).style.color = "var(--gold)";
-            }}
-            onMouseLeave={(e) => {
-              (e.target as HTMLElement).style.color = "var(--text-muted)";
+              width: "100%",
+              maxWidth: "300px",
+              borderBottom: "1px solid rgba(201, 168, 76, 0.08)",
             }}
           >
             {label}
@@ -242,45 +254,39 @@ export default function Nav({ active }: { active?: string }) {
         ))}
         <a
           href="/#contact"
-          onClick={() => setOpen(false)}
+          onClick={handleLinkClick}
           style={{
-            color: "var(--text-muted)",
-            fontSize: "18px",
+            color: "#F5F0E8",
+            fontSize: "20px",
             letterSpacing: "4px",
             textTransform: "uppercase",
             textDecoration: "none",
+            padding: "20px 24px",
+            transition: "color 0.2s ease",
             display: "block",
-            padding: "20px 0",
-            borderBottom: "1px solid rgba(201, 168, 76, 0.08)",
-            transition: "color 0.3s ease",
-            width: "100%",
             textAlign: "center",
-          }}
-          onMouseEnter={(e) => {
-            (e.target as HTMLElement).style.color = "var(--gold)";
-          }}
-          onMouseLeave={(e) => {
-            (e.target as HTMLElement).style.color = "var(--text-muted)";
+            width: "100%",
+            maxWidth: "300px",
+            borderBottom: "1px solid rgba(201, 168, 76, 0.08)",
           }}
         >
           Contact
         </a>
         <a
           href="/#contact"
-          onClick={() => setOpen(false)}
+          onClick={handleLinkClick}
           style={{
-            display: "block",
-            background: "var(--gold)",
-            color: "var(--dark)",
-            padding: "18px 48px",
+            marginTop: "32px",
+            background: "#C9A84C",
+            color: "#0A0A0A",
+            padding: "16px 48px",
             fontSize: "13px",
             letterSpacing: "3px",
             textTransform: "uppercase",
             textDecoration: "none",
-            textAlign: "center",
             fontWeight: 600,
-            marginTop: "32px",
-            transition: "all 0.3s ease",
+            textAlign: "center",
+            display: "block",
           }}
         >
           Enquire Now
