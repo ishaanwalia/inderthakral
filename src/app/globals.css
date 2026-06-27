@@ -44,100 +44,29 @@ body {
   background: var(--gold);
 }
 
-/* ====================== NAV ====================== */
-.desktop-nav {
+.nav-links {
   display: flex;
   gap: 40px;
   align-items: center;
 }
 
-.mobile-menu-btn {
+.hamburger {
   display: none;
   flex-direction: column;
-  gap: 6px;
-  padding: 10px;
   background: none;
   border: none;
   cursor: pointer;
-  -webkit-tap-highlight-color: transparent;
+  padding: 8px;
 }
 
-/* Mobile Menu */
-.mobile-menu {
+.mobile-dropdown {
   display: none;
+  padding: 24px;
+  border-top: 1px solid rgba(201,168,76,0.1);
+  background: rgba(10,10,10,0.99);
   flex-direction: column;
-  gap: 28px;
-  padding: 32px 24px;
-  background: rgba(10, 10, 10, 0.99);
-  border-top: 1px solid rgba(201, 168, 76, 0.1);
-  position: fixed;
-  top: 76px;           /* Height of your navbar */
-  left: 0;
-  right: 0;
-  height: calc(100vh - 76px);
-  z-index: 999;
-  overflow-y: auto;
 }
 
-.mobile-link {
-  color: var(--text-muted);
-  font-size: 15px;
-  letter-spacing: 3px;
-  text-transform: uppercase;
-  text-decoration: none;
-}
-
-.mobile-enquire {
-  display: block;
-  background: var(--gold);
-  color: var(--dark);
-  padding: 16px;
-  font-size: 12px;
-  letter-spacing: 3px;
-  text-transform: uppercase;
-  text-decoration: none;
-  text-align: center;
-  font-weight: 600;
-  border-radius: 2px;
-}
-
-/* ====================== RESPONSIVE ====================== */
-@media (max-width: 768px) {
-  .desktop-nav {
-    display: none !important;
-  }
-
-  .mobile-menu-btn {
-    display: flex !important;
-  }
-
-  .mobile-menu {
-    display: flex !important;
-  }
-
-  /* Other mobile styles */
-  .about-grid {
-    grid-template-columns: 1fr;
-    gap: 32px;
-  }
-
-  .properties-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .detail-grid {
-    grid-template-columns: 1fr;
-  }
-}
-
-/* Hide mobile menu on larger screens */
-@media (min-width: 769px) {
-  .mobile-menu {
-    display: none !important;
-  }
-}
-
-/* ====================== GRIDS ====================== */
 .about-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -155,4 +84,31 @@ body {
   display: grid;
   grid-template-columns: 1fr 400px;
   gap: 64px;
+}
+
+@media (max-width: 768px) {
+  .nav-links {
+    display: none;
+  }
+
+  .hamburger {
+    display: flex;
+  }
+
+  .mobile-dropdown {
+    display: flex;
+  }
+
+  .about-grid {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+
+  .properties-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .detail-grid {
+    grid-template-columns: 1fr;
+  }
 }
