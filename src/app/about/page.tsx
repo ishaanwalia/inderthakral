@@ -19,7 +19,7 @@ export default function AboutPage() {
       </section>
 
       {/* STORY */}
-      <section style={{ padding: "120px 48px" }}>
+      <section style={{ padding: "60px 48px" }}>
         <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
           <div className="about-grid">
 
