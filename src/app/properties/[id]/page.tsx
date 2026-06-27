@@ -1,19 +1,22 @@
 import { properties } from "@/data/properties";
 import PropertyDetailClient from "./PropertyDetailClient";
 
-// For static export, we need to handle the id with trailing slash
 export function generateStaticParams() {
   return properties.map((property) => ({
     id: property.id,
   }));
 }
 
-// This ensures the page works with trailingSlash: true
-export const dynamicParams = false;
-
-export default function PropertyDetailPage({ params }: { params: { id: string } }) {
+export default async function PropertyDetailPage({ 
+  params 
+}: { 
+  params: Promise<{ id: string }> 
+}) {
+  // Next.js 15+ params is a Promise — must await it
+  const { id } = await params;
+  
   // Handle both with and without trailing slash
-  const cleanId = params.id.replace(/\/$/, '');
+  const cleanId = id.replace(/\/$/, '');
   const property = properties.find(p => p.id === cleanId);
   
   if (!property) {
