@@ -20,8 +20,8 @@ export default async function PropertyDetailPage({
     return (
       <main style={{ background: "#000000", minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", color: "#FFFFFF" }}>
         <div style={{ textAlign: "center" }}>
-          <p style={{ color: "#00D4FF", letterSpacing: "4px", textTransform: "uppercase", marginBottom: "24px", fontFamily: "var(--font-mono)", fontSize: "11px" }}>Property Not Found</p>
-          <a href="/properties/" style={{ color: "rgba(255,255,255,0.4)", textDecoration: "none", fontSize: "11px", letterSpacing: "2px", textTransform: "uppercase", fontFamily: "var(--font-mono)" }}>← Back to Properties</a>
+          <p style={{ color: "#00D4FF", letterSpacing: "4px", textTransform: "uppercase", marginBottom: "24px", fontFamily: "var(--font-mono)", fontSize: "11px", fontWeight: 500 }}>Property Not Found</p>
+          <a href="/properties/" style={{ color: "rgba(255,255,255,0.4)", textDecoration: "none", fontSize: "11px", letterSpacing: "2px", textTransform: "uppercase", fontFamily: "var(--font-mono)", fontWeight: 500 }}>← Back to Properties</a>
         </div>
       </main>
     );

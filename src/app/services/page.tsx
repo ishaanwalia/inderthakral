@@ -19,34 +19,19 @@ export default function ServicesPage() {
         background: "radial-gradient(ellipse at 30% 50%, rgba(0,212,255,0.03) 0%, transparent 60%)",
       }} className="section-pad">
         <div style={{ maxWidth: "1200px", margin: "0 auto", position: "relative" }}>
-          <p style={{ 
-            color: "#00D4FF", 
-            fontSize: "11px", 
-            letterSpacing: "4px", 
-            textTransform: "uppercase", 
-            fontFamily: "var(--font-mono)", 
-            marginBottom: "24px",
-            display: "flex",
-            alignItems: "center",
-            gap: "12px",
-          }}>
-            <span style={{ width: "30px", height: "1px", background: "#00D4FF" }} />
+          <p className="section-label" style={{ marginBottom: "24px" }}>
+            <span className="accent-line" />
             What We Offer
           </p>
           <h1 style={{ 
             fontSize: "clamp(48px, 8vw, 100px)", 
-            fontWeight: 300, 
+            fontWeight: 700, 
             lineHeight: 1.05,
             letterSpacing: "-5px",
             color: "#FFFFFF",
           }}>
             Advisory<br />
-            <span style={{ 
-              background: "linear-gradient(135deg, #00D4FF 0%, #0088FF 100%)",
-              WebkitBackgroundClip: "text",
-              WebkitTextFillColor: "transparent",
-              backgroundClip: "text",
-            }}>Services</span>
+            <span className="gradient-text">Services</span>
           </h1>
           <p style={{ 
             color: "rgba(255,255,255,0.4)", 
@@ -105,12 +90,12 @@ export default function ServicesPage() {
                 alignItems: "center",
               }} className="services-grid-desktop">
                 <div style={{ order: service.flip ? 2 : 1 }}>
-                  <div style={{ color: "rgba(0,212,255,0.15)", fontSize: "72px", fontWeight: 300, opacity: 1, marginBottom: "20px", lineHeight: 1, fontFamily: "var(--font-mono)", letterSpacing: "-2px" }}>
+                  <div style={{ color: "rgba(0,212,255,0.15)", fontSize: "72px", fontWeight: 700, opacity: 1, marginBottom: "20px", lineHeight: 1, fontFamily: "var(--font-mono)", letterSpacing: "-2px" }}>
                     {service.num}
                   </div>
                   <h2 style={{ 
                     fontSize: "clamp(24px, 3vw, 36px)", 
-                    fontWeight: 500, 
+                    fontWeight: 600, 
                     marginBottom: "24px", 
                     lineHeight: 1.2,
                     letterSpacing: "-1px",
@@ -125,37 +110,11 @@ export default function ServicesPage() {
                     {service.features.map((f, j) => (
                       <div key={j} style={{ display: "flex", gap: "12px", alignItems: "flex-start" }}>
                         <span style={{ color: "#00D4FF", flexShrink: 0, marginTop: "2px", fontSize: "12px" }}>◈</span>
-                        <span style={{ color: "rgba(255,255,255,0.5)", fontSize: "13px", lineHeight: 1.6 }}>{f}</span>
+                        <span style={{ color: "rgba(255,255,255,0.5)", fontSize: "13px", lineHeight: 1.6, fontWeight: 500 }}>{f}</span>
                       </div>
                     ))}
                   </div>
-                  <a href="/#contact" style={{ 
-                    display: "inline-flex", 
-                    alignItems: "center",
-                    gap: "12px",
-                    border: "1px solid rgba(0,212,255,0.3)", 
-                    color: "#00D4FF", 
-                    padding: "14px 36px", 
-                    fontSize: "11px", 
-                    letterSpacing: "3px", 
-                    textTransform: "uppercase", 
-                    textDecoration: "none", 
-                    transition: "all 0.4s cubic-bezier(0.16, 1, 0.3, 1)",
-                    borderRadius: "2px",
-                    fontFamily: "var(--font-mono)",
-                    background: "transparent",
-                  }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.background = "rgba(0,212,255,0.1)";
-                    e.currentTarget.style.borderColor = "rgba(0,212,255,0.6)";
-                    e.currentTarget.style.boxShadow = "0 0 30px rgba(0,212,255,0.1)";
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.background = "transparent";
-                    e.currentTarget.style.borderColor = "rgba(0,212,255,0.3)";
-                    e.currentTarget.style.boxShadow = "none";
-                  }}
-                  >
+                  <a href="/#contact" className="outline-btn tap-glow" style={{ borderColor: "rgba(0,212,255,0.3)", color: "#00D4FF" }}>
                     Enquire About This →
                   </a>
                 </div>
@@ -166,7 +125,7 @@ export default function ServicesPage() {
                     overflow: "hidden",
                     border: "1px solid rgba(255,255,255,0.06)",
                     aspectRatio: "4/3",
-                  }}>
+                  }} className="card-3d">
                     <img src={service.image} alt={service.title} style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
                     <div style={{ position: "absolute", inset: 0, background: "linear-gradient(135deg, rgba(0,212,255,0.05) 0%, transparent 50%)" }} />
                     {/* Corner accent */}
@@ -203,60 +162,26 @@ export default function ServicesPage() {
         borderTop: "1px solid rgba(255,255,255,0.03)",
       }} className="section-pad">
         <div style={{ maxWidth: "800px", margin: "0 auto", textAlign: "center" }}>
-          <p style={{ 
-            color: "#00D4FF", 
-            fontSize: "11px", 
-            letterSpacing: "4px", 
-            textTransform: "uppercase", 
-            fontFamily: "var(--font-mono)", 
-            marginBottom: "24px",
-            display: "inline-flex",
-            alignItems: "center",
-            gap: "12px",
-          }}>
-            <span style={{ width: "30px", height: "1px", background: "#00D4FF" }} />
+          <p className="section-label" style={{ marginBottom: "24px", justifyContent: "center" }}>
+            <span className="accent-line" />
             Ready to Begin?
-            <span style={{ width: "30px", height: "1px", background: "#00D4FF" }} />
+            <span className="accent-line" />
           </p>
           <h2 style={{ 
             fontSize: "clamp(28px, 4vw, 48px)", 
-            fontWeight: 300, 
+            fontWeight: 700, 
             lineHeight: 1.2, 
             marginBottom: "24px",
             letterSpacing: "-2px",
             color: "#FFFFFF",
           }}>
             Let us find your<br />
-            <span style={{ color: "#00D4FF" }}>perfect asset</span>
+            <span style={{ color: "#00D4FF", fontWeight: 700 }}>perfect asset</span>
           </h2>
           <p style={{ color: "rgba(255,255,255,0.4)", fontSize: "15px", lineHeight: 1.8, marginBottom: "40px" }}>
             Every engagement begins with a personal conversation with Inder Thakral — no junior agents, no generic advice.
           </p>
-          <a href="/#contact" style={{ 
-            display: "inline-flex", 
-            alignItems: "center",
-            gap: "12px",
-            background: "#00D4FF", 
-            color: "#000000", 
-            padding: "18px 48px", 
-            fontSize: "11px", 
-            letterSpacing: "4px", 
-            textTransform: "uppercase", 
-            textDecoration: "none", 
-            fontWeight: 600, 
-            transition: "all 0.4s cubic-bezier(0.16, 1, 0.3, 1)",
-            borderRadius: "2px",
-            fontFamily: "var(--font-mono)",
-          }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.transform = "translateY(-2px)";
-            e.currentTarget.style.boxShadow = "0 20px 50px rgba(0, 212, 255, 0.3)";
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.transform = "translateY(0)";
-            e.currentTarget.style.boxShadow = "none";
-          }}
-          >
+          <a href="/#contact" className="cta-btn magnetic-btn tap-glow">
             Book a Consultation →
           </a>
         </div>
@@ -273,10 +198,10 @@ export default function ServicesPage() {
         gap: "24px" 
       }}>
         <div>
-          <div style={{ color: "#00D4FF", fontSize: "10px", letterSpacing: "4px", textTransform: "uppercase", fontFamily: "var(--font-mono)", fontWeight: 500 }}>Inder Thakral Properties</div>
+          <div style={{ color: "#00D4FF", fontSize: "10px", letterSpacing: "4px", textTransform: "uppercase", fontFamily: "var(--font-mono)", fontWeight: 700 }}>Inder Thakral Properties</div>
           <div style={{ color: "rgba(255,255,255,0.3)", fontSize: "12px", marginTop: "6px" }}>2026 · Independent Advisory · Mohali, Chandigarh Tricity</div>
         </div>
-        <div style={{ color: "rgba(255,255,255,0.2)", fontSize: "10px", letterSpacing: "3px", textTransform: "uppercase", fontFamily: "var(--font-mono)" }}>
+        <div style={{ color: "rgba(255,255,255,0.2)", fontSize: "10px", letterSpacing: "3px", textTransform: "uppercase", fontFamily: "var(--font-mono)", fontWeight: 500 }}>
           Verified Title Deeds · By Appointment Only
         </div>
       </footer>

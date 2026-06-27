@@ -5,7 +5,41 @@ import Link from "next/link";
 import Nav from "@/components/Nav";
 import { properties } from "@/data/properties";
 
-function AnimatedCounter({ end, suffix = "", duration = 2500 }: { end: number; suffix?: string; duration?: number }) {
+// ===== MOBILE COUNTER (auto-starts on mount) =====
+function MobileCounter({ end, suffix = "", duration = 2500 }: { end: number; suffix?: string; duration?: number }) {
+  const [count, setCount] = useState(0);
+  const hasAnimated = useRef(false);
+
+  useEffect(() => {
+    if (hasAnimated.current) return;
+    hasAnimated.current = true;
+    const startTime = Date.now();
+    const animate = () => {
+      const elapsed = Date.now() - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 4);
+      setCount(Math.floor(eased * end));
+      if (progress < 1) requestAnimationFrame(animate);
+    };
+    requestAnimationFrame(animate);
+  }, [end, duration]);
+
+  return (
+    <div className="mobile-counter" style={{ 
+      color: "#00D4FF", 
+      fontSize: "clamp(40px, 5vw, 72px)", 
+      fontWeight: 700, 
+      fontFamily: "var(--font-mono)", 
+      letterSpacing: "-2px",
+      lineHeight: 1,
+    }}>
+      {count}{suffix}
+    </div>
+  );
+}
+
+// ===== DESKTOP COUNTER (IntersectionObserver) =====
+function DesktopCounter({ end, suffix = "", duration = 2500 }: { end: number; suffix?: string; duration?: number }) {
   const [count, setCount] = useState(0);
   const ref = useRef<HTMLDivElement>(null);
   const hasAnimated = useRef(false);
@@ -36,7 +70,7 @@ function AnimatedCounter({ end, suffix = "", duration = 2500 }: { end: number; s
     <div ref={ref} style={{ 
       color: "#00D4FF", 
       fontSize: "clamp(40px, 5vw, 72px)", 
-      fontWeight: 300, 
+      fontWeight: 700, 
       fontFamily: "var(--font-mono)", 
       letterSpacing: "-2px",
       lineHeight: 1,
@@ -46,39 +80,17 @@ function AnimatedCounter({ end, suffix = "", duration = 2500 }: { end: number; s
   );
 }
 
-function ScrollText({ text, speed = 50 }: { text: string; speed?: number }) {
-  const containerRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const container = containerRef.current;
-    if (!container) return;
-
-    let animationId: number;
-    let position = 0;
-
-    const animate = () => {
-      position -= 0.5;
-      const firstChild = container.firstElementChild as HTMLElement;
-      if (firstChild && Math.abs(position) >= firstChild.offsetWidth / 2) {
-        position = 0;
-      }
-      container.style.transform = `translateX(${position}px)`;
-      animationId = requestAnimationFrame(animate);
-    };
-
-    animationId = requestAnimationFrame(animate);
-    return () => cancelAnimationFrame(animationId);
-  }, [speed]);
-
+// ===== KINETIC SCROLL TEXT (CSS animation, no RAF) =====
+function KineticScrollText({ text }: { text: string }) {
   return (
     <div style={{ overflow: "hidden", width: "100%", whiteSpace: "nowrap" }}>
-      <div ref={containerRef} style={{ display: "inline-flex", willChange: "transform" }}>
+      <div className="kinetic-scroll-track">
         <span style={{ 
           display: "inline-flex", 
           gap: "80px",
           paddingRight: "80px",
           fontSize: "clamp(48px, 8vw, 120px)",
-          fontWeight: 300,
+          fontWeight: 700,
           letterSpacing: "-3px",
           color: "rgba(255, 255, 255, 0.03)",
           textTransform: "uppercase",
@@ -91,7 +103,7 @@ function ScrollText({ text, speed = 50 }: { text: string; speed?: number }) {
           gap: "80px",
           paddingRight: "80px",
           fontSize: "clamp(48px, 8vw, 120px)",
-          fontWeight: 300,
+          fontWeight: 700,
           letterSpacing: "-3px",
           color: "rgba(255, 255, 255, 0.03)",
           textTransform: "uppercase",
@@ -104,10 +116,34 @@ function ScrollText({ text, speed = 50 }: { text: string; speed?: number }) {
   );
 }
 
-export default function HomePage() {
-  const revealRefs = useRef<(HTMLElement | null)[]>([]);
+// ===== FLOATING PARTICLES (150 for mobile, 6 for desktop) =====
+function FloatingParticles() {
+  const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
+  const count = isMobile ? 150 : 6;
+
+  return (
+    <>
+      {Array.from({ length: count }).map((_, i) => (
+        <div key={i} style={{
+          position: "absolute",
+          width: i % 3 === 0 ? "3px" : "2px",
+          height: i % 3 === 0 ? "3px" : "2px",
+          background: i % 5 === 0 ? "rgba(0, 212, 255, 0.6)" : "rgba(0, 212, 255, 0.3)",
+          borderRadius: "50%",
+          top: `${Math.random() * 100}%`,
+          left: `${Math.random() * 100}%`,
+          animation: `float ${8 + Math.random() * 6}s ease-in-out infinite`,
+          animationDelay: `${Math.random() * 5}s`,
+          boxShadow: i % 5 === 0 ? "0 0 15px rgba(0, 212, 255, 0.8)" : "0 0 10px rgba(0, 212, 255, 0.4)",
+        }} />
+      ))}
+    </>
+  );
+}
+
+// ===== DUAL CURSOR GLOW (800px + 400px rings) =====
+function CursorGlow() {
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
-  const heroRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
@@ -115,6 +151,30 @@ export default function HomePage() {
     };
     window.addEventListener("mousemove", handleMouseMove);
     return () => window.removeEventListener("mousemove", handleMouseMove);
+  }, []);
+
+  return (
+    <>
+      <div className="cursor-glow-outer" style={{
+        transform: `translate(${mousePos.x - 400}px, ${mousePos.y - 400}px)`,
+      }} />
+      <div className="cursor-glow-inner" style={{
+        transform: `translate(${mousePos.x - 200}px, ${mousePos.y - 200}px)`,
+      }} />
+    </>
+  );
+}
+
+export default function HomePage() {
+  const revealRefs = useRef<(HTMLElement | null)[]>([]);
+  const heroRef = useRef<HTMLDivElement>(null);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
   useEffect(() => {
@@ -141,24 +201,14 @@ export default function HomePage() {
   };
 
   const featuredProperties = properties.slice(0, 3);
+  const CounterComponent = isMobile ? MobileCounter : DesktopCounter;
   const scrollText = "Verified Land • Trusted Advisory • Personal Service • Mohali • Chandigarh • Panchkula • Premium Properties • Verified Land • Trusted Advisory • Personal Service • Mohali • Chandigarh • Panchkula • Premium Properties";
 
   return (
     <main style={{ background: "#000000", minHeight: "100vh", overflowX: "hidden", width: "100%", color: "#FFFFFF", fontFamily: "var(--font-sans)" }}>
 
-      {/* Cursor glow - premium subtle effect */}
-      <div style={{
-        position: "fixed",
-        width: "500px",
-        height: "500px",
-        borderRadius: "50%",
-        background: "radial-gradient(circle, rgba(0,212,255,0.06) 0%, transparent 60%)",
-        pointerEvents: "none",
-        zIndex: 1,
-        transform: `translate(${mousePos.x - 250}px, ${mousePos.y - 250}px)`,
-        transition: "transform 0.15s ease-out",
-        mixBlendMode: "screen",
-      }} />
+      {/* Dual Cursor Glow - 10x larger */}
+      <CursorGlow />
 
       <Nav />
 
@@ -188,72 +238,30 @@ export default function HomePage() {
           animation: "pulseGlow 6s ease-in-out infinite",
         }} />
 
-        {/* Floating particles */}
-        {[...Array(6)].map((_, i) => (
-          <div key={i} style={{
-            position: "absolute",
-            width: "2px",
-            height: "2px",
-            background: "rgba(0, 212, 255, 0.4)",
-            borderRadius: "50%",
-            top: `${20 + i * 15}%`,
-            left: `${10 + i * 15}%`,
-            animation: `float ${8 + i * 2}s ease-in-out infinite`,
-            animationDelay: `${i * 0.5}s`,
-            boxShadow: "0 0 10px rgba(0, 212, 255, 0.6)",
-          }} />
-        ))}
+        {/* Floating particles - 150 on mobile, 6 on desktop */}
+        <FloatingParticles />
 
         <div style={{ position: "relative", zIndex: 2, textAlign: "center", maxWidth: "1000px", padding: "0 24px", width: "100%" }}>
           {/* Tags */}
           <div style={{ display: "inline-flex", gap: "16px", marginBottom: "48px", flexWrap: "wrap", justifyContent: "center" }}>
             {["Verified", "Trusted", "Personal"].map((tag, i) => (
-              <span key={i} style={{
-                padding: "10px 24px",
-                border: "1px solid rgba(0,212,255,0.2)",
-                color: "#00D4FF",
-                fontSize: "10px",
-                letterSpacing: "4px",
-                textTransform: "uppercase",
-                fontFamily: "var(--font-mono)",
-                background: "rgba(0,212,255,0.03)",
-                backdropFilter: "blur(10px)",
-                transition: "all 0.4s ease",
-                cursor: "default",
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.borderColor = "rgba(0,212,255,0.5)";
-                e.currentTarget.style.background = "rgba(0,212,255,0.08)";
-                e.currentTarget.style.boxShadow = "0 0 30px rgba(0,212,255,0.1)";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.borderColor = "rgba(0,212,255,0.2)";
-                e.currentTarget.style.background = "rgba(0,212,255,0.03)";
-                e.currentTarget.style.boxShadow = "none";
-              }}
-              >
+              <span key={i} className="tag-pill tap-glow">
                 {tag}
               </span>
             ))}
           </div>
 
-          {/* Main headline - Zera style */}
+          {/* Main headline - Bolder weights */}
           <h1 style={{
             fontSize: "clamp(42px, 9vw, 100px)",
-            fontWeight: 300,
+            fontWeight: 700,
             lineHeight: 1.05,
             marginBottom: "32px",
             letterSpacing: "-4px",
             color: "#FFFFFF",
           }}>
             <span style={{ display: "block" }}>Verified Land.</span>
-            <span style={{ 
-              display: "block", 
-              background: "linear-gradient(135deg, #00D4FF 0%, #0088FF 50%, #00D4FF 100%)",
-              WebkitBackgroundClip: "text",
-              WebkitTextFillColor: "transparent",
-              backgroundClip: "text",
-            }}>Trusted Advisor.</span>
+            <span className="gradient-text" style={{ display: "block" }}>Trusted Advisor.</span>
           </h1>
 
           {/* Subtitle */}
@@ -271,67 +279,17 @@ export default function HomePage() {
 
           {/* CTA Buttons */}
           <div style={{ display: "flex", gap: "20px", justifyContent: "center", flexWrap: "wrap" }}>
-            <Link href="/properties/" style={{
-              display: "inline-flex",
-              alignItems: "center",
-              gap: "12px",
-              background: "#00D4FF",
-              color: "#000000",
-              padding: "18px 44px",
-              fontSize: "12px",
-              letterSpacing: "3px",
-              textTransform: "uppercase",
-              textDecoration: "none",
-              fontWeight: 600,
-              transition: "all 0.4s cubic-bezier(0.16, 1, 0.3, 1)",
-              borderRadius: "2px",
-              fontFamily: "var(--font-mono)",
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.transform = "translateY(-2px)";
-              e.currentTarget.style.boxShadow = "0 20px 60px rgba(0, 212, 255, 0.3)";
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.transform = "translateY(0)";
-              e.currentTarget.style.boxShadow = "none";
-            }}
-            >
+            <Link href="/properties/" className="cta-btn magnetic-btn tap-glow">
               View Properties
               <span style={{ fontSize: "16px" }}>→</span>
             </Link>
-            <a href="/#contact" style={{
-              display: "inline-flex",
-              alignItems: "center",
-              gap: "12px",
-              border: "1px solid rgba(255,255,255,0.15)",
-              color: "rgba(255,255,255,0.8)",
-              padding: "18px 44px",
-              fontSize: "12px",
-              letterSpacing: "3px",
-              textTransform: "uppercase",
-              textDecoration: "none",
-              transition: "all 0.4s cubic-bezier(0.16, 1, 0.3, 1)",
-              borderRadius: "2px",
-              fontFamily: "var(--font-mono)",
-              background: "rgba(255,255,255,0.02)",
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.borderColor = "rgba(0,212,255,0.4)";
-              e.currentTarget.style.color = "#00D4FF";
-              e.currentTarget.style.background = "rgba(0,212,255,0.05)";
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.borderColor = "rgba(255,255,255,0.15)";
-              e.currentTarget.style.color = "rgba(255,255,255,0.8)";
-              e.currentTarget.style.background = "rgba(255,255,255,0.02)";
-            }}
-            >
+            <a href="/#contact" className="outline-btn magnetic-btn tap-glow">
               Book Consultation
             </a>
           </div>
         </div>
 
-        {/* Scroll indicator - refined */}
+        {/* Scroll indicator */}
         <div style={{
           position: "absolute",
           bottom: "48px",
@@ -346,13 +304,14 @@ export default function HomePage() {
           letterSpacing: "4px",
           textTransform: "uppercase",
           fontFamily: "var(--font-mono)",
+          fontWeight: 500,
         }}>
           <span>Scroll</span>
           <div style={{ width: "1px", height: "50px", background: "linear-gradient(to bottom, rgba(0,212,255,0.5), transparent)", animation: "scrollPulse 2.5s ease-in-out infinite" }} />
         </div>
       </section>
 
-      {/* ===== KINETIC SCROLL TEXT ===== */}
+      {/* ===== KINETIC SCROLL TEXT (CSS animation, no RAF) ===== */}
       <section style={{ 
         padding: "80px 0", 
         borderTop: "1px solid rgba(255,255,255,0.03)", 
@@ -360,7 +319,7 @@ export default function HomePage() {
         background: "linear-gradient(180deg, transparent 0%, rgba(0,212,255,0.01) 50%, transparent 100%)",
         overflow: "hidden",
       }}>
-        <ScrollText text={scrollText} />
+        <KineticScrollText text={scrollText} />
       </section>
 
       {/* ===== STATS BAR ===== */}
@@ -377,13 +336,10 @@ export default function HomePage() {
             { end: 500, suffix: "+", label: "Clients Served" },
             { end: 100, suffix: "%", label: "Title Verified" },
           ].map((stat, i) => (
-            <div key={i} ref={addRef} className="reveal" style={{ 
-              padding: "80px 24px", 
-              textAlign: "center", 
+            <div key={i} ref={addRef} className="reveal stat-card" style={{ 
               borderRight: i < 3 ? "1px solid rgba(255,255,255,0.04)" : "none",
-              position: "relative",
             }}>
-              <AnimatedCounter end={stat.end} suffix={stat.suffix} />
+              <CounterComponent end={stat.end} suffix={stat.suffix} />
               <div style={{ 
                 color: "rgba(255,255,255,0.3)", 
                 fontSize: "10px", 
@@ -391,7 +347,7 @@ export default function HomePage() {
                 textTransform: "uppercase", 
                 marginTop: "16px", 
                 fontFamily: "var(--font-mono)",
-                fontWeight: 400,
+                fontWeight: 500,
               }}>
                 {stat.label}
               </div>
@@ -415,87 +371,37 @@ export default function HomePage() {
         <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
           <div ref={addRef} className="reveal" style={{ marginBottom: "80px", display: "flex", justifyContent: "space-between", alignItems: "flex-end", flexWrap: "wrap", gap: "24px" }}>
             <div>
-              <p style={{ 
-                color: "#00D4FF", 
-                fontSize: "11px", 
-                letterSpacing: "4px", 
-                textTransform: "uppercase", 
-                fontFamily: "var(--font-mono)", 
-                marginBottom: "20px",
-                display: "flex",
-                alignItems: "center",
-                gap: "12px",
-              }}>
-                <span style={{ width: "30px", height: "1px", background: "#00D4FF" }} />
+              <p className="section-label" style={{ marginBottom: "20px" }}>
+                <span className="accent-line" />
                 Featured Listings
               </p>
               <h2 style={{ 
                 fontSize: "clamp(32px, 5vw, 56px)", 
-                fontWeight: 300, 
+                fontWeight: 700, 
                 lineHeight: 1.1, 
                 letterSpacing: "-3px",
                 color: "#FFFFFF",
               }}>
-                Available <span style={{ color: "#00D4FF", fontWeight: 400 }}>Properties</span>
+                Available <span style={{ color: "#00D4FF", fontWeight: 700 }}>Properties</span>
               </h2>
             </div>
-            <Link href="/properties/" style={{
-              display: "inline-flex",
-              alignItems: "center",
-              gap: "8px",
-              border: "1px solid rgba(255,255,255,0.1)",
-              color: "rgba(255,255,255,0.5)",
-              padding: "14px 32px",
-              fontSize: "11px",
-              letterSpacing: "2px",
-              textTransform: "uppercase",
-              textDecoration: "none",
-              transition: "all 0.4s ease",
-              borderRadius: "2px",
-              background: "transparent",
-              fontFamily: "var(--font-mono)",
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.borderColor = "rgba(0,212,255,0.4)";
-              e.currentTarget.style.color = "#00D4FF";
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.borderColor = "rgba(255,255,255,0.1)";
-              e.currentTarget.style.color = "rgba(255,255,255,0.5)";
-            }}
-            >
+            <Link href="/properties/" className="outline-btn tap-glow" style={{ padding: "14px 32px", fontSize: "11px" }}>
               View All →
             </Link>
           </div>
 
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "32px" }} className="properties-grid-desktop">
-            {featuredProperties.map((property, i) => (
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "32px" }} className="properties-grid-desktop perspective-container">
+            {featuredProperties.map((property) => (
               <Link key={property.id} href={`/properties/${property.id}/`} ref={addRef} className="reveal" style={{ textDecoration: "none" }}>
-                <div style={{
-                  background: "rgba(255,255,255,0.02)",
-                  border: "1px solid rgba(255,255,255,0.06)",
-                  borderRadius: "16px",
-                  overflow: "hidden",
-                  transition: "all 0.5s cubic-bezier(0.16, 1, 0.3, 1)",
-                  height: "100%",
-                  display: "flex",
-                  flexDirection: "column",
-                  position: "relative",
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.borderColor = "rgba(0,212,255,0.2)";
-                  e.currentTarget.style.transform = "translateY(-12px)";
-                  e.currentTarget.style.boxShadow = "0 30px 80px rgba(0,0,0,0.4), 0 0 60px rgba(0,212,255,0.06)";
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.borderColor = "rgba(255,255,255,0.06)";
-                  e.currentTarget.style.transform = "translateY(0)";
-                  e.currentTarget.style.boxShadow = "none";
-                }}
-                >
+                <div className="property-card card-3d tap-glow">
                   {/* Image container with overlay */}
                   <div style={{ position: "relative", overflow: "hidden", aspectRatio: "4/3" }}>
-                    <img src={property.image} alt={property.title} style={{ width: "100%", height: "100%", objectFit: "cover", display: "block", transition: "transform 0.8s cubic-bezier(0.16, 1, 0.3, 1)" }} />
+                    <img 
+                      src={property.image} 
+                      alt={property.title} 
+                      className="property-card-img"
+                      style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} 
+                    />
                     <div style={{
                       position: "absolute",
                       inset: 0,
@@ -511,7 +417,7 @@ export default function HomePage() {
                       fontSize: "9px",
                       letterSpacing: "3px",
                       textTransform: "uppercase",
-                      fontWeight: 600,
+                      fontWeight: 700,
                       borderRadius: "4px",
                       backdropFilter: "blur(10px)",
                       fontFamily: "var(--font-mono)",
@@ -525,7 +431,7 @@ export default function HomePage() {
                       right: "20px",
                       color: "#00D4FF",
                       fontSize: "22px",
-                      fontWeight: 300,
+                      fontWeight: 700,
                       fontFamily: "var(--font-mono)",
                       textShadow: "0 2px 20px rgba(0,0,0,0.5)",
                     }}>
@@ -540,13 +446,14 @@ export default function HomePage() {
                       textTransform: "uppercase", 
                       marginBottom: "10px", 
                       fontFamily: "var(--font-mono)",
+                      fontWeight: 500,
                     }}>
                       {property.location}
                     </p>
                     <h3 style={{ 
                       color: "#FFFFFF", 
                       fontSize: "18px", 
-                      fontWeight: 500, 
+                      fontWeight: 600, 
                       marginBottom: "12px", 
                       lineHeight: 1.3,
                       letterSpacing: "-0.5px",
@@ -564,12 +471,12 @@ export default function HomePage() {
                     </p>
                     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", paddingTop: "20px", borderTop: "1px solid rgba(255,255,255,0.05)" }}>
                       <div>
-                        <div style={{ color: "rgba(255,255,255,0.2)", fontSize: "9px", letterSpacing: "2px", textTransform: "uppercase", marginBottom: "6px", fontFamily: "var(--font-mono)" }}>Size</div>
-                        <div style={{ color: "rgba(255,255,255,0.7)", fontSize: "13px", fontFamily: "var(--font-mono)" }}>{property.size}</div>
+                        <div style={{ color: "rgba(255,255,255,0.2)", fontSize: "9px", letterSpacing: "2px", textTransform: "uppercase", marginBottom: "6px", fontFamily: "var(--font-mono)", fontWeight: 500 }}>Size</div>
+                        <div style={{ color: "rgba(255,255,255,0.7)", fontSize: "13px", fontFamily: "var(--font-mono)", fontWeight: 500 }}>{property.size}</div>
                       </div>
                       <div style={{ textAlign: "right" }}>
-                        <div style={{ color: "rgba(255,255,255,0.2)", fontSize: "9px", letterSpacing: "2px", textTransform: "uppercase", marginBottom: "6px", fontFamily: "var(--font-mono)" }}>Status</div>
-                        <div style={{ color: "#00D4FF", fontSize: "13px", fontFamily: "var(--font-mono)" }}>{property.status}</div>
+                        <div style={{ color: "rgba(255,255,255,0.2)", fontSize: "9px", letterSpacing: "2px", textTransform: "uppercase", marginBottom: "6px", fontFamily: "var(--font-mono)", fontWeight: 500 }}>Status</div>
+                        <div style={{ color: "#00D4FF", fontSize: "13px", fontFamily: "var(--font-mono)", fontWeight: 600 }}>{property.status}</div>
                       </div>
                     </div>
                   </div>
@@ -590,30 +497,20 @@ export default function HomePage() {
       }} className="section-pad">
         <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
           <div ref={addRef} className="reveal" style={{ textAlign: "center", marginBottom: "80px" }}>
-            <p style={{ 
-              color: "#00D4FF", 
-              fontSize: "11px", 
-              letterSpacing: "4px", 
-              textTransform: "uppercase", 
-              fontFamily: "var(--font-mono)", 
-              marginBottom: "20px",
-              display: "inline-flex",
-              alignItems: "center",
-              gap: "12px",
-            }}>
-              <span style={{ width: "30px", height: "1px", background: "#00D4FF" }} />
+            <p className="section-label" style={{ marginBottom: "20px", justifyContent: "center" }}>
+              <span className="accent-line" />
               What We Offer
-              <span style={{ width: "30px", height: "1px", background: "#00D4FF" }} />
+              <span className="accent-line" />
             </p>
             <h2 style={{ 
               fontSize: "clamp(32px, 5vw, 56px)", 
-              fontWeight: 300, 
+              fontWeight: 700, 
               lineHeight: 1.1, 
               letterSpacing: "-3px", 
               marginBottom: "20px",
               color: "#FFFFFF",
             }}>
-              Advisory <span style={{ color: "#00D4FF", fontWeight: 400 }}>Services</span>
+              Advisory <span style={{ color: "#00D4FF", fontWeight: 700 }}>Services</span>
             </h2>
             <p style={{ 
               color: "rgba(255,255,255,0.4)", 
@@ -633,29 +530,7 @@ export default function HomePage() {
               { num: "03", title: "To-Let & Rental Services", desc: "Helping property owners find verified tenants and tenants find the right space across Tricity." },
               { num: "04", title: "NRI Investment Advisory", desc: "Specialized advisory for NRIs with power of attorney support and remote transaction management." },
             ].map((service, i) => (
-              <div key={i} ref={addRef} className="reveal" style={{
-                padding: "48px",
-                background: "rgba(255,255,255,0.02)",
-                border: "1px solid rgba(255,255,255,0.05)",
-                borderRadius: "16px",
-                transition: "all 0.5s cubic-bezier(0.16, 1, 0.3, 1)",
-                cursor: "default",
-                position: "relative",
-                overflow: "hidden",
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.borderColor = "rgba(0,212,255,0.2)";
-                e.currentTarget.style.background = "rgba(0,212,255,0.03)";
-                e.currentTarget.style.transform = "translateY(-4px)";
-                e.currentTarget.style.boxShadow = "0 20px 60px rgba(0,0,0,0.3)";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.borderColor = "rgba(255,255,255,0.05)";
-                e.currentTarget.style.background = "rgba(255,255,255,0.02)";
-                e.currentTarget.style.transform = "translateY(0)";
-                e.currentTarget.style.boxShadow = "none";
-              }}
-              >
+              <div key={i} ref={addRef} className="reveal service-card card-3d tap-glow">
                 {/* Subtle corner accent */}
                 <div style={{
                   position: "absolute",
@@ -665,13 +540,13 @@ export default function HomePage() {
                   height: "60px",
                   background: "linear-gradient(135deg, transparent 50%, rgba(0,212,255,0.05) 50%)",
                 }} />
-                <div style={{ color: "rgba(0,212,255,0.3)", fontSize: "13px", fontFamily: "var(--font-mono)", letterSpacing: "2px", marginBottom: "20px" }}>
+                <div style={{ color: "rgba(0,212,255,0.3)", fontSize: "13px", fontFamily: "var(--font-mono)", letterSpacing: "2px", marginBottom: "20px", fontWeight: 500 }}>
                   {service.num}
                 </div>
                 <h3 style={{ 
                   color: "#FFFFFF", 
                   fontSize: "22px", 
-                  fontWeight: 500, 
+                  fontWeight: 600, 
                   marginBottom: "14px", 
                   lineHeight: 1.3,
                   letterSpacing: "-0.5px",
@@ -700,7 +575,7 @@ export default function HomePage() {
                 <img src="/inder.jpeg" alt="Inder Thakral" style={{ width: "100%", aspectRatio: "3/4", objectFit: "cover", display: "block", filter: "grayscale(30%) contrast(1.05)" }} />
                 <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(0,0,0,0.95) 0%, transparent 50%)" }} />
                 <div style={{ position: "absolute", bottom: "40px", left: "40px", right: "40px" }}>
-                  <p style={{ color: "#00D4FF", fontSize: "11px", letterSpacing: "4px", textTransform: "uppercase", fontFamily: "var(--font-mono)", marginBottom: "8px" }}>Inder Thakral</p>
+                  <p style={{ color: "#00D4FF", fontSize: "11px", letterSpacing: "4px", textTransform: "uppercase", fontFamily: "var(--font-mono)", marginBottom: "8px", fontWeight: 500 }}>Inder Thakral</p>
                   <p style={{ color: "rgba(255,255,255,0.5)", fontSize: "14px" }}>Principal Advisor · 15+ Years</p>
                 </div>
                 {/* Accent corner */}
@@ -717,23 +592,13 @@ export default function HomePage() {
             </div>
 
             <div ref={addRef} className="reveal">
-              <p style={{ 
-                color: "#00D4FF", 
-                fontSize: "11px", 
-                letterSpacing: "4px", 
-                textTransform: "uppercase", 
-                fontFamily: "var(--font-mono)", 
-                marginBottom: "24px",
-                display: "flex",
-                alignItems: "center",
-                gap: "12px",
-              }}>
-                <span style={{ width: "30px", height: "1px", background: "#00D4FF" }} />
+              <p className="section-label" style={{ marginBottom: "24px" }}>
+                <span className="accent-line" />
                 The Principal Advisor
               </p>
               <h2 style={{ 
                 fontSize: "clamp(28px, 4vw, 48px)", 
-                fontWeight: 300, 
+                fontWeight: 700, 
                 lineHeight: 1.1, 
                 letterSpacing: "-2px", 
                 marginBottom: "32px",
@@ -741,7 +606,7 @@ export default function HomePage() {
               }}>
                 Personal Service.
                 <br />
-                <span style={{ color: "#00D4FF", fontWeight: 400 }}>Verified Results.</span>
+                <span style={{ color: "#00D4FF", fontWeight: 700 }}>Verified Results.</span>
               </h2>
               <p style={{ color: "rgba(255,255,255,0.5)", fontSize: "16px", lineHeight: 1.9, marginBottom: "24px" }}>
                 Inder Thakral is an independent real estate advisory serving the Chandigarh Tricity. Every transaction is personally overseen, every title is carefully verified.
@@ -749,31 +614,7 @@ export default function HomePage() {
               <p style={{ color: "rgba(255,255,255,0.5)", fontSize: "16px", lineHeight: 1.9, marginBottom: "40px" }}>
                 The firm provides trusted guidance for buying, selling, leasing, and investing — with a simple promise: never show a property that would not be recommended to family.
               </p>
-              <Link href="/about/" style={{
-                display: "inline-flex",
-                alignItems: "center",
-                gap: "12px",
-                background: "#00D4FF",
-                color: "#000000",
-                padding: "16px 40px",
-                fontSize: "11px",
-                letterSpacing: "3px",
-                textTransform: "uppercase",
-                textDecoration: "none",
-                fontWeight: 600,
-                borderRadius: "2px",
-                transition: "all 0.4s cubic-bezier(0.16, 1, 0.3, 1)",
-                fontFamily: "var(--font-mono)",
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.transform = "translateY(-2px)";
-                e.currentTarget.style.boxShadow = "0 20px 50px rgba(0, 212, 255, 0.25)";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.transform = "translateY(0)";
-                e.currentTarget.style.boxShadow = "none";
-              }}
-              >
+              <Link href="/about/" className="cta-btn magnetic-btn tap-glow">
                 Learn More →
               </Link>
             </div>
@@ -791,24 +632,14 @@ export default function HomePage() {
       }} className="section-pad">
         <div style={{ maxWidth: "800px", margin: "0 auto", textAlign: "center" }}>
           <div ref={addRef} className="reveal">
-            <p style={{ 
-              color: "#00D4FF", 
-              fontSize: "11px", 
-              letterSpacing: "4px", 
-              textTransform: "uppercase", 
-              fontFamily: "var(--font-mono)", 
-              marginBottom: "40px",
-              display: "inline-flex",
-              alignItems: "center",
-              gap: "12px",
-            }}>
-              <span style={{ width: "30px", height: "1px", background: "#00D4FF" }} />
+            <p className="section-label" style={{ marginBottom: "40px", justifyContent: "center" }}>
+              <span className="accent-line" />
               Our Philosophy
-              <span style={{ width: "30px", height: "1px", background: "#00D4FF" }} />
+              <span className="accent-line" />
             </p>
             <p style={{
               fontSize: "clamp(22px, 3vw, 34px)",
-              fontWeight: 300,
+              fontWeight: 700,
               lineHeight: 1.5,
               color: "rgba(255,255,255,0.9)",
               marginBottom: "40px",
@@ -817,7 +648,7 @@ export default function HomePage() {
             }}>
               "I will never show you a property I would not recommend to my own family. Your investment is our responsibility."
             </p>
-            <p style={{ color: "#00D4FF", fontSize: "13px", letterSpacing: "3px", fontFamily: "var(--font-mono)", fontWeight: 400 }}>
+            <p style={{ color: "#00D4FF", fontSize: "13px", letterSpacing: "3px", fontFamily: "var(--font-mono)", fontWeight: 500 }}>
               — Inder Thakral
             </p>
           </div>
@@ -829,30 +660,20 @@ export default function HomePage() {
         <div style={{ position: "absolute", inset: 0, background: "radial-gradient(ellipse at 50% 0%, rgba(0,212,255,0.06) 0%, transparent 60%)" }} />
         <div style={{ maxWidth: "1000px", margin: "0 auto", position: "relative" }}>
           <div ref={addRef} className="reveal" style={{ textAlign: "center", marginBottom: "80px" }}>
-            <p style={{ 
-              color: "#00D4FF", 
-              fontSize: "11px", 
-              letterSpacing: "4px", 
-              textTransform: "uppercase", 
-              fontFamily: "var(--font-mono)", 
-              marginBottom: "20px",
-              display: "inline-flex",
-              alignItems: "center",
-              gap: "12px",
-            }}>
-              <span style={{ width: "30px", height: "1px", background: "#00D4FF" }} />
+            <p className="section-label" style={{ marginBottom: "20px", justifyContent: "center" }}>
+              <span className="accent-line" />
               Get In Touch
-              <span style={{ width: "30px", height: "1px", background: "#00D4FF" }} />
+              <span className="accent-line" />
             </p>
             <h2 style={{ 
               fontSize: "clamp(32px, 5vw, 56px)", 
-              fontWeight: 300, 
+              fontWeight: 700, 
               lineHeight: 1.1, 
               letterSpacing: "-3px", 
               marginBottom: "20px",
               color: "#FFFFFF",
             }}>
-              Ready to <span style={{ color: "#00D4FF", fontWeight: 400 }}>Invest?</span>
+              Ready to <span style={{ color: "#00D4FF", fontWeight: 700 }}>Invest?</span>
             </h2>
             <p style={{ 
               color: "rgba(255,255,255,0.4)", 
@@ -880,25 +701,23 @@ export default function HomePage() {
                     textTransform: "uppercase", 
                     fontFamily: "var(--font-mono)", 
                     marginBottom: "10px",
+                    fontWeight: 500,
                   }}>
                     {item.label}
                   </p>
                   {item.href ? (
-                    <a href={item.href} style={{ 
+                    <a href={item.href} className="hover-line" style={{ 
                       color: "#FFFFFF", 
                       fontSize: "18px", 
                       textDecoration: "none", 
-                      fontWeight: 400, 
+                      fontWeight: 500, 
                       transition: "color 0.3s ease",
                       letterSpacing: "0.5px",
-                    }}
-                    onMouseEnter={(e) => e.currentTarget.style.color = "#00D4FF"}
-                    onMouseLeave={(e) => e.currentTarget.style.color = "#FFFFFF"}
-                    >
+                    }}>
                       {item.value}
                     </a>
                   ) : (
-                    <p style={{ color: "#FFFFFF", fontSize: "18px", fontWeight: 400, whiteSpace: "pre-line", letterSpacing: "0.5px" }}>
+                    <p style={{ color: "#FFFFFF", fontSize: "18px", fontWeight: 500, whiteSpace: "pre-line", letterSpacing: "0.5px" }}>
                       {item.value}
                     </p>
                   )}
@@ -908,30 +727,8 @@ export default function HomePage() {
                 href="https://wa.me/919815901234?text=Hi%20Inder,%20I%20am%20interested%20in%20discussing%20a%20property%20in%20Tricity."
                 target="_blank"
                 rel="noopener noreferrer"
-                style={{
-                  display: "inline-flex",
-                  alignItems: "center",
-                  gap: "12px",
-                  background: "#25D366",
-                  color: "#fff",
-                  padding: "16px 32px",
-                  fontSize: "11px",
-                  letterSpacing: "3px",
-                  textTransform: "uppercase",
-                  textDecoration: "none",
-                  fontWeight: 600,
-                  borderRadius: "2px",
-                  fontFamily: "var(--font-mono)",
-                  transition: "all 0.4s ease",
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.transform = "translateY(-2px)";
-                  e.currentTarget.style.boxShadow = "0 15px 40px rgba(37, 211, 102, 0.3)";
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.transform = "translateY(0)";
-                  e.currentTarget.style.boxShadow = "none";
-                }}
+                className="cta-btn magnetic-btn tap-glow"
+                style={{ background: "#25D366", color: "#fff" }}
               >
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
                   <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
@@ -946,112 +743,17 @@ export default function HomePage() {
                 { type: "email", name: "email", placeholder: "Email Address", required: true },
                 { type: "tel", name: "phone", placeholder: "Phone Number", required: false },
               ].map((field) => (
-                <input key={field.name} type={field.type} name={field.name} placeholder={field.placeholder} required={field.required} style={{
-                  width: "100%",
-                  background: "rgba(255,255,255,0.03)",
-                  border: "1px solid rgba(255,255,255,0.08)",
-                  color: "#FFFFFF",
-                  padding: "18px 24px",
-                  fontSize: "15px",
-                  outline: "none",
-                  transition: "all 0.4s ease",
-                  borderRadius: "8px",
-                  fontFamily: "var(--font-sans)",
-                  letterSpacing: "0.5px",
-                }}
-                onFocus={(e) => {
-                  e.currentTarget.style.borderColor = "rgba(0,212,255,0.3)";
-                  e.currentTarget.style.background = "rgba(0,212,255,0.02)";
-                  e.currentTarget.style.boxShadow = "0 0 20px rgba(0,212,255,0.05)";
-                }}
-                onBlur={(e) => {
-                  e.currentTarget.style.borderColor = "rgba(255,255,255,0.08)";
-                  e.currentTarget.style.background = "rgba(255,255,255,0.03)";
-                  e.currentTarget.style.boxShadow = "none";
-                }}
-                />
+                <input key={field.name} type={field.type} name={field.name} placeholder={field.placeholder} required={field.required} className="form-input tap-glow" />
               ))}
-              <select name="interest" style={{
-                width: "100%",
-                background: "rgba(255,255,255,0.03)",
-                border: "1px solid rgba(255,255,255,0.08)",
-                color: "rgba(255,255,255,0.5)",
-                padding: "18px 24px",
-                fontSize: "15px",
-                outline: "none",
-                transition: "all 0.4s ease",
-                borderRadius: "8px",
-                fontFamily: "var(--font-sans)",
-              }}
-              onFocus={(e) => {
-                e.currentTarget.style.borderColor = "rgba(0,212,255,0.3)";
-                e.currentTarget.style.background = "rgba(0,212,255,0.02)";
-              }}
-              onBlur={(e) => {
-                e.currentTarget.style.borderColor = "rgba(255,255,255,0.08)";
-                e.currentTarget.style.background = "rgba(255,255,255,0.03)";
-              }}
-              >
+              <select name="interest" className="form-input tap-glow">
                 <option value="">What are you looking for?</option>
                 <option value="residential">Residential Plot / Home</option>
                 <option value="commercial">Commercial Showroom</option>
                 <option value="rental">To-Let / Rental</option>
                 <option value="nri">NRI Investment</option>
               </select>
-              <textarea name="message" placeholder="Tell us about your requirements..." style={{
-                width: "100%",
-                background: "rgba(255,255,255,0.03)",
-                border: "1px solid rgba(255,255,255,0.08)",
-                color: "#FFFFFF",
-                padding: "18px 24px",
-                fontSize: "15px",
-                outline: "none",
-                transition: "all 0.4s ease",
-                borderRadius: "8px",
-                minHeight: "140px",
-                resize: "vertical",
-                fontFamily: "var(--font-sans)",
-                letterSpacing: "0.5px",
-              }}
-              onFocus={(e) => {
-                e.currentTarget.style.borderColor = "rgba(0,212,255,0.3)";
-                e.currentTarget.style.background = "rgba(0,212,255,0.02)";
-                e.currentTarget.style.boxShadow = "0 0 20px rgba(0,212,255,0.05)";
-              }}
-              onBlur={(e) => {
-                e.currentTarget.style.borderColor = "rgba(255,255,255,0.08)";
-                e.currentTarget.style.background = "rgba(255,255,255,0.03)";
-                e.currentTarget.style.boxShadow = "none";
-              }}
-              />
-              <button type="submit" style={{
-                display: "inline-flex",
-                alignItems: "center",
-                justifyContent: "center",
-                gap: "12px",
-                background: "#00D4FF",
-                color: "#000000",
-                padding: "18px 48px",
-                fontSize: "11px",
-                letterSpacing: "3px",
-                textTransform: "uppercase",
-                fontWeight: 600,
-                border: "none",
-                cursor: "pointer",
-                transition: "all 0.4s cubic-bezier(0.16, 1, 0.3, 1)",
-                borderRadius: "2px",
-                fontFamily: "var(--font-mono)",
-                marginTop: "8px",
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.transform = "translateY(-2px)";
-                e.currentTarget.style.boxShadow = "0 20px 50px rgba(0, 212, 255, 0.3)";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.transform = "translateY(0)";
-                e.currentTarget.style.boxShadow = "none";
-              }}
-              >
+              <textarea name="message" placeholder="Tell us about your requirements..." className="form-input tap-glow" style={{ minHeight: "140px", resize: "vertical" }} />
+              <button type="submit" className="cta-btn magnetic-btn tap-glow" style={{ marginTop: "8px", justifyContent: "center" }}>
                 Send Enquiry →
               </button>
             </form>
@@ -1077,7 +779,7 @@ export default function HomePage() {
             letterSpacing: "4px", 
             textTransform: "uppercase", 
             fontFamily: "var(--font-mono)",
-            fontWeight: 500,
+            fontWeight: 700,
           }}>Inder Thakral Properties</div>
           <div style={{ color: "rgba(255,255,255,0.3)", fontSize: "12px", marginTop: "6px", letterSpacing: "0.5px" }}>2026 · Independent Advisory · Mohali, Chandigarh Tricity</div>
         </div>
@@ -1087,6 +789,7 @@ export default function HomePage() {
           letterSpacing: "3px", 
           textTransform: "uppercase", 
           fontFamily: "var(--font-mono)",
+          fontWeight: 500,
         }}>
           Verified Title Deeds · By Appointment Only
         </div>

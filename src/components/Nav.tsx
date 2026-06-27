@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 
 export default function Nav({ active }: { active?: string }) {
@@ -14,7 +14,6 @@ export default function Nav({ active }: { active?: string }) {
       const currentScrollY = window.scrollY;
       setScrolled(currentScrollY > 50);
 
-      // Hide nav on scroll down, show on scroll up (Zera-style)
       if (currentScrollY > lastScrollY && currentScrollY > 100) {
         setHidden(true);
       } else {
@@ -44,7 +43,7 @@ export default function Nav({ active }: { active?: string }) {
     ["Services", "/services/"],
   ];
 
-  const handleLinkClick = () => setMenuOpen(false);
+  const handleLinkClick = useCallback(() => setMenuOpen(false), []);
 
   return (
     <>
@@ -86,7 +85,7 @@ export default function Nav({ active }: { active?: string }) {
                 fontSize: "14px",
                 letterSpacing: "6px",
                 textTransform: "uppercase",
-                fontWeight: 500,
+                fontWeight: 700,
                 lineHeight: 1.2,
                 fontFamily: "var(--font-mono)",
               }}
@@ -101,6 +100,7 @@ export default function Nav({ active }: { active?: string }) {
                 textTransform: "uppercase",
                 marginTop: "4px",
                 fontFamily: "var(--font-mono)",
+                fontWeight: 500,
               }}
             >
               Tricity Land Advisory
@@ -140,7 +140,7 @@ export default function Nav({ active }: { active?: string }) {
                   position: "relative",
                   padding: "4px 0",
                   fontFamily: "var(--font-mono)",
-                  fontWeight: 400,
+                  fontWeight: 500,
                 }}
                 onMouseEnter={(e) => {
                   e.currentTarget.style.color = "#00D4FF";
@@ -175,7 +175,7 @@ export default function Nav({ active }: { active?: string }) {
                 transition: "all 0.3s ease",
                 padding: "4px 0",
                 fontFamily: "var(--font-mono)",
-                fontWeight: 400,
+                fontWeight: 500,
               }}
               onMouseEnter={(e) => e.currentTarget.style.color = "#00D4FF"}
               onMouseLeave={(e) => e.currentTarget.style.color = "rgba(255, 255, 255, 0.5)"}
@@ -195,7 +195,7 @@ export default function Nav({ active }: { active?: string }) {
                 transition: "all 0.4s cubic-bezier(0.16, 1, 0.3, 1)",
                 background: "transparent",
                 fontFamily: "var(--font-mono)",
-                fontWeight: 500,
+                fontWeight: 600,
                 position: "relative",
                 overflow: "hidden",
               }}
@@ -214,7 +214,7 @@ export default function Nav({ active }: { active?: string }) {
             </a>
           </nav>
 
-          {/* Hamburger */}
+          {/* Hamburger - Mobile */}
           <button
             type="button"
             onClick={() => setMenuOpen(!menuOpen)}
@@ -268,27 +268,8 @@ export default function Nav({ active }: { active?: string }) {
         </div>
       </header>
 
-      {/* Mobile Menu - Full screen overlay */}
-      <div
-        style={{
-          position: "fixed",
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          zIndex: 999,
-          background: "rgba(0, 0, 0, 0.98)",
-          backdropFilter: "blur(40px)",
-          WebkitBackdropFilter: "blur(40px)",
-          display: menuOpen ? "flex" : "none",
-          flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "center",
-          gap: "0",
-          padding: "100px 24px 40px",
-          transition: "opacity 0.5s ease",
-        }}
-      >
+      {/* Mobile Menu - Full screen overlay with animation states */}
+      <div className={`mobile-nav-overlay ${menuOpen ? 'visible' : 'hidden'}`}>
         {/* Animated grid lines */}
         <div style={{
           position: "absolute",
@@ -299,29 +280,14 @@ export default function Nav({ active }: { active?: string }) {
           transition: "opacity 0.8s ease",
         }} />
 
-        {navLinks.map(([label, href], i) => (
+        {navLinks.map(([label, href]) => (
           <Link
             key={label}
             href={href}
             onClick={handleLinkClick}
+            className="mobile-nav-link"
             style={{
               color: active === label ? "#00D4FF" : "#FFFFFF",
-              fontSize: "28px",
-              letterSpacing: "6px",
-              textTransform: "uppercase",
-              textDecoration: "none",
-              padding: "20px 24px",
-              transition: "all 0.3s ease",
-              display: "block",
-              textAlign: "center",
-              width: "100%",
-              maxWidth: "400px",
-              borderBottom: "1px solid rgba(255, 255, 255, 0.05)",
-              fontFamily: "var(--font-mono)",
-              fontWeight: 300,
-              opacity: menuOpen ? 1 : 0,
-              transform: menuOpen ? "translateY(0)" : "translateY(20px)",
-              transitionDelay: `${i * 0.1 + 0.2}s`,
             }}
           >
             {label}
@@ -330,25 +296,7 @@ export default function Nav({ active }: { active?: string }) {
         <a
           href="/#contact"
           onClick={handleLinkClick}
-          style={{
-            color: "#FFFFFF",
-            fontSize: "28px",
-            letterSpacing: "6px",
-            textTransform: "uppercase",
-            textDecoration: "none",
-            padding: "20px 24px",
-            transition: "all 0.3s ease",
-            display: "block",
-            textAlign: "center",
-            width: "100%",
-            maxWidth: "400px",
-            borderBottom: "1px solid rgba(255, 255, 255, 0.05)",
-            fontFamily: "var(--font-mono)",
-            fontWeight: 300,
-            opacity: menuOpen ? 1 : 0,
-            transform: menuOpen ? "translateY(0)" : "translateY(20px)",
-            transitionDelay: "0.5s",
-          }}
+          className="mobile-nav-link"
         >
           Contact
         </a>
@@ -364,14 +312,13 @@ export default function Nav({ active }: { active?: string }) {
             letterSpacing: "4px",
             textTransform: "uppercase",
             textDecoration: "none",
-            fontWeight: 500,
+            fontWeight: 600,
             textAlign: "center",
             display: "block",
             fontFamily: "var(--font-mono)",
             opacity: menuOpen ? 1 : 0,
             transform: menuOpen ? "translateY(0)" : "translateY(20px)",
-            transitionDelay: "0.6s",
-            transition: "all 0.5s ease",
+            transition: "all 0.5s ease 0.6s",
           }}
         >
           Enquire Now
