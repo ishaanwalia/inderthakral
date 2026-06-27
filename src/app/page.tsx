@@ -489,8 +489,7 @@ export default function HomePage() {
               Every engagement begins with a personal conversation. Share your requirements and we will get back to you within 24 hours.
             </p>
           </div>
-
-          <div ref={addRef} className="reveal" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "64px", alignItems: "start" }} className="contact-grid-mobile">
+<div ref={addRef} className="reveal contact-grid-mobile" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "64px", alignItems: "start" }}>
             <div>
               {[
                 { label: "Call Directly", value: "+91 98159 01234", href: "tel:+919815901234" },
