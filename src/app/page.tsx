@@ -101,13 +101,20 @@ export default function Home() {
       </section>
 
       {/* ABOUT */}
-      <section style={{ padding: "80px 24px", background: "var(--dark-2)" }}>
+      <section style={{ padding: "80px 48px", background: "var(--dark-2)" }}>
         <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
-          <p style={{ color: "var(--gold)", fontSize: "11px", letterSpacing: "4px", textTransform: "uppercase", marginBottom: "16px" }}>The Principal Advisor</p>
-          <h2 style={{ fontSize: "clamp(28px, 5vw, 52px)", fontWeight: 300, lineHeight: 1.2, marginBottom: "24px" }}>Direct accountability,<br /><em style={{ color: "var(--gold)" }}>proven expertise</em></h2>
-          <div style={{ width: "100%", height: "280px", backgroundImage: "url('https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=800&q=80')", backgroundSize: "cover", backgroundPosition: "center", marginBottom: "32px" }} />
-          <p style={{ color: "var(--text-muted)", fontSize: "15px", lineHeight: 1.9, marginBottom: "32px" }}>Unlike transactional agencies or digital portals, Inder Thakral Properties operates on direct personal accountability. Every transaction is personally managed — ensuring 100% verified title deeds and transparent valuations.</p>
-          <Link href="/about" style={{ display: "inline-block", border: "1px solid var(--gold)", color: "var(--gold)", padding: "14px 36px", fontSize: "11px", letterSpacing: "3px", textTransform: "uppercase", textDecoration: "none" }}>Learn More</Link>
+          <div className="about-grid">
+            <div>
+              <img src="/inder.jpeg" alt="Inder Thakral" style={{ width: "100%", aspectRatio: "3/4", objectFit: "cover", objectPosition: "center top", display: "block" }} />
+            </div>
+            <div>
+              <p style={{ color: "var(--gold)", fontSize: "11px", letterSpacing: "4px", textTransform: "uppercase", marginBottom: "16px" }}>The Principal Advisor</p>
+              <h2 style={{ fontSize: "clamp(28px, 4vw, 52px)", fontWeight: 300, lineHeight: 1.2, marginBottom: "24px" }}>A reliable dealer,<br /><em style={{ color: "var(--gold)" }}>personal service</em></h2>
+              <p style={{ color: "var(--text-muted)", fontSize: "15px", lineHeight: 1.9, marginBottom: "24px" }}>Inder Thakral is not a corporate agency. He is a trusted, personal real estate advisor who helps you buy plots, flats, houses, and commercial showrooms across the Chandigarh Tricity — and assists with ToLet and rental services too.</p>
+              <p style={{ color: "var(--text-muted)", fontSize: "15px", lineHeight: 1.9, marginBottom: "40px" }}>Every title deed personally verified. Every client gets direct attention. 15+ years of Tricity expertise, at your service.</p>
+              <Link href="/about" style={{ display: "inline-block", border: "1px solid var(--gold)", color: "var(--gold)", padding: "14px 36px", fontSize: "11px", letterSpacing: "3px", textTransform: "uppercase", textDecoration: "none" }}>Meet Inder</Link>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -118,12 +125,16 @@ export default function Home() {
           <h2 style={{ fontSize: "clamp(28px, 6vw, 64px)", fontWeight: 300, lineHeight: 1.1, marginBottom: "24px" }}>Secure your<br /><em style={{ color: "var(--gold)" }}>Tricity asset</em></h2>
           <p style={{ color: "var(--text-muted)", fontSize: "15px", lineHeight: 1.8, marginBottom: "48px" }}>Connect directly with Inder Thakral to discuss high-yield commercial showrooms and verified residential plot acquisitions.</p>
           <div style={{ display: "flex", flexDirection: "column", gap: "2px", marginBottom: "48px" }}>
-            {[{ label: "Email", value: "care@inderthakral.com" }, { label: "Phone", value: "+91 98159 01234" }, { label: "Location", value: "Mohali, Tricity" }].map((item, i) => (
-              <div key={i} style={{ padding: "24px", background: "var(--dark-2)", border: "1px solid rgba(201,168,76,0.08)", textAlign: "left" }}>
-                <div style={{ color: "var(--text-muted)", fontSize: "10px", letterSpacing: "3px", textTransform: "uppercase", marginBottom: "8px" }}>{item.label}</div>
-                <div style={{ color: "var(--text-primary)", fontSize: "15px" }}>{item.value}</div>
-              </div>
-            ))}
+            {[{ label: "Email", value: "care@inderthakral.com", href: "mailto:care@inderthakral.com" }, { label: "Phone", value: "+91 98159 01234", href: "tel:+919815901234" }, { label: "Location", value: "Mohali, Tricity", href: "" }].map((item, i) => (
+                <div key={i} style={{ padding: "24px", background: "var(--dark-2)", border: "1px solid rgba(201,168,76,0.08)", textAlign: "left" }}>
+                  <div style={{ color: "var(--text-muted)", fontSize: "10px", letterSpacing: "3px", textTransform: "uppercase", marginBottom: "8px" }}>{item.label}</div>
+                  {item.href ? (
+                    <a href={item.href} style={{ color: "var(--gold)", fontSize: "15px", textDecoration: "none" }}>{item.value}</a>
+                  ) : (
+                    <div style={{ color: "var(--text-primary)", fontSize: "15px" }}>{item.value}</div>
+                  )}
+                </div>
+              ))}
           </div>
           <a href="mailto:care@inderthakral.com" style={{ display: "block", background: "var(--gold)", color: "var(--dark)", padding: "18px", fontSize: "11px", letterSpacing: "4px", textTransform: "uppercase", textDecoration: "none", fontWeight: 600 }}>Send Enquiry</a>
         </div>
