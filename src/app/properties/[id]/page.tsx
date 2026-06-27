@@ -1,14 +1,12 @@
 import { properties } from "@/data/properties";
 import PropertyDetailClient from "./PropertyDetailClient";
 
-// Server function - NO "use client" here
 export function generateStaticParams() {
   return properties.map((property) => ({
     id: property.id,
   }));
 }
 
-// Server component that passes data to client component
 export default function PropertyDetailPage({ params }: { params: { id: string } }) {
   const property = properties.find(p => p.id === params.id);
   

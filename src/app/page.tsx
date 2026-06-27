@@ -533,7 +533,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ABOUT PREVIEW */}
+      {/* ABOUT PREVIEW - WITH inder.jpeg */}
       <section style={{ padding: "120px 48px" }}>
         <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
           <div className="about-grid">
@@ -546,7 +546,7 @@ export default function HomePage() {
                 }}
               >
                 <img
-                  src="https://images.unsplash.com/photo-1560250097-0b93528c311a?w=800&q=80"
+                  src="/inder.jpeg"
                   alt="Inder Thakral"
                   style={{
                     width: "100%",
