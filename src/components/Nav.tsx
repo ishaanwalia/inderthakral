@@ -33,10 +33,10 @@ export default function Nav({ active }: { active?: string }) {
         )}
 
         {mobile && (
-          <button onClick={() => setMenuOpen(o => !o)} style={{ cursor: "pointer", padding: "10px", display: "flex", flexDirection: "column", gap: "5px", background: "none", border: "none", WebkitAppearance: "none" }}>            <div style={{ width: "25px", height: "2px", background: "var(--gold)", transition: "all 0.3s", transform: menuOpen ? "rotate(45deg) translateY(7px)" : "none" }} />
+            <button onClick={() => setMenuOpen(o => !o)} style={{ cursor: "pointer", padding: "10px", display: "flex", flexDirection: "column", gap: "5px", background: "none", border: "none", WebkitAppearance: "none" }}>            <div style={{ width: "25px", height: "2px", background: "var(--gold)", transition: "all 0.3s", transform: menuOpen ? "rotate(45deg) translateY(7px)" : "none" }} />
             <div style={{ width: "25px", height: "2px", background: "var(--gold)", opacity: menuOpen ? 0 : 1, transition: "all 0.3s" }} />
             <div style={{ width: "25px", height: "2px", background: "var(--gold)", transition: "all 0.3s", transform: menuOpen ? "rotate(-45deg) translateY(-7px)" : "none" }} />
-          </div>
+          </button>
         )}
       </div>
 
