@@ -5,7 +5,7 @@ import Link from "next/link";
 
 export default function Nav({ active }: { active?: string }) {
   const [menuOpen, setMenuOpen] = useState(false);
-  const [mobile, setMobile] = useState(false);
+  const [mobile, setMobile] = useState(true);
 
   useEffect(() => {
     const update = () => setMobile(window.innerWidth < 769);
