@@ -23,13 +23,12 @@ export default function Nav({ active }: { active?: string }) {
         </Link>
 
         {!mobile && (
-          <div style={{ display: "flex", gap: "40px", alignItems: "center" }}>
-            {[["Properties", "/properties"], ["About", "/about"], ["Services", "/services"]].map(([label, href]) => (
+          <button onClick={() => setMenuOpen(o => !o)} style={{ cursor: "pointer", padding: "10px", display: "flex", flexDirection: "column", gap: "5px", background: "none", border: "none", WebkitAppearance: "none" }}>            {[["Properties", "/properties"], ["About", "/about"], ["Services", "/services"]].map(([label, href]) => (
               <Link key={label} href={href} style={{ color: active === label ? "var(--gold)" : "var(--text-muted)", fontSize: "11px", letterSpacing: "2px", textTransform: "uppercase", textDecoration: "none" }}>{label}</Link>
             ))}
             <a href="/#contact" style={{ color: "var(--text-muted)", fontSize: "11px", letterSpacing: "2px", textTransform: "uppercase", textDecoration: "none" }}>Contact</a>
             <a href="/#contact" style={{ border: "1px solid var(--gold)", color: "var(--gold)", padding: "10px 24px", fontSize: "10px", letterSpacing: "3px", textTransform: "uppercase", textDecoration: "none" }}>Enquire</a>
-          </div>
+          </button>
         )}
 
         {mobile && (
