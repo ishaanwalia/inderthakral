@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { properties } from "@/data/properties";
 import PropertyDetailClient from "./PropertyDetailClient";
 
@@ -5,6 +6,31 @@ export function generateStaticParams() {
   return properties.map((property) => ({
     id: property.id,
   }));
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}): Promise<Metadata> {
+  const { id } = await params;
+  const property = properties.find((p) => p.id === id.replace(/\/$/, ""));
+  if (!property) {
+    return { title: "Property Not Found", robots: { index: false } };
+  }
+  const title = `${property.title} — ${property.price}`;
+  const description = `Representative ${property.type.toLowerCase()} listing: ${property.size} in ${property.location}. ${property.highlight}. Contact Inder Thakral for current verified inventory and availability.`;
+  return {
+    title,
+    description,
+    alternates: { canonical: `/properties/${property.id}/` },
+    openGraph: {
+      title,
+      description,
+      url: `/properties/${property.id}/`,
+      images: [{ url: property.image, alt: property.title }],
+    },
+  };
 }
 
 export default async function PropertyDetailPage({ 
