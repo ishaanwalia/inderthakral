@@ -36,9 +36,12 @@
   box-sizing: border-box;
 }
 
+/* overflow-x must be `clip`, not `hidden`, on html/body and any ancestor of a
+   cine-scroll section: `hidden` turns the element into a scroll container,
+   which silently disables position:sticky pinning. */
 html {
   scroll-behavior: smooth;
-  overflow-x: hidden;
+  overflow-x: clip;
   background: var(--bg);
 }
 
@@ -46,7 +49,7 @@ body {
   background-color: var(--bg);
   color: var(--text-primary);
   font-family: var(--font-sans);
-  overflow-x: hidden;
+  overflow-x: clip;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   width: 100%;

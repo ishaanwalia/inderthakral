@@ -222,7 +222,9 @@ export default function CineScroll({ sequence }: { sequence: CineSequence }) {
         const t = (progress * (sequence.playback.cycles ?? 3)) % 1;
         target = (1 - Math.abs(2 * t - 1)) * (frameCount - 1);
       } else {
-        target = progress * (frameCount - 1);
+        // Finish the sequence by 90% of the pin and hold the final frame for
+        // the rest, so the ending is actually seen before the section unpins.
+        target = Math.min(progress / 0.9, 1) * (frameCount - 1);
       }
       current += (target - current) * 0.4;
       if (Math.abs(target - current) < 0.4) current = target;

@@ -45,7 +45,7 @@ export const cineSequences = {
     frames: range("/frames/city-beautiful", "ezgif-frame-", 230, 250, 3),
     playback: { mode: "pingpong", cycles: 3 },
     poster: "/frames/city-beautiful/ezgif-frame-230.webp",
-    heightVh: 300,
+    heightVh: 380,
     overlays: [
       {
         range: [0, 0.32],
@@ -79,7 +79,7 @@ export const cineSequences = {
       ...range("/frames/growth-corridor", "", 1, 81, 0),
     ],
     poster: "/frames/growth-corridor/ezgif-frame-001.webp",
-    heightVh: 340,
+    heightVh: 420,
     overlays: [
       {
         range: [0, 0.3],

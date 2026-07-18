@@ -261,7 +261,9 @@ export default function HomePage() {
   const scrollText = "Verified Land • Trusted Advisory • Personal Service • Mohali • Chandigarh • Panchkula • Premium Properties • Verified Land • Trusted Advisory • Personal Service • Mohali • Chandigarh • Panchkula • Premium Properties";
 
   return (
-    <main style={{ background: "var(--bg)", minHeight: "100vh", overflowX: "hidden", width: "100%", color: "var(--fg)", fontFamily: "var(--font-sans)" }}>
+    // overflow-x must be `clip`, not `hidden`: a hidden ancestor disables
+    // position:sticky, which the cine-scroll sections depend on.
+    <main style={{ background: "var(--bg)", minHeight: "100vh", overflowX: "clip", width: "100%", color: "var(--fg)", fontFamily: "var(--font-sans)" }}>
 
       {/* Dual Cursor Glow - 10x larger */}
       <CursorGlow />
