@@ -846,15 +846,11 @@ body {
    Screen-blend cyan glows disappear on ivory; these give day mode its own
    gold luminosity: stronger halos, ambient card glow, shimmering headlines. */
 :root[data-theme="day"] .cursor-glow-outer {
-  background: radial-gradient(circle, rgba(var(--accent-rgb), 0.12) 0%, transparent 60%);
+  background: radial-gradient(circle, rgba(var(--accent-rgb), 0.05) 0%, transparent 60%);
 }
 
 :root[data-theme="day"] .cursor-glow-inner {
-  background: radial-gradient(circle, rgba(var(--accent-rgb), 0.2) 0%, transparent 50%);
-}
-
-:root[data-theme="day"] .hero-orb {
-  background: radial-gradient(circle, rgba(212, 175, 55, 0.35) 0%, rgba(var(--accent-rgb), 0.12) 40%, transparent 70%) !important;
+  background: radial-gradient(circle, rgba(var(--accent-rgb), 0.09) 0%, transparent 50%);
 }
 
 :root[data-theme="day"] .gradient-text {
