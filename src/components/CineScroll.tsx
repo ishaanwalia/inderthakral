@@ -16,6 +16,20 @@ const usePrefersReducedMotion = () =>
     () => false
   );
 
+// Track the site theme (data-theme on <html>) so sequences with a dayFrames
+// variant can swap footage when the user toggles day/night.
+const subscribeTheme = (onChange: () => void) => {
+  const observer = new MutationObserver(onChange);
+  observer.observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
+  return () => observer.disconnect();
+};
+const useSiteTheme = () =>
+  useSyncExternalStore(
+    subscribeTheme,
+    () => (document.documentElement.getAttribute("data-theme") === "day" ? "day" : "night"),
+    () => "night"
+  );
+
 // Scroll-scrubbed frame sequence ("cine scroll"): a sticky full-viewport canvas
 // inside a tall section; scroll progress selects the frame. Frames load lazily
 // (keyframes first, then filled in around the current position) and everything
@@ -46,18 +60,20 @@ const overlayPositionStyle = (
   }
 };
 
-function OverlayCopy({ heading, caption, onFrames }: { heading: string; caption?: string; onFrames: boolean }) {
+// Overlay copy inside a liquid-glass card — smoked glass keeps the type
+// legible over any footage, day or night.
+function OverlayCopy({ heading, caption }: { heading: string; caption?: string }) {
   return (
-    <div style={{ maxWidth: "640px", padding: "0 24px" }}>
+    <div className="cine-glass-card">
       <h2
-        className={onFrames ? "cine-heading-on-frames" : undefined}
         style={{
-          fontSize: "clamp(30px, 5vw, 60px)",
-          fontWeight: 700,
-          letterSpacing: "-2px",
-          lineHeight: 1.1,
-          marginBottom: "20px",
-          color: onFrames ? "#fff" : "var(--fg)",
+          fontFamily: "var(--font-cine), serif",
+          fontSize: "clamp(28px, 4.2vw, 52px)",
+          fontWeight: 400,
+          letterSpacing: "0.5px",
+          lineHeight: 1.12,
+          marginBottom: caption ? "16px" : 0,
+          color: "#fff",
         }}
       >
         {heading}
@@ -68,8 +84,7 @@ function OverlayCopy({ heading, caption, onFrames }: { heading: string; caption?
             fontSize: "clamp(14px, 1.6vw, 17px)",
             lineHeight: 1.8,
             letterSpacing: "0.3px",
-            color: onFrames ? "rgba(255,255,255,0.75)" : "rgba(var(--fg-rgb),0.5)",
-            textShadow: onFrames ? "0 1px 12px rgba(0,0,0,0.6)" : undefined,
+            color: "rgba(255,255,255,0.78)",
           }}
         >
           {caption}
@@ -84,8 +99,10 @@ export default function CineScroll({ sequence }: { sequence: CineSequence }) {
   // image callback, never synchronously inside the effect.
   const [failed, setFailed] = useState(false);
   const prefersReducedMotion = usePrefersReducedMotion();
+  const theme = useSiteTheme();
+  const frames = theme === "day" && sequence.dayFrames ? sequence.dayFrames : sequence.frames;
   const mode: "cine" | "fallback" =
-    sequence.frames.length > 0 && !failed && !prefersReducedMotion ? "cine" : "fallback";
+    frames.length > 0 && !failed && !prefersReducedMotion ? "cine" : "fallback";
   const containerRef = useRef<HTMLElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const posterRef = useRef<HTMLDivElement>(null);
@@ -99,7 +116,7 @@ export default function CineScroll({ sequence }: { sequence: CineSequence }) {
     const ctx = canvas?.getContext("2d");
     if (!container || !canvas || !ctx) return;
 
-    const frameCount = sequence.frames.length;
+    const frameCount = frames.length;
 
     const images: (HTMLImageElement | undefined)[] = new Array(frameCount);
     const inflight = new Set<number>();
@@ -182,7 +199,7 @@ export default function CineScroll({ sequence }: { sequence: CineSequence }) {
         if (i === 0) setFailed(true);
         else pump();
       };
-      img.src = sequence.frames[i];
+      img.src = frames[i];
     };
 
     const startLoading = () => {
@@ -221,6 +238,10 @@ export default function CineScroll({ sequence }: { sequence: CineSequence }) {
         // Triangle wave: each cycle plays the frames forward then back.
         const t = (progress * (sequence.playback.cycles ?? 3)) % 1;
         target = (1 - Math.abs(2 * t - 1)) * (frameCount - 1);
+      } else if (sequence.playback?.mode === "loop") {
+        // Seamless forward loop, `cycles` times across the scroll.
+        const t = (progress * (sequence.playback.cycles ?? 3)) % 1;
+        target = t * (frameCount - 1);
       } else {
         // Finish the sequence by 90% of the pin and hold the final frame for
         // the rest, so the ending is actually seen before the section unpins.
@@ -270,7 +291,7 @@ export default function CineScroll({ sequence }: { sequence: CineSequence }) {
       window.removeEventListener("scroll", schedule);
       window.removeEventListener("resize", onResize);
     };
-  }, [mode, sequence]);
+  }, [mode, sequence, frames]);
 
   // ----- Static fallback: a designed 100vh panel, not a frozen scrub track -----
   if (mode === "fallback") {
@@ -306,7 +327,7 @@ export default function CineScroll({ sequence }: { sequence: CineSequence }) {
         )}
         {sequence.overlays.map((overlay, i) => (
           <div key={i} style={{ position: "relative", textAlign: "center" }}>
-            <OverlayCopy heading={overlay.heading} caption={overlay.caption} onFrames={!!sequence.poster} />
+            <OverlayCopy heading={overlay.heading} caption={overlay.caption} />
           </div>
         ))}
       </section>
@@ -366,7 +387,7 @@ export default function CineScroll({ sequence }: { sequence: CineSequence }) {
               ref={(el) => { overlayRefs.current[i] = el; }}
               style={{ opacity: 0, transform: "translateY(16px)" }}
             >
-              <OverlayCopy heading={overlay.heading} caption={overlay.caption} onFrames />
+              <OverlayCopy heading={overlay.heading} caption={overlay.caption} />
             </div>
           </div>
         ))}

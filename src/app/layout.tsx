@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Cinzel } from "next/font/google";
+import { Cinzel, Prata } from "next/font/google";
 import { site } from "@/data/site";
 import "./globals.css";
 
@@ -7,6 +7,15 @@ const cinzel = Cinzel({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
   variable: "--font-display-day",
+});
+
+// Cinematic display serif for cine-scroll overlays. Prata stands in for the
+// licensed Kaftan face — drop Kaftan-Regular.woff2 into src/fonts and switch
+// this to next/font/local to use the real thing.
+const prata = Prata({
+  subsets: ["latin"],
+  weight: "400",
+  variable: "--font-cine",
 });
 
 const SITE_URL = "https://www.inderthakral.com";
@@ -114,7 +123,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={cinzel.variable} data-scroll-behavior="smooth">
+    <html lang="en" className={`${cinzel.variable} ${prata.variable}`} data-scroll-behavior="smooth">
       <body>
         <script
           dangerouslySetInnerHTML={{

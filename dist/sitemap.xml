@@ -1,87 +1,100 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="/sitemap.xsl"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-<url>
-<loc>https://www.inderthakral.com/</loc>
-<lastmod>2026-07-18T17:35:56.793Z</lastmod>
-<changefreq>weekly</changefreq>
-<priority>1</priority>
-</url>
-<url>
-<loc>https://www.inderthakral.com/properties/</loc>
-<lastmod>2026-07-18T17:35:56.793Z</lastmod>
-<changefreq>weekly</changefreq>
-<priority>0.9</priority>
-</url>
-<url>
-<loc>https://www.inderthakral.com/services/</loc>
-<lastmod>2026-07-18T17:35:56.793Z</lastmod>
-<changefreq>monthly</changefreq>
-<priority>0.8</priority>
-</url>
-<url>
-<loc>https://www.inderthakral.com/about/</loc>
-<lastmod>2026-07-18T17:35:56.793Z</lastmod>
-<changefreq>monthly</changefreq>
-<priority>0.8</priority>
-</url>
-<url>
-<loc>https://www.inderthakral.com/insights/</loc>
-<lastmod>2026-07-18T17:35:56.793Z</lastmod>
-<changefreq>weekly</changefreq>
-<priority>0.7</priority>
-</url>
-<url>
-<loc>https://www.inderthakral.com/properties/sector-70-residential-plot/</loc>
-<lastmod>2026-07-18T17:35:56.793Z</lastmod>
-<changefreq>weekly</changefreq>
-<priority>0.7</priority>
-</url>
-<url>
-<loc>https://www.inderthakral.com/properties/sector-82-commercial-showroom/</loc>
-<lastmod>2026-07-18T17:35:56.793Z</lastmod>
-<changefreq>weekly</changefreq>
-<priority>0.7</priority>
-</url>
-<url>
-<loc>https://www.inderthakral.com/properties/new-chandigarh-residential-plot/</loc>
-<lastmod>2026-07-18T17:35:56.793Z</lastmod>
-<changefreq>weekly</changefreq>
-<priority>0.7</priority>
-</url>
-<url>
-<loc>https://www.inderthakral.com/properties/sector-66-commercial-plot/</loc>
-<lastmod>2026-07-18T17:35:56.793Z</lastmod>
-<changefreq>weekly</changefreq>
-<priority>0.7</priority>
-</url>
-<url>
-<loc>https://www.inderthakral.com/properties/sector-77-residential-plot/</loc>
-<lastmod>2026-07-18T17:35:56.793Z</lastmod>
-<changefreq>weekly</changefreq>
-<priority>0.7</priority>
-</url>
-<url>
-<loc>https://www.inderthakral.com/properties/aerocity-commercial-showroom/</loc>
-<lastmod>2026-07-18T17:35:56.793Z</lastmod>
-<changefreq>weekly</changefreq>
-<priority>0.7</priority>
-</url>
-<url>
-<loc>https://www.inderthakral.com/insights/mohali-sector-108-115-growth-corridor/</loc>
-<lastmod>2026-07-01T00:00:00.000Z</lastmod>
-<changefreq>monthly</changefreq>
-<priority>0.6</priority>
-</url>
-<url>
-<loc>https://www.inderthakral.com/insights/new-chandigarh-vs-mohali-where-to-buy/</loc>
-<lastmod>2026-06-15T00:00:00.000Z</lastmod>
-<changefreq>monthly</changefreq>
-<priority>0.6</priority>
-</url>
-<url>
-<loc>https://www.inderthakral.com/insights/nri-guide-buying-property-tricity/</loc>
-<lastmod>2026-05-20T00:00:00.000Z</lastmod>
-<changefreq>monthly</changefreq>
-<priority>0.6</priority>
-</url>
+  <url>
+    <loc>https://www.inderthakral.com/</loc>
+    <lastmod>2026-07-18</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://www.inderthakral.com/properties/</loc>
+    <lastmod>2026-07-18</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://www.inderthakral.com/services/</loc>
+    <lastmod>2026-07-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.inderthakral.com/about/</loc>
+    <lastmod>2026-07-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.inderthakral.com/insights/</loc>
+    <lastmod>2026-07-18</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.inderthakral.com/properties/sector-70-residential-plot/</loc>
+    <lastmod>2026-07-18</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.inderthakral.com/properties/sector-82-commercial-showroom/</loc>
+    <lastmod>2026-07-18</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.inderthakral.com/properties/new-chandigarh-residential-plot/</loc>
+    <lastmod>2026-07-18</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.inderthakral.com/properties/sector-66-commercial-plot/</loc>
+    <lastmod>2026-07-18</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.inderthakral.com/properties/sector-77-residential-plot/</loc>
+    <lastmod>2026-07-18</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.inderthakral.com/properties/aerocity-commercial-showroom/</loc>
+    <lastmod>2026-07-18</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.inderthakral.com/insights/mohali-sector-108-115-growth-corridor/</loc>
+    <lastmod>2026-07-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.inderthakral.com/insights/new-chandigarh-vs-mohali-where-to-buy/</loc>
+    <lastmod>2026-06-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.inderthakral.com/insights/nri-guide-buying-property-tricity/</loc>
+    <lastmod>2026-05-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.inderthakral.com/insights/tricity-rental-yields-tolet-market-2026/</loc>
+    <lastmod>2026-07-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.inderthakral.com/insights/punjab-land-title-verification-checklist/</loc>
+    <lastmod>2026-07-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
 </urlset>

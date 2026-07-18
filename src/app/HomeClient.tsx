@@ -719,8 +719,8 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ===== CINE SCROLL: GROWTH CORRIDOR ===== */}
-      <CineScroll sequence={cineSequences.growthCorridor} />
+      {/* ===== CINE SCROLL: SUKHNA LAKE TIMELAPSE (day/night variants) ===== */}
+      <CineScroll sequence={cineSequences.sukhnaLake} />
 
       {/* ===== MARKET NOTES ===== */}
       <section style={{ padding: "88px 48px", position: "relative" }} className="section-pad">

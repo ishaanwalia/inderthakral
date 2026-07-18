@@ -3,8 +3,12 @@
 // Each sequence is an ordered list of frame image paths under public/frames/.
 // `playback` controls how scroll progress maps onto the frames:
 //   - "scrub" (default): frame 0 at the top of the section, last frame at the bottom.
-//   - "pingpong": the sequence plays forward then backward `cycles` times across
-//     the scroll — for looping ambient shots (e.g. traffic circling a roundabout).
+//   - "loop": plays the frames forward `cycles` times across the scroll — for
+//     seamless loops (traffic circling a roundabout).
+//   - "pingpong": forward then backward `cycles` times — for non-loop clips.
+// `dayFrames`, when present, is used instead of `frames` while the site is in
+// the day theme (the Sukhna timelapse shows its daylight arc in day mode and
+// its sunset-to-night arc in night mode).
 //
 // If the frames list is empty or the first frame fails to load, the section
 // renders as a static cinematic panel with the overlay copy instead.
@@ -19,10 +23,12 @@ export type CineOverlay = {
 
 export type CineSequence = {
   id: string;
-  /** Ordered public paths of the frames. */
+  /** Ordered public paths of the frames (used in night theme / by default). */
   frames: string[];
+  /** Optional alternate frame list for the day theme. */
+  dayFrames?: string[];
   /** How scroll progress maps to frames. Default: linear scrub. */
-  playback?: { mode: "pingpong"; cycles?: number };
+  playback?: { mode: "pingpong" | "loop"; cycles?: number };
   /** Optional poster image shown before frames load / in fallback mode. */
   poster?: string;
   /** Total scroll height of the section in vh (100vh of it is the pinned stage). */
@@ -30,7 +36,7 @@ export type CineSequence = {
   overlays: CineOverlay[];
 };
 
-/** Builds paths like `${folder}/${prefix}230.webp` … zero-padded to `pad` digits (0 = no padding). */
+/** Builds paths like `${folder}/${prefix}0001.webp`, zero-padded to `pad` digits (0 = no padding). */
 const range = (folder: string, prefix: string, from: number, to: number, pad: number, ext = "webp") =>
   Array.from(
     { length: to - from + 1 },
@@ -38,13 +44,13 @@ const range = (folder: string, prefix: string, from: number, to: number, pad: nu
   );
 
 export const cineSequences = {
-  // Aerial view of a Tricity roundabout — only the traffic moves, so scroll
-  // drives a back-and-forth loop through the 21 frames.
+  // Aerial view of a Tricity roundabout — a seamless traffic loop, played
+  // forward three times across the scroll.
   cityBeautiful: {
     id: "city-beautiful",
-    frames: range("/frames/city-beautiful", "ezgif-frame-", 230, 250, 3),
-    playback: { mode: "pingpong", cycles: 3 },
-    poster: "/frames/city-beautiful/ezgif-frame-230.webp",
+    frames: range("/frames/city-beautiful", "frame_", 1, 144, 4),
+    playback: { mode: "loop", cycles: 3 },
+    poster: "/frames/city-beautiful/frame_0001.webp",
     heightVh: 380,
     overlays: [
       {
@@ -58,7 +64,7 @@ export const cineSequences = {
         range: [0.34, 0.64],
         heading: "Order by Design",
         caption:
-          "A sector grid that made land legible: clean titles, wide roads, deliberate growth. From the Capitol Complex to Sukhna's still water, this city was drawn before it was built.",
+          "A sector grid that made land legible: clean titles, wide roads, deliberate growth. This city was drawn before it was built.",
         position: "bottom-left",
       },
       {
@@ -70,36 +76,35 @@ export const cineSequences = {
       },
     ],
   },
-  // Ground-level flyover of a residential plot corridor, stitched from two
-  // exports: ezgif-frame-001..194 followed by its continuation 1..81.
-  growthCorridor: {
-    id: "growth-corridor",
-    frames: [
-      ...range("/frames/growth-corridor", "ezgif-frame-", 1, 194, 3),
-      ...range("/frames/growth-corridor", "", 1, 81, 0),
-    ],
-    poster: "/frames/growth-corridor/ezgif-frame-001.webp",
+  // Sukhna Lake timelapse: one master shot spanning a full day. Day theme
+  // scrubs morning -> golden hour (frames 1-148); night theme scrubs
+  // sunset -> nightfall (frames 149-240).
+  sukhnaLake: {
+    id: "lake",
+    frames: range("/frames/lake", "frame_", 149, 240, 4),
+    dayFrames: range("/frames/lake", "frame_", 1, 148, 4),
+    poster: "/frames/lake/frame_0160.webp",
     heightVh: 420,
     overlays: [
       {
         range: [0, 0.3],
-        heading: "Beyond the Grid",
+        heading: "The City's Still Heart",
         caption:
-          "The airport corridor and the Sector 108–115 belt — where Chandigarh's order meets Mohali's momentum.",
+          "Sukhna Lake — where Chandigarh slows down. A city that planned its calm as carefully as its commerce.",
         position: "center",
       },
       {
         range: [0.36, 0.64],
-        heading: "Verified Ground",
+        heading: "Value Follows Quality of Life",
         caption:
-          "Every plot we recommend sits on land we have walked and titles we have checked. Thirty-eight years of knowing exactly where this city grows next.",
+          "Lakes, gardens, wide skies — the Tricity's liveability is exactly why its land holds value. We help you own a piece of it.",
         position: "bottom-left",
       },
       {
         range: [0.7, 1],
-        heading: "Invest Where the City Is Going",
+        heading: "From Sunrise to Skyline",
         caption:
-          "Personal advisory from Thakral Towers, Sector 108 — the corridor we call home.",
+          "Thirty-eight years watching this city change light. Personal advisory from Thakral Towers, Sector 108, Mohali.",
         position: "center",
       },
     ],

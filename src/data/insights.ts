@@ -126,4 +126,72 @@ export const insights: Insight[] = [
       },
     ],
   },
+  {
+    slug: "tricity-rental-yields-tolet-market-2026",
+    title: "Tricity Rental Yields in 2026: What the To-Let Market Is Telling Investors",
+    dek: "Rental demand across Mohali and Chandigarh has quietly re-rated the case for holding property rather than flipping it. Here is how yields actually break down by asset type — and where the to-let market is tightest.",
+    date: "2026-07-19",
+    displayDate: "July 2026",
+    readTime: "4 min read",
+    tag: "Investment",
+    sections: [
+      {
+        paragraphs: [
+          "For years, Tricity real estate conversations revolved around capital appreciation: buy the plot, wait for the corridor to mature, sell. But 2026's to-let market is making a second argument that investors should not ignore — rental income in the right micro-markets has become strong enough to change the holding math entirely.",
+          "Three forces are driving it. The IT City and Aerocity employment belts keep pulling salaried tenants into Mohali faster than quality rental stock is being built. Students and medical travellers anchor year-round demand closer to Chandigarh. And NRI owners, who once left houses locked for years, are increasingly asking us to place tenants rather than let an asset sit idle.",
+        ],
+      },
+      {
+        heading: "Where yields actually sit",
+        paragraphs: [
+          "Broadly, well-located residential houses and flats in Mohali's newer sectors are letting at healthy occupancy with tenants signing longer terms than the market saw pre-2024. Commercial is the sharper story: showrooms on high-footfall arterial roads — the kind of inventory we specialise in — command rents that meaningfully outperform residential on a per-square-yard basis, with corporate and franchise tenants preferring multi-year leases.",
+          "The spread between a locked, idle property and a professionally tenanted one is no longer trivial. On a typical commercial showroom, several years of unlet vacancy can equal a meaningful percentage of the asset's value in foregone income — money that disciplined owners are now collecting.",
+          "The catch is quality of tenancy. A yield number is only as good as the tenant behind it, and recovering possession from a poorly documented tenancy in Punjab can consume years. Rent agreements, police verification, and clean exit clauses matter as much as the headline rent.",
+        ],
+      },
+      {
+        heading: "What we advise owners and buyers",
+        paragraphs: [
+          "If you own property in the Tricity that sits empty, treat placement as seriously as purchase: verify the tenant, document the tenancy, and price to the micro-market rather than to sentiment. If you are buying for yield, prioritise arterial-road commercial and near-employment residential over speculative edge plots — the corridor story rewards patience, but the rental story pays monthly.",
+          "Our to-let desk places verified tenants and manages the paperwork end to end. If you want a realistic rent assessment for a specific property, ask — we will tell you what it will actually let for, not what a listing portal hopes it will.",
+        ],
+      },
+    ],
+  },
+  {
+    slug: "punjab-land-title-verification-checklist",
+    title: "The 7-Point Title Verification Checklist Before You Buy Land in Punjab",
+    dek: "Most land disputes in the Tricity trace back to checks that were skipped at purchase. This is the exact verification sequence we run on every property before recommending it — usable by any buyer.",
+    date: "2026-07-19",
+    displayDate: "July 2026",
+    readTime: "5 min read",
+    tag: "Buyer Guide",
+    sections: [
+      {
+        paragraphs: [
+          "Every week we meet buyers who fell in love with a plot before anyone checked whether the seller could actually convey clean title to it. In Punjab, where land records span jamabandi registers, mutation entries, and authority allotments, a property can look perfect on the ground and still carry defects that surface years later — usually when you try to sell.",
+          "This is the checklist we run before any property earns a recommendation. None of it is exotic; all of it is skippable in the excitement of a deal, and skipping any single point is how disputes are born.",
+        ],
+      },
+      {
+        heading: "The seven checks",
+        paragraphs: [
+          "One — chain of title. Trace ownership back through the sale deeds, not just the current one. Gaps, unregistered transfers, or a link resting on a general power of attorney are red flags that must be resolved before money moves.",
+          "Two — jamabandi and mutation. The revenue record must show the seller as owner, and every past transfer must have a completed mutation entry. A sale deed without its mutation is a transaction the revenue record does not yet believe.",
+          "Three — encumbrance search. Loans, mortgages, and liens follow the land, not the seller. A registrar's encumbrance check plus a CERSAI search catches most charges; for authority plots, confirm no dues are outstanding with the authority itself.",
+          "Four — litigation check. Search the property and the seller's name in the local civil courts and revenue courts. Pending partition suits among family members are the classic Tricity trap.",
+          "Five — land use and layout sanction. Confirm the plot's zoning matches your intent — agricultural land sold as 'residential' without change of land use is a problem you inherit. For township plots, verify the layout is sanctioned and the specific plot number exists in the approved layout.",
+          "Six — authority NOCs and dues. For GMADA, PUDA, or municipal plots: no-dues certificate, transfer permission, and confirmation that the allotment is not cancelled or under resumption proceedings.",
+          "Seven — physical possession and demarcation. Walk the land with the revenue official's demarcation. Paper boundaries and fence lines disagree more often than buyers expect, and an encroachment discovered after registration is your dispute to fund.",
+        ],
+      },
+      {
+        heading: "The rule we never break",
+        paragraphs: [
+          "No single document proves a clean title; the checks only work as a sequence, because each one catches what the previous one cannot see. This is why 'the papers look fine' from a seller's agent is not diligence — it is a sales line.",
+          "Every property we recommend has already been through this sequence, which is what '100% title verified' means on our listings. If you are evaluating land anywhere in the Tricity — including property we are not selling — we are happy to run the same checks for you before you commit.",
+        ],
+      },
+    ],
+  },
 ];
