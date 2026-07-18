@@ -5,6 +5,7 @@ import Link from "next/link";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import CineScroll from "@/components/CineScroll";
+import Carousel from "@/components/Carousel";
 import { properties } from "@/data/properties";
 import { insights } from "@/data/insights";
 import { site } from "@/data/site";
@@ -428,8 +429,10 @@ export default function HomePage() {
       </section>
 
       {/* ===== FEATURED PROPERTIES ===== */}
-      <section style={{ padding: "88px 48px" }} className="section-pad">
-        <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
+      <section style={{ padding: "88px 48px", position: "relative" }} className="section-pad">
+        <div aria-hidden className="glass-ambient" style={{ top: "-5%", left: "-8%" }} />
+        <div aria-hidden className="glass-ambient glass-ambient-2" style={{ bottom: "-10%", right: "-6%" }} />
+        <div style={{ maxWidth: "1200px", margin: "0 auto", position: "relative", zIndex: 1 }}>
           <div ref={addRef} className="reveal" style={{ marginBottom: "56px", display: "flex", justifyContent: "space-between", alignItems: "flex-end", flexWrap: "wrap", gap: "24px" }}>
             <div>
               <p className="section-label" style={{ marginBottom: "20px" }}>
@@ -451,7 +454,7 @@ export default function HomePage() {
             </Link>
           </div>
 
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "32px" }} className="properties-grid-desktop perspective-container">
+          <Carousel label="featured properties">
             {featuredProperties.map((property) => (
               <Link key={property.id} href={`/properties/${property.id}/`} ref={addRef} className="reveal" style={{ textDecoration: "none" }}>
                 <div className="property-card card-3d tap-glow">
@@ -544,7 +547,7 @@ export default function HomePage() {
                 </div>
               </Link>
             ))}
-          </div>
+          </Carousel>
         </div>
       </section>
 
@@ -720,8 +723,10 @@ export default function HomePage() {
       <CineScroll sequence={cineSequences.growthCorridor} />
 
       {/* ===== MARKET NOTES ===== */}
-      <section style={{ padding: "88px 48px" }} className="section-pad">
-        <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
+      <section style={{ padding: "88px 48px", position: "relative" }} className="section-pad">
+        <div aria-hidden className="glass-ambient glass-ambient-2" style={{ top: "-8%", left: "-6%" }} />
+        <div aria-hidden className="glass-ambient" style={{ bottom: "-12%", right: "-8%" }} />
+        <div style={{ maxWidth: "1200px", margin: "0 auto", position: "relative", zIndex: 1 }}>
           <div ref={addRef} className="reveal" style={{ marginBottom: "48px", display: "flex", justifyContent: "space-between", alignItems: "flex-end", flexWrap: "wrap", gap: "24px" }}>
             <div>
               <p className="section-label" style={{ marginBottom: "20px" }}>
@@ -743,7 +748,7 @@ export default function HomePage() {
             </Link>
           </div>
 
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "24px" }} className="properties-grid-desktop">
+          <Carousel label="market insights">
             {insights.slice(0, 3).map((article) => (
               <Link key={article.slug} href={`/insights/${article.slug}/`} ref={addRef} className="reveal" style={{ textDecoration: "none" }}>
                 <article className="service-card card-3d tap-glow" style={{ height: "100%", display: "flex", flexDirection: "column", cursor: "pointer" }}>
@@ -784,7 +789,7 @@ export default function HomePage() {
                 </article>
               </Link>
             ))}
-          </div>
+          </Carousel>
         </div>
       </section>
 
