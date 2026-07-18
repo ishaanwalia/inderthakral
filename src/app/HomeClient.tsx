@@ -4,6 +4,7 @@ import { useEffect, useRef, useState, useCallback } from "react";
 import Link from "next/link";
 import Nav from "@/components/Nav";
 import { properties } from "@/data/properties";
+import { insights } from "@/data/insights";
 
 // ===== MOBILE COUNTER (auto-starts on mount) =====
 function MobileCounter({ end, suffix = "", duration = 2500 }: { end: number; suffix?: string; duration?: number }) {
@@ -26,7 +27,7 @@ function MobileCounter({ end, suffix = "", duration = 2500 }: { end: number; suf
 
   return (
     <div className="mobile-counter" style={{ 
-      color: "#00D4FF", 
+      color: "var(--accent)", 
       fontSize: "clamp(40px, 5vw, 72px)", 
       fontWeight: 700, 
       fontFamily: "var(--font-mono)", 
@@ -68,7 +69,7 @@ function DesktopCounter({ end, suffix = "", duration = 2500 }: { end: number; su
 
   return (
     <div ref={ref} style={{ 
-      color: "#00D4FF", 
+      color: "var(--accent)", 
       fontSize: "clamp(40px, 5vw, 72px)", 
       fontWeight: 700, 
       fontFamily: "var(--font-mono)", 
@@ -92,7 +93,7 @@ function KineticScrollText({ text }: { text: string }) {
           fontSize: "clamp(48px, 8vw, 120px)",
           fontWeight: 700,
           letterSpacing: "-3px",
-          color: "rgba(255, 255, 255, 0.03)",
+          color: "rgba(var(--fg-rgb), 0.03)",
           textTransform: "uppercase",
           fontFamily: "var(--font-sans)",
         }}>
@@ -105,7 +106,7 @@ function KineticScrollText({ text }: { text: string }) {
           fontSize: "clamp(48px, 8vw, 120px)",
           fontWeight: 700,
           letterSpacing: "-3px",
-          color: "rgba(255, 255, 255, 0.03)",
+          color: "rgba(var(--fg-rgb), 0.03)",
           textTransform: "uppercase",
           fontFamily: "var(--font-sans)",
         }}>
@@ -116,10 +117,9 @@ function KineticScrollText({ text }: { text: string }) {
   );
 }
 
-// ===== FLOATING PARTICLES (150 for mobile, 6 for desktop) =====
+// ===== FLOATING PARTICLES (50 on all devices) =====
 function FloatingParticles() {
-  const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
-  const count = isMobile ? 150 : 6;
+  const count = 50;
 
   return (
     <>
@@ -128,13 +128,13 @@ function FloatingParticles() {
           position: "absolute",
           width: i % 3 === 0 ? "3px" : "2px",
           height: i % 3 === 0 ? "3px" : "2px",
-          background: i % 5 === 0 ? "rgba(0, 212, 255, 0.6)" : "rgba(0, 212, 255, 0.3)",
+          background: i % 5 === 0 ? "rgba(var(--accent-rgb), 0.6)" : "rgba(var(--accent-rgb), 0.3)",
           borderRadius: "50%",
           top: `${Math.random() * 100}%`,
           left: `${Math.random() * 100}%`,
           animation: `float ${8 + Math.random() * 6}s ease-in-out infinite`,
           animationDelay: `${Math.random() * 5}s`,
-          boxShadow: i % 5 === 0 ? "0 0 15px rgba(0, 212, 255, 0.8)" : "0 0 10px rgba(0, 212, 255, 0.4)",
+          boxShadow: i % 5 === 0 ? "0 0 15px rgba(var(--accent-rgb), 0.8)" : "0 0 10px rgba(var(--accent-rgb), 0.4)",
         }} />
       ))}
     </>
@@ -142,25 +142,25 @@ function FloatingParticles() {
 }
 
 // ===== DUAL CURSOR GLOW (800px + 400px rings) =====
+// Writes transforms straight to the DOM on mousemove — no React state, no
+// re-render cascade — while keeping the exact same look and easing.
 function CursorGlow() {
-  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+  const outerRef = useRef<HTMLDivElement>(null);
+  const innerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
-      setMousePos({ x: e.clientX, y: e.clientY });
+      if (outerRef.current) outerRef.current.style.transform = `translate(${e.clientX - 400}px, ${e.clientY - 400}px)`;
+      if (innerRef.current) innerRef.current.style.transform = `translate(${e.clientX - 200}px, ${e.clientY - 200}px)`;
     };
-    window.addEventListener("mousemove", handleMouseMove);
+    window.addEventListener("mousemove", handleMouseMove, { passive: true });
     return () => window.removeEventListener("mousemove", handleMouseMove);
   }, []);
 
   return (
     <>
-      <div className="cursor-glow-outer" style={{
-        transform: `translate(${mousePos.x - 400}px, ${mousePos.y - 400}px)`,
-      }} />
-      <div className="cursor-glow-inner" style={{
-        transform: `translate(${mousePos.x - 200}px, ${mousePos.y - 200}px)`,
-      }} />
+      <div ref={outerRef} className="cursor-glow-outer" style={{ transform: "translate(-400px, -400px)" }} />
+      <div ref={innerRef} className="cursor-glow-inner" style={{ transform: "translate(-200px, -200px)" }} />
     </>
   );
 }
@@ -200,12 +200,34 @@ export default function HomePage() {
     }
   };
 
+  // Until a mailbox for care@inderthakral.com is live, enquiries are routed
+  // through WhatsApp — the submit handler composes the message from the form.
+  const handleEnquirySubmit = useCallback((e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const data = new FormData(e.currentTarget);
+    const interestLabels: Record<string, string> = {
+      residential: "Residential Plot / Home",
+      commercial: "Commercial Showroom",
+      rental: "To-Let / Rental",
+      nri: "NRI Investment",
+    };
+    const lines = [
+      "Hi Inder, I would like to make an enquiry.",
+      `Name: ${data.get("name") || "-"}`,
+      `Email: ${data.get("email") || "-"}`,
+      `Phone: ${data.get("phone") || "-"}`,
+      `Looking for: ${interestLabels[String(data.get("interest"))] || "Not specified"}`,
+      `Requirements: ${data.get("message") || "-"}`,
+    ];
+    window.open(`https://wa.me/919815901234?text=${encodeURIComponent(lines.join("\n"))}`, "_blank", "noopener,noreferrer");
+  }, []);
+
   const featuredProperties = properties.slice(0, 3);
   const CounterComponent = isMobile ? MobileCounter : DesktopCounter;
   const scrollText = "Verified Land • Trusted Advisory • Personal Service • Mohali • Chandigarh • Panchkula • Premium Properties • Verified Land • Trusted Advisory • Personal Service • Mohali • Chandigarh • Panchkula • Premium Properties";
 
   return (
-    <main style={{ background: "#000000", minHeight: "100vh", overflowX: "hidden", width: "100%", color: "#FFFFFF", fontFamily: "var(--font-sans)" }}>
+    <main style={{ background: "var(--bg)", minHeight: "100vh", overflowX: "hidden", width: "100%", color: "var(--fg)", fontFamily: "var(--font-sans)" }}>
 
       {/* Dual Cursor Glow - 10x larger */}
       <CursorGlow />
@@ -218,7 +240,7 @@ export default function HomePage() {
         <div style={{
           position: "absolute",
           inset: 0,
-          backgroundImage: "linear-gradient(rgba(0,212,255,0.015) 1px, transparent 1px), linear-gradient(90deg, rgba(0,212,255,0.015) 1px, transparent 1px)",
+          backgroundImage: "linear-gradient(rgba(var(--accent-rgb),0.015) 1px, transparent 1px), linear-gradient(90deg, rgba(var(--accent-rgb),0.015) 1px, transparent 1px)",
           backgroundSize: "80px 80px",
           maskImage: "radial-gradient(ellipse at 50% 50%, black 0%, transparent 70%)",
           WebkitMaskImage: "radial-gradient(ellipse at 50% 50%, black 0%, transparent 70%)",
@@ -233,7 +255,7 @@ export default function HomePage() {
           width: "700px",
           height: "700px",
           borderRadius: "50%",
-          background: "radial-gradient(circle, rgba(0,212,255,0.12) 0%, rgba(0,100,200,0.03) 40%, transparent 70%)",
+          background: "radial-gradient(circle, rgba(var(--accent-rgb),0.12) 0%, rgba(0,100,200,0.03) 40%, transparent 70%)",
           filter: "blur(60px)",
           animation: "pulseGlow 6s ease-in-out infinite",
         }} />
@@ -258,7 +280,7 @@ export default function HomePage() {
             lineHeight: 1.05,
             marginBottom: "32px",
             letterSpacing: "-4px",
-            color: "#FFFFFF",
+            color: "var(--fg)",
           }}>
             <span style={{ display: "block" }}>Verified Land.</span>
             <span className="gradient-text" style={{ display: "block" }}>Trusted Advisor.</span>
@@ -266,7 +288,7 @@ export default function HomePage() {
 
           {/* Subtitle */}
           <p style={{
-            color: "rgba(255,255,255,0.4)",
+            color: "rgba(var(--fg-rgb),0.4)",
             fontSize: "clamp(15px, 2vw, 18px)",
             lineHeight: 1.8,
             maxWidth: "560px",
@@ -299,7 +321,7 @@ export default function HomePage() {
           flexDirection: "column",
           alignItems: "center",
           gap: "12px",
-          color: "rgba(0,212,255,0.4)",
+          color: "rgba(var(--accent-rgb),0.4)",
           fontSize: "10px",
           letterSpacing: "4px",
           textTransform: "uppercase",
@@ -307,16 +329,16 @@ export default function HomePage() {
           fontWeight: 500,
         }}>
           <span>Scroll</span>
-          <div style={{ width: "1px", height: "50px", background: "linear-gradient(to bottom, rgba(0,212,255,0.5), transparent)", animation: "scrollPulse 2.5s ease-in-out infinite" }} />
+          <div style={{ width: "1px", height: "50px", background: "linear-gradient(to bottom, rgba(var(--accent-rgb),0.5), transparent)", animation: "scrollPulse 2.5s ease-in-out infinite" }} />
         </div>
       </section>
 
       {/* ===== KINETIC SCROLL TEXT (CSS animation, no RAF) ===== */}
       <section style={{ 
         padding: "80px 0", 
-        borderTop: "1px solid rgba(255,255,255,0.03)", 
-        borderBottom: "1px solid rgba(255,255,255,0.03)",
-        background: "linear-gradient(180deg, transparent 0%, rgba(0,212,255,0.01) 50%, transparent 100%)",
+        borderTop: "1px solid rgba(var(--fg-rgb),0.03)", 
+        borderBottom: "1px solid rgba(var(--fg-rgb),0.03)",
+        background: "linear-gradient(180deg, transparent 0%, rgba(var(--accent-rgb),0.01) 50%, transparent 100%)",
         overflow: "hidden",
       }}>
         <KineticScrollText text={scrollText} />
@@ -324,9 +346,9 @@ export default function HomePage() {
 
       {/* ===== STATS BAR ===== */}
       <section style={{ 
-        borderTop: "1px solid rgba(255,255,255,0.04)", 
-        borderBottom: "1px solid rgba(255,255,255,0.04)", 
-        background: "rgba(0,212,255,0.015)",
+        borderTop: "1px solid rgba(var(--fg-rgb),0.04)", 
+        borderBottom: "1px solid rgba(var(--fg-rgb),0.04)", 
+        background: "rgba(var(--accent-rgb),0.015)",
         position: "relative",
       }}>
         <div style={{ maxWidth: "1200px", margin: "0 auto", display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "1px" }} className="stats-grid-desktop">
@@ -337,11 +359,11 @@ export default function HomePage() {
             { end: 100, suffix: "%", label: "Title Verified" },
           ].map((stat, i) => (
             <div key={i} ref={addRef} className="reveal stat-card" style={{ 
-              borderRight: i < 3 ? "1px solid rgba(255,255,255,0.04)" : "none",
+              borderRight: i < 3 ? "1px solid rgba(var(--fg-rgb),0.04)" : "none",
             }}>
               <CounterComponent end={stat.end} suffix={stat.suffix} />
               <div style={{ 
-                color: "rgba(255,255,255,0.3)", 
+                color: "rgba(var(--fg-rgb),0.3)", 
                 fontSize: "10px", 
                 letterSpacing: "4px", 
                 textTransform: "uppercase", 
@@ -359,7 +381,7 @@ export default function HomePage() {
                 transform: "translateX(-50%)",
                 width: "40px",
                 height: "1px",
-                background: "linear-gradient(90deg, transparent, rgba(0,212,255,0.3), transparent)",
+                background: "linear-gradient(90deg, transparent, rgba(var(--accent-rgb),0.3), transparent)",
               }} />
             </div>
           ))}
@@ -380,9 +402,9 @@ export default function HomePage() {
                 fontWeight: 700, 
                 lineHeight: 1.1, 
                 letterSpacing: "-3px",
-                color: "#FFFFFF",
+                color: "var(--fg)",
               }}>
-                Available <span style={{ color: "#00D4FF", fontWeight: 700 }}>Properties</span>
+                Available <span style={{ color: "var(--accent)", fontWeight: 700 }}>Properties</span>
               </h2>
             </div>
             <Link href="/properties/" className="outline-btn tap-glow" style={{ padding: "14px 32px", fontSize: "11px" }}>
@@ -412,8 +434,8 @@ export default function HomePage() {
                       top: "20px",
                       left: "20px",
                       padding: "8px 16px",
-                      background: property.type === "Commercial" ? "#00D4FF" : "rgba(0,0,0,0.5)",
-                      color: property.type === "Commercial" ? "#000" : "#00D4FF",
+                      background: property.type === "Commercial" ? "var(--accent)" : "rgba(0,0,0,0.5)",
+                      color: property.type === "Commercial" ? "var(--on-accent)" : "var(--accent)",
                       fontSize: "9px",
                       letterSpacing: "3px",
                       textTransform: "uppercase",
@@ -429,7 +451,7 @@ export default function HomePage() {
                       position: "absolute",
                       bottom: "20px",
                       right: "20px",
-                      color: "#00D4FF",
+                      color: "var(--accent)",
                       fontSize: "22px",
                       fontWeight: 700,
                       fontFamily: "var(--font-mono)",
@@ -440,7 +462,7 @@ export default function HomePage() {
                   </div>
                   <div style={{ padding: "32px", flex: 1, display: "flex", flexDirection: "column" }}>
                     <p style={{ 
-                      color: "rgba(255,255,255,0.3)", 
+                      color: "rgba(var(--fg-rgb),0.3)", 
                       fontSize: "10px", 
                       letterSpacing: "3px", 
                       textTransform: "uppercase", 
@@ -451,7 +473,7 @@ export default function HomePage() {
                       {property.location}
                     </p>
                     <h3 style={{ 
-                      color: "#FFFFFF", 
+                      color: "var(--fg)", 
                       fontSize: "18px", 
                       fontWeight: 600, 
                       marginBottom: "12px", 
@@ -461,7 +483,7 @@ export default function HomePage() {
                       {property.title}
                     </h3>
                     <p style={{ 
-                      color: "rgba(255,255,255,0.4)", 
+                      color: "rgba(var(--fg-rgb),0.4)", 
                       fontSize: "14px", 
                       marginBottom: "24px", 
                       lineHeight: 1.6, 
@@ -469,14 +491,14 @@ export default function HomePage() {
                     }}>
                       {property.highlight}
                     </p>
-                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", paddingTop: "20px", borderTop: "1px solid rgba(255,255,255,0.05)" }}>
+                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", paddingTop: "20px", borderTop: "1px solid rgba(var(--fg-rgb),0.05)" }}>
                       <div>
-                        <div style={{ color: "rgba(255,255,255,0.2)", fontSize: "9px", letterSpacing: "2px", textTransform: "uppercase", marginBottom: "6px", fontFamily: "var(--font-mono)", fontWeight: 500 }}>Size</div>
-                        <div style={{ color: "rgba(255,255,255,0.7)", fontSize: "13px", fontFamily: "var(--font-mono)", fontWeight: 500 }}>{property.size}</div>
+                        <div style={{ color: "rgba(var(--fg-rgb),0.2)", fontSize: "9px", letterSpacing: "2px", textTransform: "uppercase", marginBottom: "6px", fontFamily: "var(--font-mono)", fontWeight: 500 }}>Size</div>
+                        <div style={{ color: "rgba(var(--fg-rgb),0.7)", fontSize: "13px", fontFamily: "var(--font-mono)", fontWeight: 500 }}>{property.size}</div>
                       </div>
                       <div style={{ textAlign: "right" }}>
-                        <div style={{ color: "rgba(255,255,255,0.2)", fontSize: "9px", letterSpacing: "2px", textTransform: "uppercase", marginBottom: "6px", fontFamily: "var(--font-mono)", fontWeight: 500 }}>Status</div>
-                        <div style={{ color: "#00D4FF", fontSize: "13px", fontFamily: "var(--font-mono)", fontWeight: 600 }}>{property.status}</div>
+                        <div style={{ color: "rgba(var(--fg-rgb),0.2)", fontSize: "9px", letterSpacing: "2px", textTransform: "uppercase", marginBottom: "6px", fontFamily: "var(--font-mono)", fontWeight: 500 }}>Status</div>
+                        <div style={{ color: "var(--accent)", fontSize: "13px", fontFamily: "var(--font-mono)", fontWeight: 600 }}>{property.status}</div>
                       </div>
                     </div>
                   </div>
@@ -490,9 +512,9 @@ export default function HomePage() {
       {/* ===== SERVICES ===== */}
       <section style={{ 
         padding: "140px 48px", 
-        background: "rgba(0,212,255,0.015)", 
-        borderTop: "1px solid rgba(255,255,255,0.03)",
-        borderBottom: "1px solid rgba(255,255,255,0.03)",
+        background: "rgba(var(--accent-rgb),0.015)", 
+        borderTop: "1px solid rgba(var(--fg-rgb),0.03)",
+        borderBottom: "1px solid rgba(var(--fg-rgb),0.03)",
         position: "relative",
       }} className="section-pad">
         <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
@@ -508,12 +530,12 @@ export default function HomePage() {
               lineHeight: 1.1, 
               letterSpacing: "-3px", 
               marginBottom: "20px",
-              color: "#FFFFFF",
+              color: "var(--fg)",
             }}>
-              Advisory <span style={{ color: "#00D4FF", fontWeight: 700 }}>Services</span>
+              Advisory <span style={{ color: "var(--accent)", fontWeight: 700 }}>Services</span>
             </h2>
             <p style={{ 
-              color: "rgba(255,255,255,0.4)", 
+              color: "rgba(var(--fg-rgb),0.4)", 
               fontSize: "16px", 
               lineHeight: 1.8, 
               maxWidth: "560px", 
@@ -538,13 +560,13 @@ export default function HomePage() {
                   right: 0,
                   width: "60px",
                   height: "60px",
-                  background: "linear-gradient(135deg, transparent 50%, rgba(0,212,255,0.05) 50%)",
+                  background: "linear-gradient(135deg, transparent 50%, rgba(var(--accent-rgb),0.05) 50%)",
                 }} />
-                <div style={{ color: "rgba(0,212,255,0.3)", fontSize: "13px", fontFamily: "var(--font-mono)", letterSpacing: "2px", marginBottom: "20px", fontWeight: 500 }}>
+                <div style={{ color: "rgba(var(--accent-rgb),0.3)", fontSize: "13px", fontFamily: "var(--font-mono)", letterSpacing: "2px", marginBottom: "20px", fontWeight: 500 }}>
                   {service.num}
                 </div>
                 <h3 style={{ 
-                  color: "#FFFFFF", 
+                  color: "var(--fg)", 
                   fontSize: "22px", 
                   fontWeight: 600, 
                   marginBottom: "14px", 
@@ -554,7 +576,7 @@ export default function HomePage() {
                   {service.title}
                 </h3>
                 <p style={{ 
-                  color: "rgba(255,255,255,0.4)", 
+                  color: "rgba(var(--fg-rgb),0.4)", 
                   fontSize: "15px", 
                   lineHeight: 1.7,
                 }}>
@@ -571,12 +593,12 @@ export default function HomePage() {
         <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "100px", alignItems: "center" }} className="about-grid-desktop">
             <div ref={addRef} className="reveal">
-              <div style={{ position: "relative", borderRadius: "20px", overflow: "hidden", border: "1px solid rgba(255,255,255,0.06)" }}>
+              <div style={{ position: "relative", borderRadius: "20px", overflow: "hidden", border: "1px solid rgba(var(--fg-rgb),0.06)" }}>
                 <img src="/inder.jpeg" alt="Inder Thakral" style={{ width: "100%", aspectRatio: "3/4", objectFit: "cover", display: "block", filter: "grayscale(30%) contrast(1.05)" }} />
                 <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(0,0,0,0.95) 0%, transparent 50%)" }} />
                 <div style={{ position: "absolute", bottom: "40px", left: "40px", right: "40px" }}>
-                  <p style={{ color: "#00D4FF", fontSize: "11px", letterSpacing: "4px", textTransform: "uppercase", fontFamily: "var(--font-mono)", marginBottom: "8px", fontWeight: 500 }}>Inder Thakral</p>
-                  <p style={{ color: "rgba(255,255,255,0.5)", fontSize: "14px" }}>Principal Advisor · 15+ Years</p>
+                  <p style={{ color: "var(--accent)", fontSize: "11px", letterSpacing: "4px", textTransform: "uppercase", fontFamily: "var(--font-mono)", marginBottom: "8px", fontWeight: 500 }}>Inder Thakral</p>
+                  <p style={{ color: "rgba(var(--fg-rgb),0.5)", fontSize: "14px" }}>Principal Advisor · 15+ Years</p>
                 </div>
                 {/* Accent corner */}
                 <div style={{
@@ -585,8 +607,8 @@ export default function HomePage() {
                   right: "20px",
                   width: "40px",
                   height: "40px",
-                  borderTop: "2px solid rgba(0,212,255,0.3)",
-                  borderRight: "2px solid rgba(0,212,255,0.3)",
+                  borderTop: "2px solid rgba(var(--accent-rgb),0.3)",
+                  borderRight: "2px solid rgba(var(--accent-rgb),0.3)",
                 }} />
               </div>
             </div>
@@ -602,16 +624,16 @@ export default function HomePage() {
                 lineHeight: 1.1, 
                 letterSpacing: "-2px", 
                 marginBottom: "32px",
-                color: "#FFFFFF",
+                color: "var(--fg)",
               }}>
                 Personal Service.
                 <br />
-                <span style={{ color: "#00D4FF", fontWeight: 700 }}>Verified Results.</span>
+                <span style={{ color: "var(--accent)", fontWeight: 700 }}>Verified Results.</span>
               </h2>
-              <p style={{ color: "rgba(255,255,255,0.5)", fontSize: "16px", lineHeight: 1.9, marginBottom: "24px" }}>
+              <p style={{ color: "rgba(var(--fg-rgb),0.5)", fontSize: "16px", lineHeight: 1.9, marginBottom: "24px" }}>
                 Inder Thakral is an independent real estate advisory serving the Chandigarh Tricity. Every transaction is personally overseen, every title is carefully verified.
               </p>
-              <p style={{ color: "rgba(255,255,255,0.5)", fontSize: "16px", lineHeight: 1.9, marginBottom: "40px" }}>
+              <p style={{ color: "rgba(var(--fg-rgb),0.5)", fontSize: "16px", lineHeight: 1.9, marginBottom: "40px" }}>
                 The firm provides trusted guidance for buying, selling, leasing, and investing — with a simple promise: never show a property that would not be recommended to family.
               </p>
               <Link href="/about/" className="cta-btn magnetic-btn tap-glow">
@@ -625,9 +647,9 @@ export default function HomePage() {
       {/* ===== PHILOSOPHY ===== */}
       <section style={{ 
         padding: "140px 48px", 
-        background: "rgba(0,212,255,0.015)", 
-        borderTop: "1px solid rgba(255,255,255,0.03)", 
-        borderBottom: "1px solid rgba(255,255,255,0.03)",
+        background: "rgba(var(--accent-rgb),0.015)", 
+        borderTop: "1px solid rgba(var(--fg-rgb),0.03)", 
+        borderBottom: "1px solid rgba(var(--fg-rgb),0.03)",
         position: "relative",
       }} className="section-pad">
         <div style={{ maxWidth: "800px", margin: "0 auto", textAlign: "center" }}>
@@ -641,23 +663,92 @@ export default function HomePage() {
               fontSize: "clamp(22px, 3vw, 34px)",
               fontWeight: 700,
               lineHeight: 1.5,
-              color: "rgba(255,255,255,0.9)",
+              color: "rgba(var(--fg-rgb),0.9)",
               marginBottom: "40px",
               fontStyle: "italic",
               letterSpacing: "-0.5px",
             }}>
               "I will never show you a property I would not recommend to my own family. Your investment is our responsibility."
             </p>
-            <p style={{ color: "#00D4FF", fontSize: "13px", letterSpacing: "3px", fontFamily: "var(--font-mono)", fontWeight: 500 }}>
+            <p style={{ color: "var(--accent)", fontSize: "13px", letterSpacing: "3px", fontFamily: "var(--font-mono)", fontWeight: 500 }}>
               — Inder Thakral
             </p>
           </div>
         </div>
       </section>
 
+      {/* ===== MARKET NOTES ===== */}
+      <section style={{ padding: "140px 48px" }} className="section-pad">
+        <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
+          <div ref={addRef} className="reveal" style={{ marginBottom: "64px", display: "flex", justifyContent: "space-between", alignItems: "flex-end", flexWrap: "wrap", gap: "24px" }}>
+            <div>
+              <p className="section-label" style={{ marginBottom: "20px" }}>
+                <span className="accent-line" />
+                Tricity Market Notes
+              </p>
+              <h2 style={{
+                fontSize: "clamp(32px, 5vw, 56px)",
+                fontWeight: 700,
+                lineHeight: 1.1,
+                letterSpacing: "-3px",
+                color: "var(--fg)",
+              }}>
+                Market <span style={{ color: "var(--accent)", fontWeight: 700 }}>Insights</span>
+              </h2>
+            </div>
+            <Link href="/insights/" className="outline-btn tap-glow" style={{ padding: "14px 32px", fontSize: "11px" }}>
+              All Notes →
+            </Link>
+          </div>
+
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "24px" }} className="properties-grid-desktop">
+            {insights.slice(0, 3).map((article) => (
+              <Link key={article.slug} href={`/insights/${article.slug}/`} ref={addRef} className="reveal" style={{ textDecoration: "none" }}>
+                <article className="service-card card-3d tap-glow" style={{ height: "100%", display: "flex", flexDirection: "column", cursor: "pointer" }}>
+                  <div style={{ display: "flex", gap: "12px", alignItems: "center", marginBottom: "24px", flexWrap: "wrap" }}>
+                    <span style={{
+                      color: "var(--accent)",
+                      fontSize: "9px",
+                      letterSpacing: "3px",
+                      textTransform: "uppercase",
+                      fontFamily: "var(--font-mono)",
+                      fontWeight: 600,
+                      border: "1px solid rgba(var(--accent-rgb),0.25)",
+                      padding: "5px 12px",
+                      borderRadius: "2px",
+                    }}>
+                      {article.tag}
+                    </span>
+                    <span style={{ color: "rgba(var(--fg-rgb),0.25)", fontSize: "10px", letterSpacing: "2px", textTransform: "uppercase", fontFamily: "var(--font-mono)", fontWeight: 500 }}>
+                      {article.displayDate}
+                    </span>
+                  </div>
+                  <h3 style={{
+                    color: "var(--fg)",
+                    fontSize: "19px",
+                    fontWeight: 600,
+                    lineHeight: 1.35,
+                    letterSpacing: "-0.5px",
+                    marginBottom: "14px",
+                  }}>
+                    {article.title}
+                  </h3>
+                  <p style={{ color: "rgba(var(--fg-rgb),0.4)", fontSize: "14px", lineHeight: 1.7, flex: 1, marginBottom: "24px" }}>
+                    {article.dek.length > 140 ? article.dek.slice(0, 140).trimEnd() + "…" : article.dek}
+                  </p>
+                  <span style={{ color: "var(--accent)", fontSize: "10px", letterSpacing: "3px", textTransform: "uppercase", fontFamily: "var(--font-mono)", fontWeight: 600 }}>
+                    Read Note →
+                  </span>
+                </article>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* ===== CONTACT ===== */}
       <section id="contact" style={{ padding: "140px 48px", position: "relative", overflow: "hidden" }} className="section-pad">
-        <div style={{ position: "absolute", inset: 0, background: "radial-gradient(ellipse at 50% 0%, rgba(0,212,255,0.06) 0%, transparent 60%)" }} />
+        <div style={{ position: "absolute", inset: 0, background: "radial-gradient(ellipse at 50% 0%, rgba(var(--accent-rgb),0.06) 0%, transparent 60%)" }} />
         <div style={{ maxWidth: "1000px", margin: "0 auto", position: "relative" }}>
           <div ref={addRef} className="reveal" style={{ textAlign: "center", marginBottom: "80px" }}>
             <p className="section-label" style={{ marginBottom: "20px", justifyContent: "center" }}>
@@ -671,12 +762,12 @@ export default function HomePage() {
               lineHeight: 1.1, 
               letterSpacing: "-3px", 
               marginBottom: "20px",
-              color: "#FFFFFF",
+              color: "var(--fg)",
             }}>
-              Ready to <span style={{ color: "#00D4FF", fontWeight: 700 }}>Invest?</span>
+              Ready to <span style={{ color: "var(--accent)", fontWeight: 700 }}>Invest?</span>
             </h2>
             <p style={{ 
-              color: "rgba(255,255,255,0.4)", 
+              color: "rgba(var(--fg-rgb),0.4)", 
               fontSize: "16px", 
               lineHeight: 1.8, 
               maxWidth: "500px", 
@@ -695,7 +786,7 @@ export default function HomePage() {
               ].map((item, i) => (
                 <div key={i} style={{ marginBottom: "40px" }}>
                   <p style={{ 
-                    color: "#00D4FF", 
+                    color: "var(--accent)", 
                     fontSize: "10px", 
                     letterSpacing: "4px", 
                     textTransform: "uppercase", 
@@ -711,7 +802,7 @@ export default function HomePage() {
                       className="hover-line"
                       {...(item.href.startsWith("http") ? { target: "_blank", rel: "noopener noreferrer" } : {})}
                       style={{
-                      color: "#FFFFFF",
+                      color: "var(--fg)",
                       fontSize: "18px",
                       textDecoration: "none",
                       fontWeight: 500,
@@ -723,7 +814,7 @@ export default function HomePage() {
                       {item.value}
                     </a>
                   ) : (
-                    <p style={{ color: "#FFFFFF", fontSize: "18px", fontWeight: 500, whiteSpace: "pre-line", letterSpacing: "0.5px" }}>
+                    <p style={{ color: "var(--fg)", fontSize: "18px", fontWeight: 500, whiteSpace: "pre-line", letterSpacing: "0.5px" }}>
                       {item.value}
                     </p>
                   )}
@@ -743,7 +834,7 @@ export default function HomePage() {
               </a>
             </div>
 
-            <form action="https://formspree.io/f/YOUR_FORM_ID" method="POST" style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
+            <form onSubmit={handleEnquirySubmit} style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
               {[
                 { type: "text", name: "name", placeholder: "Your Name", required: true },
                 { type: "email", name: "email", placeholder: "Email Address", required: true },
@@ -760,8 +851,11 @@ export default function HomePage() {
               </select>
               <textarea name="message" placeholder="Tell us about your requirements..." className="form-input tap-glow" style={{ minHeight: "140px", resize: "vertical" }} />
               <button type="submit" className="cta-btn magnetic-btn tap-glow" style={{ marginTop: "8px", justifyContent: "center" }}>
-                Send Enquiry →
+                Send Enquiry via WhatsApp →
               </button>
+              <p style={{ color: "rgba(var(--fg-rgb),0.3)", fontSize: "12px", lineHeight: 1.6, textAlign: "center" }}>
+                Your enquiry opens in WhatsApp — sent directly to Inder, replies within 24 hours.
+              </p>
             </form>
           </div>
         </div>
@@ -770,27 +864,27 @@ export default function HomePage() {
       {/* ===== FOOTER ===== */}
       <footer style={{ 
         padding: "48px 48px", 
-        borderTop: "1px solid rgba(255,255,255,0.04)", 
+        borderTop: "1px solid rgba(var(--fg-rgb),0.04)", 
         display: "flex", 
         justifyContent: "space-between", 
         alignItems: "center", 
         flexWrap: "wrap", 
         gap: "24px",
-        background: "rgba(0,0,0,0.5)",
+        background: "rgba(var(--bg-rgb),0.5)",
       }}>
         <div>
           <div style={{ 
-            color: "#00D4FF", 
+            color: "var(--accent)", 
             fontSize: "10px", 
             letterSpacing: "4px", 
             textTransform: "uppercase", 
             fontFamily: "var(--font-mono)",
             fontWeight: 700,
           }}>Inder Thakral Properties</div>
-          <div style={{ color: "rgba(255,255,255,0.3)", fontSize: "12px", marginTop: "6px", letterSpacing: "0.5px" }}>2026 · SCO 124, Sector-108, Pine Wood Center Emaar, Mohali - 140306</div>
+          <div style={{ color: "rgba(var(--fg-rgb),0.3)", fontSize: "12px", marginTop: "6px", letterSpacing: "0.5px" }}>2026 · SCO 124, Sector-108, Pine Wood Center Emaar, Mohali - 140306</div>
         </div>
         <div style={{ 
-          color: "rgba(255,255,255,0.2)", 
+          color: "rgba(var(--fg-rgb),0.2)", 
           fontSize: "10px", 
           letterSpacing: "3px", 
           textTransform: "uppercase", 

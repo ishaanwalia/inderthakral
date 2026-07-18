@@ -28,14 +28,14 @@ export default function PropertyDetailClient({ property }: { property: Property 
   const whatsappLink = "https://wa.me/919815901234?text=" + whatsappMessage;
 
   return (
-    <main style={{ background: "#000000", minHeight: "100vh", overflowX: "hidden", width: "100%", color: "#FFFFFF", fontFamily: "var(--font-sans)" }}>
+    <main style={{ background: "var(--bg)", minHeight: "100vh", overflowX: "hidden", width: "100%", color: "var(--fg)", fontFamily: "var(--font-sans)" }}>
       <Nav active="Properties" />
 
       {/* Back Link */}
       <div style={{ paddingTop: "120px", paddingLeft: "48px", paddingRight: "48px", paddingBottom: "16px" }} className="section-pad">
         <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
           <Link href="/properties/" className="hover-line" style={{ 
-            color: "rgba(255,255,255,0.4)", 
+            color: "rgba(var(--fg-rgb),0.4)", 
             fontSize: "11px", 
             letterSpacing: "2px", 
             textTransform: "uppercase", 
@@ -64,7 +64,7 @@ export default function PropertyDetailClient({ property }: { property: Property 
                 position: "relative", 
                 borderRadius: "16px", 
                 overflow: "hidden", 
-                border: "1px solid rgba(255,255,255,0.06)",
+                border: "1px solid rgba(var(--fg-rgb),0.06)",
                 marginBottom: "16px",
               }}>
                 <img 
@@ -80,7 +80,7 @@ export default function PropertyDetailClient({ property }: { property: Property 
                   background: "rgba(0,0,0,0.6)",
                   backdropFilter: "blur(10px)",
                   borderRadius: "4px",
-                  color: "#00D4FF",
+                  color: "var(--accent)",
                   fontSize: "10px",
                   letterSpacing: "3px",
                   textTransform: "uppercase",
@@ -116,16 +116,16 @@ export default function PropertyDetailClient({ property }: { property: Property 
               </div>
 
               {/* About Section */}
-              <div style={{ borderTop: "1px solid rgba(255,255,255,0.04)", paddingTop: "40px" }}>
+              <div style={{ borderTop: "1px solid rgba(var(--fg-rgb),0.04)", paddingTop: "40px" }}>
                 <p className="section-label" style={{ marginBottom: "24px" }}>
                   <span className="accent-line" />
                   About This Property
                 </p>
-                <p style={{ color: "rgba(255,255,255,0.5)", fontSize: "15px", lineHeight: 1.9 }}>{property.description}</p>
+                <p style={{ color: "rgba(var(--fg-rgb),0.5)", fontSize: "15px", lineHeight: 1.9 }}>{property.description}</p>
               </div>
 
               {/* Features */}
-              <div style={{ marginTop: "48px", borderTop: "1px solid rgba(255,255,255,0.04)", paddingTop: "40px" }}>
+              <div style={{ marginTop: "48px", borderTop: "1px solid rgba(var(--fg-rgb),0.04)", paddingTop: "40px" }}>
                 <p className="section-label" style={{ marginBottom: "28px" }}>
                   <span className="accent-line" />
                   Key Features
@@ -139,8 +139,8 @@ export default function PropertyDetailClient({ property }: { property: Property 
                       padding: "16px 20px",
                       cursor: "default",
                     }}>
-                      <span style={{ color: "#00D4FF", fontSize: "14px" }}>◈</span>
-                      <span style={{ color: "rgba(255,255,255,0.7)", fontSize: "13px", fontWeight: 500 }}>{feature}</span>
+                      <span style={{ color: "var(--accent)", fontSize: "14px" }}>◈</span>
+                      <span style={{ color: "rgba(var(--fg-rgb),0.7)", fontSize: "13px", fontWeight: 500 }}>{feature}</span>
                     </div>
                   ))}
                 </div>
@@ -152,15 +152,15 @@ export default function PropertyDetailClient({ property }: { property: Property 
               <div style={{ 
                 position: "sticky", 
                 top: "100px", 
-                background: "rgba(255,255,255,0.02)", 
-                border: "1px solid rgba(255,255,255,0.06)", 
+                background: "rgba(var(--fg-rgb),0.02)", 
+                border: "1px solid rgba(var(--fg-rgb),0.06)", 
                 padding: "40px",
                 borderRadius: "16px",
               }}>
                 <div style={{
                   display: "inline-block",
-                  border: "1px solid rgba(0,212,255,0.3)",
-                  color: "#00D4FF",
+                  border: "1px solid rgba(var(--accent-rgb),0.3)",
+                  color: "var(--accent)",
                   padding: "6px 18px",
                   fontSize: "10px",
                   letterSpacing: "3px",
@@ -181,11 +181,11 @@ export default function PropertyDetailClient({ property }: { property: Property 
                 }}>
                   {property.title}
                 </h1>
-                <p style={{ color: "rgba(255,255,255,0.4)", fontSize: "13px", marginBottom: "32px" }}>{property.location}</p>
+                <p style={{ color: "rgba(var(--fg-rgb),0.4)", fontSize: "13px", marginBottom: "32px" }}>{property.location}</p>
 
-                <div style={{ borderTop: "1px solid rgba(255,255,255,0.05)", borderBottom: "1px solid rgba(255,255,255,0.05)", padding: "24px 0", marginBottom: "28px" }}>
-                  <div style={{ color: "rgba(255,255,255,0.3)", fontSize: "10px", letterSpacing: "3px", textTransform: "uppercase", marginBottom: "10px", fontFamily: "var(--font-mono)", fontWeight: 500 }}>Asking Price</div>
-                  <div style={{ color: "#00D4FF", fontSize: "36px", fontWeight: 700, fontFamily: "var(--font-mono)", letterSpacing: "-1px" }}>{property.price}</div>
+                <div style={{ borderTop: "1px solid rgba(var(--fg-rgb),0.05)", borderBottom: "1px solid rgba(var(--fg-rgb),0.05)", padding: "24px 0", marginBottom: "28px" }}>
+                  <div style={{ color: "rgba(var(--fg-rgb),0.3)", fontSize: "10px", letterSpacing: "3px", textTransform: "uppercase", marginBottom: "10px", fontFamily: "var(--font-mono)", fontWeight: 500 }}>Asking Price</div>
+                  <div style={{ color: "var(--accent)", fontSize: "36px", fontWeight: 700, fontFamily: "var(--font-mono)", letterSpacing: "-1px" }}>{property.price}</div>
                 </div>
 
                 <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "20px", marginBottom: "32px" }}>
@@ -196,8 +196,8 @@ export default function PropertyDetailClient({ property }: { property: Property 
                     { label: "Type", value: property.type },
                   ].map((item, i) => (
                     <div key={i}>
-                      <div style={{ color: "rgba(255,255,255,0.3)", fontSize: "9px", letterSpacing: "2px", textTransform: "uppercase", marginBottom: "6px", fontFamily: "var(--font-mono)", fontWeight: 500 }}>{item.label}</div>
-                      <div style={{ color: "rgba(255,255,255,0.8)", fontSize: "14px", fontWeight: 500 }}>{item.value}</div>
+                      <div style={{ color: "rgba(var(--fg-rgb),0.3)", fontSize: "9px", letterSpacing: "2px", textTransform: "uppercase", marginBottom: "6px", fontFamily: "var(--font-mono)", fontWeight: 500 }}>{item.label}</div>
+                      <div style={{ color: "rgba(var(--fg-rgb),0.8)", fontSize: "14px", fontWeight: 500 }}>{item.value}</div>
                     </div>
                   ))}
                 </div>
@@ -227,20 +227,20 @@ export default function PropertyDetailClient({ property }: { property: Property 
                   justifyContent: "center", 
                   marginBottom: "24px", 
                   width: "100%",
-                  borderColor: "rgba(0,212,255,0.2)",
-                  color: "#00D4FF",
+                  borderColor: "rgba(var(--accent-rgb),0.2)",
+                  color: "var(--accent)",
                 }}>
                   Call Inder Directly
                 </a>
 
                 <div style={{ 
                   padding: "20px", 
-                  background: "rgba(0,212,255,0.03)", 
-                  border: "1px solid rgba(0,212,255,0.08)",
+                  background: "rgba(var(--accent-rgb),0.03)", 
+                  border: "1px solid rgba(var(--accent-rgb),0.08)",
                   borderRadius: "8px",
                 }}>
-                  <p style={{ color: "rgba(255,255,255,0.4)", fontSize: "12px", lineHeight: 1.7 }}>
-                    Every property is personally verified by <span style={{ color: "#00D4FF", fontWeight: 600 }}>Inder Thakral</span>. 100% clear title deeds guaranteed.
+                  <p style={{ color: "rgba(var(--fg-rgb),0.4)", fontSize: "12px", lineHeight: 1.7 }}>
+                    Every property is personally verified by <span style={{ color: "var(--accent)", fontWeight: 600 }}>Inder Thakral</span>. 100% clear title deeds guaranteed.
                   </p>
                 </div>
               </div>
@@ -253,7 +253,7 @@ export default function PropertyDetailClient({ property }: { property: Property 
       {/* Footer */}
       <footer style={{ 
         padding: "48px 48px", 
-        borderTop: "1px solid rgba(255,255,255,0.04)", 
+        borderTop: "1px solid rgba(var(--fg-rgb),0.04)", 
         display: "flex", 
         justifyContent: "space-between", 
         alignItems: "center", 
@@ -261,10 +261,10 @@ export default function PropertyDetailClient({ property }: { property: Property 
         gap: "24px" 
       }}>
         <div>
-          <div style={{ color: "#00D4FF", fontSize: "10px", letterSpacing: "4px", textTransform: "uppercase", fontFamily: "var(--font-mono)", fontWeight: 700 }}>Inder Thakral Properties</div>
-          <div style={{ color: "rgba(255,255,255,0.3)", fontSize: "12px", marginTop: "6px" }}>2026 · SCO 124, Sector-108, Pine Wood Center Emaar, Mohali - 140306</div>
+          <div style={{ color: "var(--accent)", fontSize: "10px", letterSpacing: "4px", textTransform: "uppercase", fontFamily: "var(--font-mono)", fontWeight: 700 }}>Inder Thakral Properties</div>
+          <div style={{ color: "rgba(var(--fg-rgb),0.3)", fontSize: "12px", marginTop: "6px" }}>2026 · SCO 124, Sector-108, Pine Wood Center Emaar, Mohali - 140306</div>
         </div>
-        <div style={{ color: "rgba(255,255,255,0.2)", fontSize: "10px", letterSpacing: "3px", textTransform: "uppercase", fontFamily: "var(--font-mono)", fontWeight: 500 }}>
+        <div style={{ color: "rgba(var(--fg-rgb),0.2)", fontSize: "10px", letterSpacing: "3px", textTransform: "uppercase", fontFamily: "var(--font-mono)", fontWeight: 500 }}>
           Verified Title Deeds · By Appointment Only
         </div>
       </footer>

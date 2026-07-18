@@ -15,7 +15,7 @@ export default function PropertiesPage() {
   const filtered = filter === "All" ? properties : properties.filter(p => p.type === filter);
 
   return (
-    <main style={{ background: "#000000", minHeight: "100vh", overflowX: "hidden", width: "100%", color: "#FFFFFF", fontFamily: "var(--font-sans)" }}>
+    <main style={{ background: "var(--bg)", minHeight: "100vh", overflowX: "hidden", width: "100%", color: "var(--fg)", fontFamily: "var(--font-sans)" }}>
       <Nav active="Properties" />
 
       {/* Hero */}
@@ -24,9 +24,9 @@ export default function PropertiesPage() {
         paddingBottom: "80px", 
         paddingLeft: "48px", 
         paddingRight: "48px", 
-        borderBottom: "1px solid rgba(255,255,255,0.04)",
+        borderBottom: "1px solid rgba(var(--fg-rgb),0.04)",
         position: "relative",
-        background: "radial-gradient(ellipse at 30% 50%, rgba(0,212,255,0.03) 0%, transparent 60%)",
+        background: "radial-gradient(ellipse at 30% 50%, rgba(var(--accent-rgb),0.03) 0%, transparent 60%)",
       }} className="section-pad">
         <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
           <p className="section-label" style={{ marginBottom: "24px" }}>
@@ -38,9 +38,9 @@ export default function PropertiesPage() {
             fontWeight: 700, 
             marginBottom: "48px",
             letterSpacing: "-4px",
-            color: "#FFFFFF",
+            color: "var(--fg)",
           }}>
-            Available <span style={{ color: "#00D4FF", fontWeight: 700 }}>Properties</span>
+            Available <span style={{ color: "var(--accent)", fontWeight: 700 }}>Properties</span>
           </h1>
           <div style={{ display: "flex", gap: "16px", flexWrap: "wrap" }}>
             {["All", "Residential", "Commercial"].map(f => (
@@ -77,8 +77,8 @@ export default function PropertiesPage() {
                       top: "20px",
                       left: "20px",
                       padding: "8px 16px",
-                      background: property.type === "Commercial" ? "#00D4FF" : "rgba(0,0,0,0.5)",
-                      color: property.type === "Commercial" ? "#000" : "#00D4FF",
+                      background: property.type === "Commercial" ? "var(--accent)" : "rgba(0,0,0,0.5)",
+                      color: property.type === "Commercial" ? "var(--on-accent)" : "var(--accent)",
                       fontSize: "9px",
                       letterSpacing: "3px",
                       textTransform: "uppercase",
@@ -93,7 +93,7 @@ export default function PropertiesPage() {
                       position: "absolute",
                       bottom: "20px",
                       right: "20px",
-                      color: "#00D4FF",
+                      color: "var(--accent)",
                       fontSize: "22px",
                       fontWeight: 700,
                       fontFamily: "var(--font-mono)",
@@ -104,7 +104,7 @@ export default function PropertiesPage() {
                   </div>
                   <div style={{ padding: "28px" }}>
                     <p style={{ 
-                      color: "rgba(255,255,255,0.3)", 
+                      color: "rgba(var(--fg-rgb),0.3)", 
                       fontSize: "10px", 
                       letterSpacing: "3px", 
                       textTransform: "uppercase", 
@@ -115,7 +115,7 @@ export default function PropertiesPage() {
                       {property.location}
                     </p>
                     <h3 style={{ 
-                      color: "#FFFFFF", 
+                      color: "var(--fg)", 
                       fontSize: "17px", 
                       fontWeight: 600, 
                       marginBottom: "12px", 
@@ -125,21 +125,21 @@ export default function PropertiesPage() {
                       {property.title}
                     </h3>
                     <p style={{ 
-                      color: "rgba(255,255,255,0.4)", 
+                      color: "rgba(var(--fg-rgb),0.4)", 
                       fontSize: "13px", 
                       marginBottom: "24px", 
                       lineHeight: 1.6,
                     }}>
                       {property.highlight}
                     </p>
-                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", borderTop: "1px solid rgba(255,255,255,0.05)", paddingTop: "20px" }}>
+                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", borderTop: "1px solid rgba(var(--fg-rgb),0.05)", paddingTop: "20px" }}>
                       <div>
-                        <div style={{ color: "rgba(255,255,255,0.2)", fontSize: "9px", letterSpacing: "2px", textTransform: "uppercase", marginBottom: "6px", fontFamily: "var(--font-mono)", fontWeight: 500 }}>Size</div>
-                        <div style={{ color: "rgba(255,255,255,0.7)", fontSize: "13px", fontFamily: "var(--font-mono)", fontWeight: 500 }}>{property.size}</div>
+                        <div style={{ color: "rgba(var(--fg-rgb),0.2)", fontSize: "9px", letterSpacing: "2px", textTransform: "uppercase", marginBottom: "6px", fontFamily: "var(--font-mono)", fontWeight: 500 }}>Size</div>
+                        <div style={{ color: "rgba(var(--fg-rgb),0.7)", fontSize: "13px", fontFamily: "var(--font-mono)", fontWeight: 500 }}>{property.size}</div>
                       </div>
                       <div style={{ textAlign: "right" }}>
-                        <div style={{ color: "rgba(255,255,255,0.2)", fontSize: "9px", letterSpacing: "2px", textTransform: "uppercase", marginBottom: "6px", fontFamily: "var(--font-mono)", fontWeight: 500 }}>Status</div>
-                        <div style={{ color: "#00D4FF", fontSize: "13px", fontFamily: "var(--font-mono)", fontWeight: 600 }}>{property.status}</div>
+                        <div style={{ color: "rgba(var(--fg-rgb),0.2)", fontSize: "9px", letterSpacing: "2px", textTransform: "uppercase", marginBottom: "6px", fontFamily: "var(--font-mono)", fontWeight: 500 }}>Status</div>
+                        <div style={{ color: "var(--accent)", fontSize: "13px", fontFamily: "var(--font-mono)", fontWeight: 600 }}>{property.status}</div>
                       </div>
                     </div>
                   </div>
@@ -153,7 +153,7 @@ export default function PropertiesPage() {
       {/* Footer */}
       <footer style={{ 
         padding: "48px 48px", 
-        borderTop: "1px solid rgba(255,255,255,0.04)", 
+        borderTop: "1px solid rgba(var(--fg-rgb),0.04)", 
         display: "flex", 
         justifyContent: "space-between", 
         alignItems: "center", 
@@ -161,10 +161,10 @@ export default function PropertiesPage() {
         gap: "24px" 
       }}>
         <div>
-          <div style={{ color: "#00D4FF", fontSize: "10px", letterSpacing: "4px", textTransform: "uppercase", fontFamily: "var(--font-mono)", fontWeight: 700 }}>Inder Thakral Properties</div>
-          <div style={{ color: "rgba(255,255,255,0.3)", fontSize: "12px", marginTop: "6px" }}>2026 · SCO 124, Sector-108, Pine Wood Center Emaar, Mohali - 140306</div>
+          <div style={{ color: "var(--accent)", fontSize: "10px", letterSpacing: "4px", textTransform: "uppercase", fontFamily: "var(--font-mono)", fontWeight: 700 }}>Inder Thakral Properties</div>
+          <div style={{ color: "rgba(var(--fg-rgb),0.3)", fontSize: "12px", marginTop: "6px" }}>2026 · SCO 124, Sector-108, Pine Wood Center Emaar, Mohali - 140306</div>
         </div>
-        <div style={{ color: "rgba(255,255,255,0.2)", fontSize: "10px", letterSpacing: "3px", textTransform: "uppercase", fontFamily: "var(--font-mono)", fontWeight: 500 }}>
+        <div style={{ color: "rgba(var(--fg-rgb),0.2)", fontSize: "10px", letterSpacing: "3px", textTransform: "uppercase", fontFamily: "var(--font-mono)", fontWeight: 500 }}>
           Verified Title Deeds · By Appointment Only
         </div>
       </footer>

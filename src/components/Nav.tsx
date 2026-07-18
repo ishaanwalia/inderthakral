@@ -8,6 +8,26 @@ export default function Nav({ active }: { active?: string }) {
   const [scrolled, setScrolled] = useState(false);
   const [hidden, setHidden] = useState(false);
   const [lastScrollY, setLastScrollY] = useState(0);
+  const [theme, setTheme] = useState<"night" | "day">("night");
+
+  useEffect(() => {
+    setTheme(document.documentElement.getAttribute("data-theme") === "day" ? "day" : "night");
+  }, []);
+
+  const toggleTheme = useCallback(() => {
+    setTheme((prev) => {
+      const next = prev === "day" ? "night" : "day";
+      if (next === "day") {
+        document.documentElement.setAttribute("data-theme", "day");
+      } else {
+        document.documentElement.removeAttribute("data-theme");
+      }
+      try {
+        localStorage.setItem("theme", next);
+      } catch {}
+      return next;
+    });
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -41,6 +61,7 @@ export default function Nav({ active }: { active?: string }) {
     ["Properties", "/properties/"],
     ["About", "/about/"],
     ["Services", "/services/"],
+    ["Insights", "/insights/"],
   ];
 
   const handleLinkClick = useCallback(() => setMenuOpen(false), []);
@@ -54,10 +75,10 @@ export default function Nav({ active }: { active?: string }) {
           left: 0,
           right: 0,
           zIndex: 1000,
-          background: scrolled ? "rgba(0, 0, 0, 0.85)" : "transparent",
+          background: scrolled ? "rgba(var(--bg-rgb), 0.85)" : "transparent",
           backdropFilter: scrolled ? "blur(20px) saturate(180%)" : "none",
           WebkitBackdropFilter: scrolled ? "blur(20px) saturate(180%)" : "none",
-          borderBottom: scrolled ? "1px solid rgba(0, 212, 255, 0.08)" : "1px solid transparent",
+          borderBottom: scrolled ? "1px solid rgba(var(--accent-rgb), 0.08)" : "1px solid transparent",
           transition: "all 0.5s cubic-bezier(0.16, 1, 0.3, 1)",
         }}
       >
@@ -81,7 +102,7 @@ export default function Nav({ active }: { active?: string }) {
           >
             <div
               style={{
-                color: "#FFFFFF",
+                color: "var(--fg)",
                 fontSize: "14px",
                 letterSpacing: "6px",
                 textTransform: "uppercase",
@@ -94,7 +115,7 @@ export default function Nav({ active }: { active?: string }) {
             </div>
             <div
               style={{
-                color: "rgba(0, 212, 255, 0.6)",
+                color: "rgba(var(--accent-rgb), 0.6)",
                 fontSize: "9px",
                 letterSpacing: "4px",
                 textTransform: "uppercase",
@@ -112,7 +133,7 @@ export default function Nav({ active }: { active?: string }) {
               left: 0,
               width: "30%",
               height: "1px",
-              background: "linear-gradient(90deg, #00D4FF, transparent)",
+              background: "linear-gradient(90deg, var(--accent), transparent)",
               transition: "width 0.5s ease",
             }} />
           </Link>
@@ -131,7 +152,7 @@ export default function Nav({ active }: { active?: string }) {
                 key={label}
                 href={href}
                 style={{
-                  color: active === label ? "#00D4FF" : "rgba(255, 255, 255, 0.5)",
+                  color: active === label ? "var(--accent)" : "rgba(var(--fg-rgb), 0.5)",
                   fontSize: "11px",
                   letterSpacing: "2.5px",
                   textTransform: "uppercase",
@@ -143,11 +164,11 @@ export default function Nav({ active }: { active?: string }) {
                   fontWeight: 500,
                 }}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.color = "#00D4FF";
+                  e.currentTarget.style.color = "var(--accent)";
                 }}
                 onMouseLeave={(e) => {
                   if (active !== label) {
-                    e.currentTarget.style.color = "rgba(255, 255, 255, 0.5)";
+                    e.currentTarget.style.color = "rgba(var(--fg-rgb), 0.5)";
                   }
                 }}
               >
@@ -158,16 +179,16 @@ export default function Nav({ active }: { active?: string }) {
                   left: 0,
                   width: active === label ? "100%" : "0%",
                   height: "1px",
-                  background: "#00D4FF",
+                  background: "var(--accent)",
                   transition: "width 0.3s ease",
-                  boxShadow: "0 0 8px rgba(0, 212, 255, 0.5)",
+                  boxShadow: "0 0 8px rgba(var(--accent-rgb), 0.5)",
                 }} />
               </Link>
             ))}
             <a
               href="/#contact"
               style={{
-                color: "rgba(255, 255, 255, 0.5)",
+                color: "rgba(var(--fg-rgb), 0.5)",
                 fontSize: "11px",
                 letterSpacing: "2.5px",
                 textTransform: "uppercase",
@@ -177,16 +198,16 @@ export default function Nav({ active }: { active?: string }) {
                 fontFamily: "var(--font-mono)",
                 fontWeight: 500,
               }}
-              onMouseEnter={(e) => e.currentTarget.style.color = "#00D4FF"}
-              onMouseLeave={(e) => e.currentTarget.style.color = "rgba(255, 255, 255, 0.5)"}
+              onMouseEnter={(e) => e.currentTarget.style.color = "var(--accent)"}
+              onMouseLeave={(e) => e.currentTarget.style.color = "rgba(var(--fg-rgb), 0.5)"}
             >
               Contact
             </a>
             <a
               href="/#contact"
               style={{
-                border: "1px solid rgba(0, 212, 255, 0.3)",
-                color: "#00D4FF",
+                border: "1px solid rgba(var(--accent-rgb), 0.3)",
+                color: "var(--accent)",
                 padding: "10px 28px",
                 fontSize: "10px",
                 letterSpacing: "3px",
@@ -200,19 +221,39 @@ export default function Nav({ active }: { active?: string }) {
                 overflow: "hidden",
               }}
               onMouseEnter={(e) => {
-                e.currentTarget.style.background = "rgba(0, 212, 255, 0.1)";
-                e.currentTarget.style.borderColor = "rgba(0, 212, 255, 0.6)";
-                e.currentTarget.style.boxShadow = "0 0 30px rgba(0, 212, 255, 0.15)";
+                e.currentTarget.style.background = "rgba(var(--accent-rgb), 0.1)";
+                e.currentTarget.style.borderColor = "rgba(var(--accent-rgb), 0.6)";
+                e.currentTarget.style.boxShadow = "0 0 30px rgba(var(--accent-rgb), 0.15)";
               }}
               onMouseLeave={(e) => {
                 e.currentTarget.style.background = "transparent";
-                e.currentTarget.style.borderColor = "rgba(0, 212, 255, 0.3)";
+                e.currentTarget.style.borderColor = "rgba(var(--accent-rgb), 0.3)";
                 e.currentTarget.style.boxShadow = "none";
               }}
             >
               Enquire
             </a>
           </nav>
+
+          <div style={{ display: "flex", alignItems: "center", gap: "20px", flexShrink: 0 }}>
+          {/* Theme toggle */}
+          <button
+            type="button"
+            onClick={toggleTheme}
+            aria-label={theme === "day" ? "Switch to night theme" : "Switch to day theme"}
+            className="theme-toggle"
+          >
+            {theme === "day" ? (
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
+                <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z" />
+              </svg>
+            ) : (
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
+                <circle cx="12" cy="12" r="4" />
+                <path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4" />
+              </svg>
+            )}
+          </button>
 
           {/* Hamburger - Mobile */}
           <button
@@ -239,7 +280,7 @@ export default function Nav({ active }: { active?: string }) {
                 display: "block",
                 width: "22px",
                 height: "1.5px",
-                background: menuOpen ? "#00D4FF" : "#FFFFFF",
+                background: menuOpen ? "var(--accent)" : "var(--fg)",
                 transition: "all 0.4s cubic-bezier(0.16, 1, 0.3, 1)",
                 transform: menuOpen ? "rotate(45deg) translate(4.5px, 4.5px)" : "none",
               }}
@@ -249,7 +290,7 @@ export default function Nav({ active }: { active?: string }) {
                 display: "block",
                 width: "22px",
                 height: "1.5px",
-                background: menuOpen ? "#00D4FF" : "#FFFFFF",
+                background: menuOpen ? "var(--accent)" : "var(--fg)",
                 transition: "all 0.4s cubic-bezier(0.16, 1, 0.3, 1)",
                 opacity: menuOpen ? 0 : 1,
               }}
@@ -259,12 +300,13 @@ export default function Nav({ active }: { active?: string }) {
                 display: "block",
                 width: "22px",
                 height: "1.5px",
-                background: menuOpen ? "#00D4FF" : "#FFFFFF",
+                background: menuOpen ? "var(--accent)" : "var(--fg)",
                 transition: "all 0.4s cubic-bezier(0.16, 1, 0.3, 1)",
                 transform: menuOpen ? "rotate(-45deg) translate(4.5px, -4.5px)" : "none",
               }}
             />
           </button>
+          </div>
         </div>
       </header>
 
@@ -274,7 +316,7 @@ export default function Nav({ active }: { active?: string }) {
         <div style={{
           position: "absolute",
           inset: 0,
-          backgroundImage: "linear-gradient(rgba(0,212,255,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0,212,255,0.03) 1px, transparent 1px)",
+          backgroundImage: "linear-gradient(rgba(var(--accent-rgb),0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(var(--accent-rgb),0.03) 1px, transparent 1px)",
           backgroundSize: "60px 60px",
           opacity: menuOpen ? 1 : 0,
           transition: "opacity 0.8s ease",
@@ -287,7 +329,7 @@ export default function Nav({ active }: { active?: string }) {
             onClick={handleLinkClick}
             className="mobile-nav-link"
             style={{
-              color: active === label ? "#00D4FF" : "#FFFFFF",
+              color: active === label ? "var(--accent)" : "var(--fg)",
             }}
           >
             {label}
@@ -305,8 +347,8 @@ export default function Nav({ active }: { active?: string }) {
           onClick={handleLinkClick}
           style={{
             marginTop: "40px",
-            border: "1px solid rgba(0, 212, 255, 0.4)",
-            color: "#00D4FF",
+            border: "1px solid rgba(var(--accent-rgb), 0.4)",
+            color: "var(--accent)",
             padding: "18px 56px",
             fontSize: "13px",
             letterSpacing: "4px",
