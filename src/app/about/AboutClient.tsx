@@ -9,8 +9,8 @@ export default function AboutPage() {
 
       {/* Hero */}
       <section style={{ 
-        paddingTop: "180px", 
-        paddingBottom: "100px", 
+        paddingTop: "136px", 
+        paddingBottom: "56px", 
         paddingLeft: "48px", 
         paddingRight: "48px", 
         borderBottom: "1px solid rgba(var(--fg-rgb),0.04)", 
@@ -47,7 +47,7 @@ export default function AboutPage() {
       </section>
 
       {/* Content Grid */}
-      <section style={{ padding: "100px 48px" }} className="section-pad">
+      <section style={{ padding: "72px 48px" }} className="section-pad">
         <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "80px" }} className="about-grid-desktop">
             <div>
@@ -126,9 +126,9 @@ export default function AboutPage() {
       </section>
 
       {/* Office Section */}
-      <section style={{ padding: "0 48px 100px" }} className="section-pad">
+      <section style={{ padding: "0 48px 72px" }} className="section-pad">
         <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
-          <div style={{ borderTop: "1px solid rgba(var(--fg-rgb),0.04)", paddingTop: "100px" }}>
+          <div style={{ borderTop: "1px solid rgba(var(--fg-rgb),0.04)", paddingTop: "72px" }}>
             <p className="section-label" style={{ marginBottom: "24px" }}>
               <span className="accent-line" />
               Our Office
@@ -194,7 +194,7 @@ export default function AboutPage() {
 
       {/* Philosophy */}
       <section style={{ 
-        padding: "100px 48px", 
+        padding: "72px 48px", 
         background: "rgba(var(--accent-rgb),0.015)", 
         borderTop: "1px solid rgba(var(--fg-rgb),0.03)",
       }} className="section-pad">

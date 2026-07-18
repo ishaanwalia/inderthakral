@@ -23,8 +23,8 @@ export default function InsightsPage() {
 
       {/* Hero */}
       <section style={{
-        paddingTop: "180px",
-        paddingBottom: "100px",
+        paddingTop: "136px",
+        paddingBottom: "56px",
         paddingLeft: "48px",
         paddingRight: "48px",
         borderBottom: "1px solid rgba(var(--fg-rgb),0.04)",
@@ -60,7 +60,7 @@ export default function InsightsPage() {
       </section>
 
       {/* Articles */}
-      <section style={{ padding: "100px 48px" }} className="section-pad">
+      <section style={{ padding: "72px 48px" }} className="section-pad">
         <div style={{ maxWidth: "1200px", margin: "0 auto", display: "flex", flexDirection: "column", gap: "24px" }}>
           {insights.map((article) => (
             <Link key={article.slug} href={`/insights/${article.slug}/`} style={{ textDecoration: "none" }}>

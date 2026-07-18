@@ -9,8 +9,8 @@ export default function ServicesPage() {
 
       {/* Hero */}
       <section style={{ 
-        paddingTop: "180px", 
-        paddingBottom: "100px", 
+        paddingTop: "136px", 
+        paddingBottom: "56px", 
         paddingLeft: "48px", 
         paddingRight: "48px", 
         borderBottom: "1px solid rgba(var(--fg-rgb),0.04)", 
@@ -46,8 +46,8 @@ export default function ServicesPage() {
       </section>
 
       {/* Services List */}
-      <section style={{ padding: "100px 48px" }} className="section-pad">
-        <div style={{ maxWidth: "1200px", margin: "0 auto", display: "flex", flexDirection: "column", gap: "120px" }}>
+      <section style={{ padding: "72px 48px" }} className="section-pad">
+        <div style={{ maxWidth: "1200px", margin: "0 auto", display: "flex", flexDirection: "column", gap: "88px" }}>
           {[
             {
               num: "01",
@@ -157,7 +157,7 @@ export default function ServicesPage() {
 
       {/* CTA Section */}
       <section style={{ 
-        padding: "100px 48px", 
+        padding: "72px 48px", 
         background: "rgba(var(--accent-rgb),0.015)", 
         borderTop: "1px solid rgba(var(--fg-rgb),0.03)",
       }} className="section-pad">

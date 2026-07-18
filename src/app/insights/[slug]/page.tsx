@@ -69,7 +69,7 @@ export default async function InsightArticlePage({
 
       {/* Article header */}
       <section style={{
-        paddingTop: "160px",
+        paddingTop: "128px",
         paddingBottom: "60px",
         paddingLeft: "48px",
         paddingRight: "48px",
@@ -127,7 +127,7 @@ export default async function InsightArticlePage({
       </section>
 
       {/* Article body */}
-      <section style={{ padding: "80px 48px" }} className="section-pad">
+      <section style={{ padding: "56px 48px" }} className="section-pad">
         <div style={{ maxWidth: "760px", margin: "0 auto" }}>
           {article.sections.map((section, i) => (
             <div key={i} style={{ marginBottom: "48px" }}>

@@ -200,26 +200,50 @@ export default function HomePage() {
     }
   };
 
-  // Until a mailbox for care@inderthakral.com is live, enquiries are routed
-  // through WhatsApp — the submit handler composes the message from the form.
-  const handleEnquirySubmit = useCallback((e: React.FormEvent<HTMLFormElement>) => {
+  // Enquiries are emailed to care@inderthakral.com via FormSubmit; if delivery
+  // fails for any reason, the enquiry falls back to a prefilled WhatsApp chat.
+  const [formStatus, setFormStatus] = useState<"idle" | "sending" | "sent" | "error">("idle");
+
+  const handleEnquirySubmit = useCallback(async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const data = new FormData(e.currentTarget);
+    const form = e.currentTarget;
+    const data = new FormData(form);
     const interestLabels: Record<string, string> = {
       residential: "Residential Plot / Home",
       commercial: "Commercial Showroom",
       rental: "To-Let / Rental",
       nri: "NRI Investment",
     };
-    const lines = [
-      "Hi Inder, I would like to make an enquiry.",
-      `Name: ${data.get("name") || "-"}`,
-      `Email: ${data.get("email") || "-"}`,
-      `Phone: ${data.get("phone") || "-"}`,
-      `Looking for: ${interestLabels[String(data.get("interest"))] || "Not specified"}`,
-      `Requirements: ${data.get("message") || "-"}`,
-    ];
-    window.open(`https://wa.me/919815901234?text=${encodeURIComponent(lines.join("\n"))}`, "_blank", "noopener,noreferrer");
+    const interest = interestLabels[String(data.get("interest"))] || "Not specified";
+
+    setFormStatus("sending");
+    try {
+      const res = await fetch("https://formsubmit.co/ajax/care@inderthakral.com", {
+        method: "POST",
+        headers: { Accept: "application/json" },
+        body: (() => {
+          data.set("interest", interest);
+          data.append("_subject", "New website enquiry — inderthakral.com");
+          data.append("_template", "table");
+          data.append("_captcha", "false");
+          return data;
+        })(),
+      });
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      setFormStatus("sent");
+      form.reset();
+    } catch {
+      setFormStatus("error");
+      const lines = [
+        "Hi Inder, I would like to make an enquiry.",
+        `Name: ${data.get("name") || "-"}`,
+        `Email: ${data.get("email") || "-"}`,
+        `Phone: ${data.get("phone") || "-"}`,
+        `Looking for: ${interest}`,
+        `Requirements: ${data.get("message") || "-"}`,
+      ];
+      window.open(`https://wa.me/919815901234?text=${encodeURIComponent(lines.join("\n"))}`, "_blank", "noopener,noreferrer");
+    }
   }, []);
 
   const featuredProperties = properties.slice(0, 3);
@@ -247,7 +271,7 @@ export default function HomePage() {
         }} />
 
         {/* Central glow orb */}
-        <div style={{
+        <div className="hero-orb" style={{
           position: "absolute",
           top: "45%",
           left: "50%",
@@ -335,7 +359,7 @@ export default function HomePage() {
 
       {/* ===== KINETIC SCROLL TEXT (CSS animation, no RAF) ===== */}
       <section style={{ 
-        padding: "80px 0", 
+        padding: "48px 0", 
         borderTop: "1px solid rgba(var(--fg-rgb),0.03)", 
         borderBottom: "1px solid rgba(var(--fg-rgb),0.03)",
         background: "linear-gradient(180deg, transparent 0%, rgba(var(--accent-rgb),0.01) 50%, transparent 100%)",
@@ -389,9 +413,9 @@ export default function HomePage() {
       </section>
 
       {/* ===== FEATURED PROPERTIES ===== */}
-      <section style={{ padding: "140px 48px" }} className="section-pad">
+      <section style={{ padding: "88px 48px" }} className="section-pad">
         <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
-          <div ref={addRef} className="reveal" style={{ marginBottom: "80px", display: "flex", justifyContent: "space-between", alignItems: "flex-end", flexWrap: "wrap", gap: "24px" }}>
+          <div ref={addRef} className="reveal" style={{ marginBottom: "56px", display: "flex", justifyContent: "space-between", alignItems: "flex-end", flexWrap: "wrap", gap: "24px" }}>
             <div>
               <p className="section-label" style={{ marginBottom: "20px" }}>
                 <span className="accent-line" />
@@ -511,14 +535,14 @@ export default function HomePage() {
 
       {/* ===== SERVICES ===== */}
       <section style={{ 
-        padding: "140px 48px", 
+        padding: "88px 48px", 
         background: "rgba(var(--accent-rgb),0.015)", 
         borderTop: "1px solid rgba(var(--fg-rgb),0.03)",
         borderBottom: "1px solid rgba(var(--fg-rgb),0.03)",
         position: "relative",
       }} className="section-pad">
         <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
-          <div ref={addRef} className="reveal" style={{ textAlign: "center", marginBottom: "80px" }}>
+          <div ref={addRef} className="reveal" style={{ textAlign: "center", marginBottom: "56px" }}>
             <p className="section-label" style={{ marginBottom: "20px", justifyContent: "center" }}>
               <span className="accent-line" />
               What We Offer
@@ -589,7 +613,7 @@ export default function HomePage() {
       </section>
 
       {/* ===== ABOUT ===== */}
-      <section style={{ padding: "140px 48px" }} className="section-pad">
+      <section style={{ padding: "88px 48px" }} className="section-pad">
         <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "100px", alignItems: "center" }} className="about-grid-desktop">
             <div ref={addRef} className="reveal">
@@ -646,7 +670,7 @@ export default function HomePage() {
 
       {/* ===== PHILOSOPHY ===== */}
       <section style={{ 
-        padding: "140px 48px", 
+        padding: "88px 48px", 
         background: "rgba(var(--accent-rgb),0.015)", 
         borderTop: "1px solid rgba(var(--fg-rgb),0.03)", 
         borderBottom: "1px solid rgba(var(--fg-rgb),0.03)",
@@ -678,9 +702,9 @@ export default function HomePage() {
       </section>
 
       {/* ===== MARKET NOTES ===== */}
-      <section style={{ padding: "140px 48px" }} className="section-pad">
+      <section style={{ padding: "88px 48px" }} className="section-pad">
         <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
-          <div ref={addRef} className="reveal" style={{ marginBottom: "64px", display: "flex", justifyContent: "space-between", alignItems: "flex-end", flexWrap: "wrap", gap: "24px" }}>
+          <div ref={addRef} className="reveal" style={{ marginBottom: "48px", display: "flex", justifyContent: "space-between", alignItems: "flex-end", flexWrap: "wrap", gap: "24px" }}>
             <div>
               <p className="section-label" style={{ marginBottom: "20px" }}>
                 <span className="accent-line" />
@@ -747,10 +771,10 @@ export default function HomePage() {
       </section>
 
       {/* ===== CONTACT ===== */}
-      <section id="contact" style={{ padding: "140px 48px", position: "relative", overflow: "hidden" }} className="section-pad">
+      <section id="contact" style={{ padding: "88px 48px", position: "relative", overflow: "hidden" }} className="section-pad">
         <div style={{ position: "absolute", inset: 0, background: "radial-gradient(ellipse at 50% 0%, rgba(var(--accent-rgb),0.06) 0%, transparent 60%)" }} />
         <div style={{ maxWidth: "1000px", margin: "0 auto", position: "relative" }}>
-          <div ref={addRef} className="reveal" style={{ textAlign: "center", marginBottom: "80px" }}>
+          <div ref={addRef} className="reveal" style={{ textAlign: "center", marginBottom: "56px" }}>
             <p className="section-label" style={{ marginBottom: "20px", justifyContent: "center" }}>
               <span className="accent-line" />
               Get In Touch
@@ -850,12 +874,27 @@ export default function HomePage() {
                 <option value="nri">NRI Investment</option>
               </select>
               <textarea name="message" placeholder="Tell us about your requirements..." className="form-input tap-glow" style={{ minHeight: "140px", resize: "vertical" }} />
-              <button type="submit" className="cta-btn magnetic-btn tap-glow" style={{ marginTop: "8px", justifyContent: "center" }}>
-                Send Enquiry via WhatsApp →
+              <button
+                type="submit"
+                disabled={formStatus === "sending"}
+                className="cta-btn magnetic-btn tap-glow"
+                style={{ marginTop: "8px", justifyContent: "center", opacity: formStatus === "sending" ? 0.6 : 1 }}
+              >
+                {formStatus === "sending" ? "Sending…" : "Send Enquiry →"}
               </button>
-              <p style={{ color: "rgba(var(--fg-rgb),0.3)", fontSize: "12px", lineHeight: 1.6, textAlign: "center" }}>
-                Your enquiry opens in WhatsApp — sent directly to Inder, replies within 24 hours.
-              </p>
+              {formStatus === "sent" ? (
+                <p style={{ color: "var(--accent)", fontSize: "13px", lineHeight: 1.6, textAlign: "center", fontWeight: 500 }}>
+                  Enquiry sent — Inder will get back to you within 24 hours.
+                </p>
+              ) : formStatus === "error" ? (
+                <p style={{ color: "rgba(var(--fg-rgb),0.4)", fontSize: "12px", lineHeight: 1.6, textAlign: "center" }}>
+                  Email delivery hit a snag, so we opened your enquiry in WhatsApp instead.
+                </p>
+              ) : (
+                <p style={{ color: "rgba(var(--fg-rgb),0.3)", fontSize: "12px", lineHeight: 1.6, textAlign: "center" }}>
+                  Delivered directly to care@inderthakral.com — replies within 24 hours.
+                </p>
+              )}
             </form>
           </div>
         </div>

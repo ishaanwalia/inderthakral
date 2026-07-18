@@ -841,3 +841,68 @@ body {
   background: rgba(var(--accent-rgb), 0.08);
   box-shadow: 0 0 20px rgba(var(--accent-rgb), 0.15);
 }
+
+/* ===== DAY THEME GLOW PASS =====
+   Screen-blend cyan glows disappear on ivory; these give day mode its own
+   gold luminosity: stronger halos, ambient card glow, shimmering headlines. */
+:root[data-theme="day"] .cursor-glow-outer {
+  background: radial-gradient(circle, rgba(var(--accent-rgb), 0.12) 0%, transparent 60%);
+}
+
+:root[data-theme="day"] .cursor-glow-inner {
+  background: radial-gradient(circle, rgba(var(--accent-rgb), 0.2) 0%, transparent 50%);
+}
+
+:root[data-theme="day"] .hero-orb {
+  background: radial-gradient(circle, rgba(212, 175, 55, 0.35) 0%, rgba(var(--accent-rgb), 0.12) 40%, transparent 70%) !important;
+}
+
+:root[data-theme="day"] .gradient-text {
+  filter: drop-shadow(0 0 22px rgba(212, 175, 55, 0.45));
+}
+
+:root[data-theme="day"] .section-label,
+:root[data-theme="day"] .accent-line {
+  text-shadow: 0 0 14px rgba(var(--accent-rgb), 0.5);
+  box-shadow: 0 0 10px rgba(var(--accent-rgb), 0.4);
+}
+
+:root[data-theme="day"] .section-label {
+  box-shadow: none;
+}
+
+:root[data-theme="day"] .cta-btn {
+  box-shadow: 0 6px 26px rgba(var(--accent-rgb), 0.3), 0 0 50px rgba(212, 175, 55, 0.15);
+}
+
+:root[data-theme="day"] .cta-btn:hover {
+  box-shadow: 0 12px 44px rgba(var(--accent-rgb), 0.45), 0 0 70px rgba(212, 175, 55, 0.25);
+}
+
+:root[data-theme="day"] .property-card,
+:root[data-theme="day"] .service-card {
+  box-shadow: 0 6px 30px rgba(var(--accent-rgb), 0.08);
+  background: rgba(255, 253, 246, 0.55);
+}
+
+:root[data-theme="day"] .property-card:hover,
+:root[data-theme="day"] .service-card:hover {
+  box-shadow: 0 18px 60px rgba(var(--accent-rgb), 0.2), 0 0 40px rgba(212, 175, 55, 0.15);
+}
+
+:root[data-theme="day"] .tag-pill {
+  box-shadow: 0 0 24px rgba(var(--accent-rgb), 0.18);
+  background: rgba(var(--accent-rgb), 0.06);
+}
+
+:root[data-theme="day"] .form-input:focus {
+  box-shadow: 0 0 26px rgba(var(--accent-rgb), 0.18);
+}
+
+:root[data-theme="day"] .theme-toggle {
+  box-shadow: 0 0 18px rgba(var(--accent-rgb), 0.25);
+}
+
+:root[data-theme="day"] .glow-text {
+  text-shadow: 0 0 40px rgba(212, 175, 55, 0.5), 0 0 80px rgba(var(--accent-rgb), 0.2);
+}

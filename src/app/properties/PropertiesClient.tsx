@@ -20,8 +20,8 @@ export default function PropertiesPage() {
 
       {/* Hero */}
       <section style={{ 
-        paddingTop: "180px", 
-        paddingBottom: "80px", 
+        paddingTop: "136px", 
+        paddingBottom: "48px", 
         paddingLeft: "48px", 
         paddingRight: "48px", 
         borderBottom: "1px solid rgba(var(--fg-rgb),0.04)",
@@ -58,7 +58,7 @@ export default function PropertiesPage() {
       </section>
 
       {/* Properties Grid */}
-      <section style={{ padding: "80px 48px" }} className="section-pad">
+      <section style={{ padding: "56px 48px" }} className="section-pad">
         <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "32px" }} className="properties-grid-desktop perspective-container">
             {filtered.map((property) => (

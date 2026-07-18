@@ -53,7 +53,7 @@ export default function PropertyDetailClient({ property }: { property: Property 
       </div>
 
       {/* Main Content */}
-      <section style={{ padding: "16px 48px 80px" }} className="section-pad">
+      <section style={{ padding: "16px 48px 56px" }} className="section-pad">
         <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
           <div style={{ display: "grid", gridTemplateColumns: "1.2fr 0.8fr", gap: "48px" }} className="detail-grid-desktop">
 
