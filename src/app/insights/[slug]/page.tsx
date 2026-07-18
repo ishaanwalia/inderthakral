@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import Nav from "@/components/Nav";
+import Footer from "@/components/Footer";
 import { insights } from "@/data/insights";
+import { site } from "@/data/site";
 
 export function generateStaticParams() {
   return insights.map((article) => ({ slug: article.slug }));
@@ -45,7 +47,7 @@ export default async function InsightArticlePage({
       <main style={{ background: "var(--bg)", minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", color: "var(--fg)" }}>
         <div style={{ textAlign: "center" }}>
           <p style={{ color: "var(--accent)", letterSpacing: "4px", textTransform: "uppercase", marginBottom: "24px", fontFamily: "var(--font-mono)", fontSize: "11px", fontWeight: 500 }}>Note Not Found</p>
-          <a href="/insights/" style={{ color: "rgba(var(--fg-rgb),0.4)", textDecoration: "none", fontSize: "11px", letterSpacing: "2px", textTransform: "uppercase", fontFamily: "var(--font-mono)", fontWeight: 500 }}>← Back to Insights</a>
+          <Link href="/insights/" style={{ color: "rgba(var(--fg-rgb),0.4)", textDecoration: "none", fontSize: "11px", letterSpacing: "2px", textTransform: "uppercase", fontFamily: "var(--font-mono)", fontWeight: 500 }}>← Back to Insights</Link>
         </div>
       </main>
     );
@@ -58,7 +60,7 @@ export default async function InsightArticlePage({
     description: article.dek,
     datePublished: article.date,
     author: { "@type": "Person", name: "Inder Thakral" },
-    publisher: { "@type": "Organization", name: "Inder Thakral Real Estate & Leasing" },
+    publisher: { "@type": "Organization", name: site.brand },
     mainEntityOfPage: `https://www.inderthakral.com/insights/${article.slug}/`,
   };
 
@@ -164,33 +166,17 @@ export default async function InsightArticlePage({
               Written by Inder Thakral
             </p>
             <p style={{ color: "rgba(var(--fg-rgb),0.5)", fontSize: "14px", lineHeight: 1.8, marginBottom: "28px" }}>
-              Principal Advisor — 15+ years in Tricity real estate. Every property recommendation is personally verified, every title checked.
+              Principal Advisor — {site.stats.years}+ years in Tricity real estate. Every property recommendation is personally verified, every title checked.
             </p>
-            <a href="/#contact" className="cta-btn magnetic-btn tap-glow">
+            <Link href="/#contact" className="cta-btn magnetic-btn tap-glow">
               Discuss Your Requirement →
-            </a>
+            </Link>
           </div>
         </div>
       </section>
 
       {/* Footer */}
-      <footer style={{
-        padding: "48px 48px",
-        borderTop: "1px solid rgba(var(--fg-rgb),0.04)",
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "center",
-        flexWrap: "wrap",
-        gap: "24px",
-      }}>
-        <div>
-          <div style={{ color: "var(--accent)", fontSize: "10px", letterSpacing: "4px", textTransform: "uppercase", fontFamily: "var(--font-mono)", fontWeight: 700 }}>Inder Thakral Properties</div>
-          <div style={{ color: "rgba(var(--fg-rgb),0.3)", fontSize: "12px", marginTop: "6px" }}>2026 · SCO 124, Sector-108, Pine Wood Center Emaar, Mohali - 140306</div>
-        </div>
-        <div style={{ color: "rgba(var(--fg-rgb),0.2)", fontSize: "10px", letterSpacing: "3px", textTransform: "uppercase", fontFamily: "var(--font-mono)", fontWeight: 500 }}>
-          Verified Title Deeds · By Appointment Only
-        </div>
-      </footer>
+      <Footer />
     </main>
   );
 }

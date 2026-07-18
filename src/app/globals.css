@@ -756,6 +756,11 @@ body {
   .stats-grid-desktop { grid-template-columns: 1fr 1fr !important; }
 }
 
+/* ===== CINE SCROLL ===== */
+.cine-heading-on-frames {
+  text-shadow: 0 2px 24px rgba(0, 0, 0, 0.7), 0 1px 4px rgba(0, 0, 0, 0.5);
+}
+
 /* ===== REDUCED MOTION ===== */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {

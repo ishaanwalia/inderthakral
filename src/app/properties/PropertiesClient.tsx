@@ -4,6 +4,7 @@ import { properties } from "@/data/properties";
 import Link from "next/link";
 import { useState, useCallback } from "react";
 import Nav from "@/components/Nav";
+import Footer from "@/components/Footer";
 
 export default function PropertiesPage() {
   const [filter, setFilter] = useState("All");
@@ -151,23 +152,7 @@ export default function PropertiesPage() {
       </section>
 
       {/* Footer */}
-      <footer style={{ 
-        padding: "48px 48px", 
-        borderTop: "1px solid rgba(var(--fg-rgb),0.04)", 
-        display: "flex", 
-        justifyContent: "space-between", 
-        alignItems: "center", 
-        flexWrap: "wrap", 
-        gap: "24px" 
-      }}>
-        <div>
-          <div style={{ color: "var(--accent)", fontSize: "10px", letterSpacing: "4px", textTransform: "uppercase", fontFamily: "var(--font-mono)", fontWeight: 700 }}>Inder Thakral Properties</div>
-          <div style={{ color: "rgba(var(--fg-rgb),0.3)", fontSize: "12px", marginTop: "6px" }}>2026 · SCO 124, Sector-108, Pine Wood Center Emaar, Mohali - 140306</div>
-        </div>
-        <div style={{ color: "rgba(var(--fg-rgb),0.2)", fontSize: "10px", letterSpacing: "3px", textTransform: "uppercase", fontFamily: "var(--font-mono)", fontWeight: 500 }}>
-          Verified Title Deeds · By Appointment Only
-        </div>
-      </footer>
+      <Footer />
     </main>
   );
 }

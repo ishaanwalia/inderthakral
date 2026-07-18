@@ -1,6 +1,8 @@
 "use client";
 
+import Link from "next/link";
 import Nav from "@/components/Nav";
+import Footer from "@/components/Footer";
 
 export default function ServicesPage() {
   return (
@@ -114,9 +116,9 @@ export default function ServicesPage() {
                       </div>
                     ))}
                   </div>
-                  <a href="/#contact" className="outline-btn tap-glow" style={{ borderColor: "rgba(var(--accent-rgb),0.3)", color: "var(--accent)" }}>
+                  <Link href="/#contact" className="outline-btn tap-glow" style={{ borderColor: "rgba(var(--accent-rgb),0.3)", color: "var(--accent)" }}>
                     Enquire About This →
-                  </a>
+                  </Link>
                 </div>
                 <div style={{ order: service.flip ? 1 : 2 }}>
                   <div style={{
@@ -181,30 +183,14 @@ export default function ServicesPage() {
           <p style={{ color: "rgba(var(--fg-rgb),0.4)", fontSize: "15px", lineHeight: 1.8, marginBottom: "40px" }}>
             Every engagement begins with a personal conversation with Inder Thakral — no junior agents, no generic advice.
           </p>
-          <a href="/#contact" className="cta-btn magnetic-btn tap-glow">
+          <Link href="/#contact" className="cta-btn magnetic-btn tap-glow">
             Book a Consultation →
-          </a>
+          </Link>
         </div>
       </section>
 
       {/* Footer */}
-      <footer style={{ 
-        padding: "48px 48px", 
-        borderTop: "1px solid rgba(var(--fg-rgb),0.04)", 
-        display: "flex", 
-        justifyContent: "space-between", 
-        alignItems: "center", 
-        flexWrap: "wrap", 
-        gap: "24px" 
-      }}>
-        <div>
-          <div style={{ color: "var(--accent)", fontSize: "10px", letterSpacing: "4px", textTransform: "uppercase", fontFamily: "var(--font-mono)", fontWeight: 700 }}>Inder Thakral Properties</div>
-          <div style={{ color: "rgba(var(--fg-rgb),0.3)", fontSize: "12px", marginTop: "6px" }}>2026 · SCO 124, Sector-108, Pine Wood Center Emaar, Mohali - 140306</div>
-        </div>
-        <div style={{ color: "rgba(var(--fg-rgb),0.2)", fontSize: "10px", letterSpacing: "3px", textTransform: "uppercase", fontFamily: "var(--font-mono)", fontWeight: 500 }}>
-          Verified Title Deeds · By Appointment Only
-        </div>
-      </footer>
+      <Footer />
     </main>
   );
 }

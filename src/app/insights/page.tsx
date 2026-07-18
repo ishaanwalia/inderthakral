@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import Nav from "@/components/Nav";
+import Footer from "@/components/Footer";
 import { insights } from "@/data/insights";
 
 export const metadata: Metadata = {
@@ -106,23 +107,7 @@ export default function InsightsPage() {
       </section>
 
       {/* Footer */}
-      <footer style={{
-        padding: "48px 48px",
-        borderTop: "1px solid rgba(var(--fg-rgb),0.04)",
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "center",
-        flexWrap: "wrap",
-        gap: "24px",
-      }}>
-        <div>
-          <div style={{ color: "var(--accent)", fontSize: "10px", letterSpacing: "4px", textTransform: "uppercase", fontFamily: "var(--font-mono)", fontWeight: 700 }}>Inder Thakral Properties</div>
-          <div style={{ color: "rgba(var(--fg-rgb),0.3)", fontSize: "12px", marginTop: "6px" }}>2026 · SCO 124, Sector-108, Pine Wood Center Emaar, Mohali - 140306</div>
-        </div>
-        <div style={{ color: "rgba(var(--fg-rgb),0.2)", fontSize: "10px", letterSpacing: "3px", textTransform: "uppercase", fontFamily: "var(--font-mono)", fontWeight: 500 }}>
-          Verified Title Deeds · By Appointment Only
-        </div>
-      </footer>
+      <Footer />
     </main>
   );
 }

@@ -27,7 +27,7 @@ export const insights: Insight[] = [
       {
         paragraphs: [
           "Every land market has a moment when it moves from 'emerging' to 'established' — when the roads get built, the townships fill in, and the early pricing window starts to close. For the belt running from Sector 108 through Sector 115 on Mohali's southern expansion edge, that moment is now underway.",
-          "This corridor sits at the meeting point of three forces: the Chandigarh International Airport catchment, the planned expansion of Mohali's sector grid beyond the IT City belt, and township development by national players — including Emaar's presence in Sectors 108–109, where our own showroom at Pine Wood Center is located.",
+          "This corridor sits at the meeting point of three forces: the Chandigarh International Airport catchment, the planned expansion of Mohali's sector grid beyond the IT City belt, and township development by national players — including Emaar's presence in Sectors 108–109, where our own showroom at Thakral Towers is located.",
         ],
       },
       {

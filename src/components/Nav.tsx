@@ -1,32 +1,37 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useSyncExternalStore } from "react";
 import Link from "next/link";
+import { site } from "@/data/site";
+
+// The <html data-theme> attribute (set before paint by the inline script in
+// layout.tsx) is the source of truth; subscribe to it rather than mirroring it
+// into state after mount.
+const subscribeTheme = (onChange: () => void) => {
+  const observer = new MutationObserver(onChange);
+  observer.observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
+  return () => observer.disconnect();
+};
+const getTheme = (): "night" | "day" =>
+  document.documentElement.getAttribute("data-theme") === "day" ? "day" : "night";
 
 export default function Nav({ active }: { active?: string }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [hidden, setHidden] = useState(false);
   const [lastScrollY, setLastScrollY] = useState(0);
-  const [theme, setTheme] = useState<"night" | "day">("night");
-
-  useEffect(() => {
-    setTheme(document.documentElement.getAttribute("data-theme") === "day" ? "day" : "night");
-  }, []);
+  const theme = useSyncExternalStore(subscribeTheme, getTheme, () => "night");
 
   const toggleTheme = useCallback(() => {
-    setTheme((prev) => {
-      const next = prev === "day" ? "night" : "day";
-      if (next === "day") {
-        document.documentElement.setAttribute("data-theme", "day");
-      } else {
-        document.documentElement.removeAttribute("data-theme");
-      }
-      try {
-        localStorage.setItem("theme", next);
-      } catch {}
-      return next;
-    });
+    const next = getTheme() === "day" ? "night" : "day";
+    if (next === "day") {
+      document.documentElement.setAttribute("data-theme", "day");
+    } else {
+      document.documentElement.removeAttribute("data-theme");
+    }
+    try {
+      localStorage.setItem("theme", next);
+    } catch {}
   }, []);
 
   useEffect(() => {
@@ -124,7 +129,7 @@ export default function Nav({ active }: { active?: string }) {
                 fontWeight: 500,
               }}
             >
-              Tricity Land Advisory
+              {site.tagline}
             </div>
             {/* Animated underline */}
             <div style={{
@@ -185,7 +190,7 @@ export default function Nav({ active }: { active?: string }) {
                 }} />
               </Link>
             ))}
-            <a
+            <Link
               href="/#contact"
               style={{
                 color: "rgba(var(--fg-rgb), 0.5)",
@@ -202,8 +207,8 @@ export default function Nav({ active }: { active?: string }) {
               onMouseLeave={(e) => e.currentTarget.style.color = "rgba(var(--fg-rgb), 0.5)"}
             >
               Contact
-            </a>
-            <a
+            </Link>
+            <Link
               href="/#contact"
               style={{
                 border: "1px solid rgba(var(--accent-rgb), 0.3)",
@@ -232,7 +237,7 @@ export default function Nav({ active }: { active?: string }) {
               }}
             >
               Enquire
-            </a>
+            </Link>
           </nav>
 
           <div style={{ display: "flex", alignItems: "center", gap: "20px", flexShrink: 0 }}>
@@ -335,14 +340,14 @@ export default function Nav({ active }: { active?: string }) {
             {label}
           </Link>
         ))}
-        <a
+        <Link
           href="/#contact"
           onClick={handleLinkClick}
           className="mobile-nav-link"
         >
           Contact
-        </a>
-        <a
+        </Link>
+        <Link
           href="/#contact"
           onClick={handleLinkClick}
           style={{
@@ -364,7 +369,7 @@ export default function Nav({ active }: { active?: string }) {
           }}
         >
           Enquire Now
-        </a>
+        </Link>
       </div>
     </>
   );

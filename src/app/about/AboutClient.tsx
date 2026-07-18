@@ -1,6 +1,9 @@
 "use client";
 
+import Link from "next/link";
 import Nav from "@/components/Nav";
+import Footer from "@/components/Footer";
+import { site } from "@/data/site";
 
 export default function AboutPage() {
   return (
@@ -41,7 +44,7 @@ export default function AboutPage() {
             lineHeight: 1.7,
             letterSpacing: "0.5px",
           }}>
-            Independent expertise, personal service. 15+ years of Tricity real estate mastery.
+            Independent expertise, personal service. {site.stats.years}+ years of Tricity real estate mastery.
           </p>
         </div>
       </section>
@@ -56,15 +59,15 @@ export default function AboutPage() {
                 <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 50%)" }} />
                 <div style={{ position: "absolute", bottom: "32px", left: "32px", right: "32px" }}>
                   <p style={{ color: "var(--accent)", fontSize: "11px", letterSpacing: "4px", textTransform: "uppercase", fontFamily: "var(--font-mono)", marginBottom: "8px", fontWeight: 500 }}>Inder Thakral</p>
-                  <p style={{ color: "rgba(var(--fg-rgb),0.5)", fontSize: "14px" }}>Principal Advisor · 15+ Years</p>
+                  <p style={{ color: "rgba(var(--fg-rgb),0.5)", fontSize: "14px" }}>Principal Advisor · {site.stats.years}+ Years</p>
                 </div>
               </div>
               <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "2px" }}>
                 {[
-                  { num: "15+", label: "Years Experience" },
-                  { num: "₹450Cr+", label: "Transactions" },
-                  { num: "500+", label: "Clients Served" },
-                  { num: "100%", label: "Title Verified" },
+                  { num: `${site.stats.years}+`, label: "Years Experience" },
+                  { num: `₹${site.stats.transactionsCr}Cr+`, label: "Transactions" },
+                  { num: `${site.stats.clients}+`, label: "Clients Served" },
+                  { num: `${site.stats.verifiedPct}%`, label: "Title Verified" },
                 ].map((stat, i) => (
                   <div key={i} className="service-card tap-glow" style={{ 
                     padding: "28px", 
@@ -90,7 +93,7 @@ export default function AboutPage() {
                 Inder Thakral is an independent real estate advisory serving the Chandigarh Tricity. Founded by Inder Thakral, the firm provides trusted guidance for buying, selling, leasing, and investing in residential and commercial properties.
               </p>
               <p style={{ color: "rgba(var(--fg-rgb),0.5)", fontSize: "15px", lineHeight: 1.9, marginBottom: "24px" }}>
-                Every transaction is personally overseen, every title is carefully verified, and every client receives direct attention backed by over 15 years of local market expertise.
+                Every transaction is personally overseen, every title is carefully verified, and every client receives direct attention backed by over {site.stats.years} years of local market expertise.
               </p>
               <p style={{ color: "rgba(var(--fg-rgb),0.5)", fontSize: "15px", lineHeight: 1.9, marginBottom: "48px" }}>
                 The firm also provides To-Let and rental placement services — helping property owners find the right tenants and helping tenants find the right space across Tricity.
@@ -108,7 +111,7 @@ export default function AboutPage() {
                     "Commercial showroom plots on high-traffic roads",
                     "To-Let and rental placement services",
                     "Investment advisory for NRIs with remote support",
-                    "15+ years of direct Mohali micro-market expertise",
+                    `${site.stats.years}+ years of direct Mohali micro-market expertise`,
                   ].map((item, i) => (
                     <div key={i} style={{ display: "flex", gap: "16px", alignItems: "flex-start" }}>
                       <span style={{ color: "var(--accent)", marginTop: "2px", flexShrink: 0, fontSize: "12px" }}>◈</span>
@@ -117,9 +120,9 @@ export default function AboutPage() {
                   ))}
                 </div>
               </div>
-              <a href="/#contact" className="cta-btn magnetic-btn tap-glow">
+              <Link href="/#contact" className="cta-btn magnetic-btn tap-glow">
                 Get In Touch →
-              </a>
+              </Link>
             </div>
           </div>
         </div>
@@ -146,7 +149,7 @@ export default function AboutPage() {
               <div style={{ position: "relative", overflow: "hidden", borderRadius: "16px", border: "1px solid rgba(var(--fg-rgb),0.06)" }} className="card-3d tap-glow">
                 <img
                   src="/showroom-exterior.jpeg"
-                  alt="Inder Thakral Real Estate & Leasing office building — SCO 124, Sector-108, Pine Wood Center Emaar, Mohali"
+                  alt={`${site.brand} office building — ${site.address.oneLine}`}
                   style={{ width: "100%", height: "auto", display: "block" }}
                 />
                 <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(0,0,0,0.75) 0%, transparent 40%)" }} />
@@ -165,20 +168,20 @@ export default function AboutPage() {
                 <div>
                   <p style={{ color: "var(--accent)", fontSize: "10px", letterSpacing: "4px", textTransform: "uppercase", fontFamily: "var(--font-mono)", marginBottom: "12px", fontWeight: 500 }}>Address</p>
                   <p style={{ color: "var(--fg)", fontSize: "17px", fontWeight: 500, lineHeight: 1.7, letterSpacing: "0.3px" }}>
-                    SCO 124, Sector-108,<br />
-                    Pine Wood Center Emaar,<br />
-                    Mohali - 140306
+                    {site.address.lines.map((line, i) => (
+                      <span key={i}>{line}{i < site.address.lines.length - 1 ? <>,<br /></> : null}</span>
+                    ))}
                   </p>
                 </div>
                 <div>
                   <p style={{ color: "var(--accent)", fontSize: "10px", letterSpacing: "4px", textTransform: "uppercase", fontFamily: "var(--font-mono)", marginBottom: "12px", fontWeight: 500 }}>Contact</p>
                   <p style={{ color: "rgba(var(--fg-rgb),0.7)", fontSize: "15px", lineHeight: 1.9 }}>
-                    <a href="tel:+919815901234" className="hover-line" style={{ color: "rgba(var(--fg-rgb),0.7)", textDecoration: "none" }}>+91 98159 01234</a><br />
-                    <a href="mailto:care@inderthakral.com" className="hover-line" style={{ color: "rgba(var(--fg-rgb),0.7)", textDecoration: "none" }}>care@inderthakral.com</a>
+                    <a href={`tel:${site.phoneE164}`} className="hover-line" style={{ color: "rgba(var(--fg-rgb),0.7)", textDecoration: "none" }}>{site.phoneDisplay}</a><br />
+                    <a href={`mailto:${site.email}`} className="hover-line" style={{ color: "rgba(var(--fg-rgb),0.7)", textDecoration: "none" }}>{site.email}</a>
                   </p>
                 </div>
                 <a
-                  href="https://www.google.com/maps/search/?api=1&query=SCO+124+Sector+108+Pine+Wood+Center+Emaar+Mohali+140306"
+                  href={site.address.mapsUrl}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="outline-btn tap-glow"
@@ -212,30 +215,14 @@ export default function AboutPage() {
             marginBottom: "40px",
             fontStyle: "italic",
           }}>
-            "I will never show you a property I would not recommend to my own family. Your investment is our responsibility."
+            “I will never show you a property I would not recommend to my own family. Your investment is our responsibility.”
           </p>
           <p style={{ color: "var(--accent)", fontSize: "13px", letterSpacing: "3px", fontFamily: "var(--font-mono)", fontWeight: 500 }}>— Inder Thakral</p>
         </div>
       </section>
 
       {/* Footer */}
-      <footer style={{ 
-        padding: "48px 48px", 
-        borderTop: "1px solid rgba(var(--fg-rgb),0.04)", 
-        display: "flex", 
-        justifyContent: "space-between", 
-        alignItems: "center", 
-        flexWrap: "wrap", 
-        gap: "24px" 
-      }}>
-        <div>
-          <div style={{ color: "var(--accent)", fontSize: "10px", letterSpacing: "4px", textTransform: "uppercase", fontFamily: "var(--font-mono)", fontWeight: 700 }}>Inder Thakral Properties</div>
-          <div style={{ color: "rgba(var(--fg-rgb),0.3)", fontSize: "12px", marginTop: "6px" }}>2026 · SCO 124, Sector-108, Pine Wood Center Emaar, Mohali - 140306</div>
-        </div>
-        <div style={{ color: "rgba(var(--fg-rgb),0.2)", fontSize: "10px", letterSpacing: "3px", textTransform: "uppercase", fontFamily: "var(--font-mono)", fontWeight: 500 }}>
-          Verified Title Deeds · By Appointment Only
-        </div>
-      </footer>
+      <Footer />
     </main>
   );
 }

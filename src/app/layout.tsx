@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Cinzel } from "next/font/google";
+import { site } from "@/data/site";
 import "./globals.css";
 
 const cinzel = Cinzel({
@@ -13,11 +14,11 @@ const SITE_URL = "https://www.inderthakral.com";
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: "Inder Thakral — Real Estate & Leasing | Mohali, Chandigarh Tricity",
-    template: "%s | Inder Thakral Real Estate",
+    default: "Inder Thakral — Property Consultants | Mohali, Chandigarh Tricity",
+    template: "%s | Inder Thakral Property Consultants",
   },
   description:
-    "Verified residential plots and premium commercial showrooms across Mohali, New Chandigarh & Panchkula. Direct advisory by Inder Thakral — 15+ years of Tricity real estate expertise.",
+    "Verified residential plots and premium commercial showrooms across Mohali, New Chandigarh & Panchkula. Direct advisory by Inder Thakral — 38+ years of Tricity real estate expertise.",
   keywords: [
     "Inder Thakral",
     "Mohali real estate",
@@ -31,9 +32,9 @@ export const metadata: Metadata = {
     "Aerocity Mohali",
     "premium land advisory",
   ],
-  authors: [{ name: "Inder Thakral Real Estate & Leasing" }],
-  creator: "Inder Thakral Real Estate & Leasing",
-  publisher: "Inder Thakral Real Estate & Leasing",
+  authors: [{ name: site.brand }],
+  creator: site.brand,
+  publisher: site.brand,
   robots: {
     index: true,
     follow: true,
@@ -47,9 +48,9 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     url: SITE_URL,
-    siteName: "Inder Thakral Real Estate & Leasing",
+    siteName: site.brand,
     locale: "en_IN",
-    title: "Inder Thakral — Real Estate & Leasing | Mohali, Chandigarh Tricity",
+    title: "Inder Thakral — Property Consultants | Mohali, Chandigarh Tricity",
     description:
       "Verified residential plots and premium commercial showrooms across Mohali, New Chandigarh & Panchkula. Personal advisory, 100% verified titles.",
     images: [
@@ -57,13 +58,13 @@ export const metadata: Metadata = {
         url: "/showroom-exterior.jpeg",
         width: 1148,
         height: 1400,
-        alt: "Inder Thakral Real Estate & Leasing office, Sector 108, Mohali",
+        alt: "Inder Thakral Property Consultants office — Thakral Towers, Sector 108, Mohali",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Inder Thakral — Real Estate & Leasing | Mohali, Chandigarh Tricity",
+    title: "Inder Thakral — Property Consultants | Mohali, Chandigarh Tricity",
     description:
       "Verified residential plots and premium commercial showrooms across Mohali, New Chandigarh & Panchkula.",
     images: ["/showroom-exterior.jpeg"],
@@ -77,20 +78,20 @@ export const viewport: Viewport = {
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "RealEstateAgent",
-  name: "Inder Thakral Real Estate & Leasing",
+  name: site.brand,
   url: SITE_URL,
   image: `${SITE_URL}/showroom-exterior.jpeg`,
   logo: `${SITE_URL}/showroom-exterior.jpeg`,
   telephone: "+91-98159-01234",
-  email: "care@inderthakral.com",
+  email: site.email,
   founder: { "@type": "Person", name: "Inder Thakral" },
   address: {
     "@type": "PostalAddress",
-    streetAddress: "SCO 124, Sector-108, Pine Wood Center Emaar",
-    addressLocality: "Mohali",
-    addressRegion: "Punjab",
-    postalCode: "140306",
-    addressCountry: "IN",
+    streetAddress: site.address.street,
+    addressLocality: site.address.locality,
+    addressRegion: site.address.region,
+    postalCode: site.address.postalCode,
+    addressCountry: site.address.country,
   },
   areaServed: [
     { "@type": "City", name: "Mohali" },
@@ -113,7 +114,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={cinzel.variable}>
+    <html lang="en" className={cinzel.variable} data-scroll-behavior="smooth">
       <body>
         <script
           dangerouslySetInnerHTML={{

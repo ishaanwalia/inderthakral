@@ -3,8 +3,12 @@
 import { useEffect, useRef, useState, useCallback } from "react";
 import Link from "next/link";
 import Nav from "@/components/Nav";
+import Footer from "@/components/Footer";
+import CineScroll from "@/components/CineScroll";
 import { properties } from "@/data/properties";
 import { insights } from "@/data/insights";
+import { site } from "@/data/site";
+import { cineSequences } from "@/data/cineSequences";
 
 // ===== MOBILE COUNTER (auto-starts on mount) =====
 function MobileCounter({ end, suffix = "", duration = 2500 }: { end: number; suffix?: string; duration?: number }) {
@@ -118,8 +122,14 @@ function KineticScrollText({ text }: { text: string }) {
 }
 
 // ===== FLOATING PARTICLES (50 on all devices) =====
+// Positions must be deterministic (not Math.random) so the server-rendered
+// HTML matches the client on hydration.
 function FloatingParticles() {
   const count = 50;
+  const rand = (i: number, salt: number) => {
+    const x = Math.sin(i * 127.1 + salt * 311.7) * 43758.5453;
+    return x - Math.floor(x);
+  };
 
   return (
     <>
@@ -130,10 +140,10 @@ function FloatingParticles() {
           height: i % 3 === 0 ? "3px" : "2px",
           background: i % 5 === 0 ? "rgba(var(--accent-rgb), 0.6)" : "rgba(var(--accent-rgb), 0.3)",
           borderRadius: "50%",
-          top: `${Math.random() * 100}%`,
-          left: `${Math.random() * 100}%`,
-          animation: `float ${8 + Math.random() * 6}s ease-in-out infinite`,
-          animationDelay: `${Math.random() * 5}s`,
+          top: `${(rand(i, 1) * 100).toFixed(4)}%`,
+          left: `${(rand(i, 2) * 100).toFixed(4)}%`,
+          animation: `float ${(8 + rand(i, 3) * 6).toFixed(3)}s ease-in-out infinite`,
+          animationDelay: `${(rand(i, 4) * 5).toFixed(3)}s`,
           boxShadow: i % 5 === 0 ? "0 0 15px rgba(var(--accent-rgb), 0.8)" : "0 0 10px rgba(var(--accent-rgb), 0.4)",
         }} />
       ))}
@@ -329,9 +339,9 @@ export default function HomePage() {
               View Properties
               <span style={{ fontSize: "16px" }}>→</span>
             </Link>
-            <a href="/#contact" className="outline-btn magnetic-btn tap-glow">
+            <Link href="/#contact" className="outline-btn magnetic-btn tap-glow">
               Book Consultation
-            </a>
+            </Link>
           </div>
         </div>
 
@@ -368,6 +378,9 @@ export default function HomePage() {
         <KineticScrollText text={scrollText} />
       </section>
 
+      {/* ===== CINE SCROLL: CHANDIGARH — THE CITY BEAUTIFUL ===== */}
+      <CineScroll sequence={cineSequences.cityBeautiful} />
+
       {/* ===== STATS BAR ===== */}
       <section style={{ 
         borderTop: "1px solid rgba(var(--fg-rgb),0.04)", 
@@ -377,10 +390,10 @@ export default function HomePage() {
       }}>
         <div style={{ maxWidth: "1200px", margin: "0 auto", display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "1px" }} className="stats-grid-desktop">
           {[
-            { end: 15, suffix: "+", label: "Years Experience" },
-            { end: 450, suffix: "Cr+", label: "Transactions" },
-            { end: 500, suffix: "+", label: "Clients Served" },
-            { end: 100, suffix: "%", label: "Title Verified" },
+            { end: site.stats.years, suffix: "+", label: "Years Experience" },
+            { end: site.stats.transactionsCr, suffix: "Cr+", label: "Transactions" },
+            { end: site.stats.clients, suffix: "+", label: "Clients Served" },
+            { end: site.stats.verifiedPct, suffix: "%", label: "Title Verified" },
           ].map((stat, i) => (
             <div key={i} ref={addRef} className="reveal stat-card" style={{ 
               borderRight: i < 3 ? "1px solid rgba(var(--fg-rgb),0.04)" : "none",
@@ -622,7 +635,7 @@ export default function HomePage() {
                 <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(0,0,0,0.95) 0%, transparent 50%)" }} />
                 <div style={{ position: "absolute", bottom: "40px", left: "40px", right: "40px" }}>
                   <p style={{ color: "var(--accent)", fontSize: "11px", letterSpacing: "4px", textTransform: "uppercase", fontFamily: "var(--font-mono)", marginBottom: "8px", fontWeight: 500 }}>Inder Thakral</p>
-                  <p style={{ color: "rgba(var(--fg-rgb),0.5)", fontSize: "14px" }}>Principal Advisor · 15+ Years</p>
+                  <p style={{ color: "rgba(var(--fg-rgb),0.5)", fontSize: "14px" }}>Principal Advisor · {site.stats.years}+ Years</p>
                 </div>
                 {/* Accent corner */}
                 <div style={{
@@ -692,7 +705,7 @@ export default function HomePage() {
               fontStyle: "italic",
               letterSpacing: "-0.5px",
             }}>
-              "I will never show you a property I would not recommend to my own family. Your investment is our responsibility."
+              “I will never show you a property I would not recommend to my own family. Your investment is our responsibility.”
             </p>
             <p style={{ color: "var(--accent)", fontSize: "13px", letterSpacing: "3px", fontFamily: "var(--font-mono)", fontWeight: 500 }}>
               — Inder Thakral
@@ -700,6 +713,9 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+
+      {/* ===== CINE SCROLL: GROWTH CORRIDOR ===== */}
+      <CineScroll sequence={cineSequences.growthCorridor} />
 
       {/* ===== MARKET NOTES ===== */}
       <section style={{ padding: "88px 48px" }} className="section-pad">
@@ -804,9 +820,9 @@ export default function HomePage() {
           <div ref={addRef} className="reveal contact-grid-desktop" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "80px", alignItems: "start" }}>
             <div>
               {[
-                { label: "Call Directly", value: "+91 98159 01234", href: "tel:+919815901234" },
-                { label: "Email", value: "care@inderthakral.com", href: "mailto:care@inderthakral.com" },
-                { label: "Office", value: "SCO 124, Sector-108,\nPine Wood Center Emaar,\nMohali - 140306", href: "https://www.google.com/maps/search/?api=1&query=SCO+124+Sector+108+Pine+Wood+Center+Emaar+Mohali+140306" },
+                { label: "Call Directly", value: site.phoneDisplay, href: `tel:${site.phoneE164}` },
+                { label: "Email", value: site.email, href: `mailto:${site.email}` },
+                { label: "Office", value: site.address.lines.join(",\n"), href: site.address.mapsUrl },
               ].map((item, i) => (
                 <div key={i} style={{ marginBottom: "40px" }}>
                   <p style={{ 
@@ -901,38 +917,7 @@ export default function HomePage() {
       </section>
 
       {/* ===== FOOTER ===== */}
-      <footer style={{ 
-        padding: "48px 48px", 
-        borderTop: "1px solid rgba(var(--fg-rgb),0.04)", 
-        display: "flex", 
-        justifyContent: "space-between", 
-        alignItems: "center", 
-        flexWrap: "wrap", 
-        gap: "24px",
-        background: "rgba(var(--bg-rgb),0.5)",
-      }}>
-        <div>
-          <div style={{ 
-            color: "var(--accent)", 
-            fontSize: "10px", 
-            letterSpacing: "4px", 
-            textTransform: "uppercase", 
-            fontFamily: "var(--font-mono)",
-            fontWeight: 700,
-          }}>Inder Thakral Properties</div>
-          <div style={{ color: "rgba(var(--fg-rgb),0.3)", fontSize: "12px", marginTop: "6px", letterSpacing: "0.5px" }}>2026 · SCO 124, Sector-108, Pine Wood Center Emaar, Mohali - 140306</div>
-        </div>
-        <div style={{ 
-          color: "rgba(var(--fg-rgb),0.2)", 
-          fontSize: "10px", 
-          letterSpacing: "3px", 
-          textTransform: "uppercase", 
-          fontFamily: "var(--font-mono)",
-          fontWeight: 500,
-        }}>
-          Verified Title Deeds · By Appointment Only
-        </div>
-      </footer>
+      <Footer />
     </main>
   );
 }
