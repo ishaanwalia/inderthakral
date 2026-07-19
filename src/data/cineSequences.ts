@@ -58,21 +58,21 @@ export const cineSequences = {
         heading: "The City Beautiful",
         caption:
           "Chandigarh — Le Corbusier's planned masterpiece, and North India's most disciplined real-estate story.",
-        position: "center",
+        position: "bottom-right",
       },
       {
         range: [0.34, 0.64],
         heading: "Order by Design",
         caption:
           "A sector grid that made land legible: clean titles, wide roads, deliberate growth. This city was drawn before it was built.",
-        position: "bottom-left",
+        position: "bottom-right",
       },
       {
         range: [0.66, 1],
         heading: "That Discipline Moves South",
         caption:
           "Mohali, New Chandigarh, Aerocity — the grid extends, and value follows it.",
-        position: "center",
+        position: "bottom-right",
       },
     ],
   },
@@ -91,21 +91,21 @@ export const cineSequences = {
         heading: "The City's Still Heart",
         caption:
           "Sukhna Lake — where Chandigarh slows down. A city that planned its calm as carefully as its commerce.",
-        position: "center",
+        position: "bottom-right",
       },
       {
         range: [0.36, 0.64],
         heading: "Value Follows Quality of Life",
         caption:
           "Lakes, gardens, wide skies — the Tricity's liveability is exactly why its land holds value. We help you own a piece of it.",
-        position: "bottom-left",
+        position: "bottom-right",
       },
       {
         range: [0.7, 1],
         heading: "From Sunrise to Skyline",
         caption:
           "Thirty-eight years watching this city change light. Personal advisory from Thakral Towers, Sector 108, Mohali.",
-        position: "center",
+        position: "bottom-right",
       },
     ],
   },

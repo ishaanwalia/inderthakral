@@ -980,16 +980,23 @@ body {
   letter-spacing: 0.5px !important;
 }
 
-/* Smoked liquid-glass card for overlay copy — legible over any footage */
+/* Cine overlay card — same liquid-glass recipe and theme tints as the
+   property cards, so overlays match the site's card language in both themes */
 .cine-glass-card {
   position: relative;
-  max-width: 620px;
-  padding: clamp(24px, 3.5vw, 40px) clamp(28px, 4vw, 48px);
-  border-radius: 24px;
-  background: linear-gradient(150deg, rgba(13, 16, 22, 0.55) 0%, rgba(13, 16, 22, 0.32) 100%);
-  -webkit-backdrop-filter: blur(22px) saturate(150%);
-  backdrop-filter: blur(22px) saturate(150%);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.22), 0 22px 60px rgba(0, 0, 0, 0.4);
+  max-width: 560px;
+  padding: clamp(22px, 3vw, 36px) clamp(26px, 3.5vw, 44px);
+  border-radius: 20px;
+  background: linear-gradient(
+    150deg,
+    rgba(var(--glass-rgb), calc(var(--glass-a1) + 0.06)) 0%,
+    rgba(var(--glass-rgb), calc(var(--glass-a2) + 0.06)) 55%,
+    rgba(var(--accent-rgb), 0.07) 100%
+  );
+  -webkit-backdrop-filter: blur(28px) saturate(170%);
+  backdrop-filter: blur(28px) saturate(170%);
+  border: 1px solid rgba(var(--fg-rgb), 0.05);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.16), var(--glass-shadow);
 }
 
 .cine-glass-card::before {

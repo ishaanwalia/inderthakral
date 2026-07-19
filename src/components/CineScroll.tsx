@@ -73,7 +73,7 @@ function OverlayCopy({ heading, caption }: { heading: string; caption?: string }
           letterSpacing: "0.5px",
           lineHeight: 1.12,
           marginBottom: caption ? "16px" : 0,
-          color: "#fff",
+          color: "var(--fg)",
         }}
       >
         {heading}
@@ -84,7 +84,7 @@ function OverlayCopy({ heading, caption }: { heading: string; caption?: string }
             fontSize: "clamp(14px, 1.6vw, 17px)",
             lineHeight: 1.8,
             letterSpacing: "0.3px",
-            color: "rgba(255,255,255,0.78)",
+            color: "rgba(var(--fg-rgb),0.72)",
           }}
         >
           {caption}
@@ -145,15 +145,13 @@ export default function CineScroll({ sequence }: { sequence: CineSequence }) {
       const img = images[best]!;
       const cw = canvas.width;
       const ch = canvas.height;
-      const s = Math.max(cw / img.naturalWidth, ch / img.naturalHeight);
+      // Crop the right/bottom edges of the source (hides the generator
+      // watermark in the footage corner), then cover-fit whats left.
+      const sw = img.naturalWidth * 0.93;
+      const sh = img.naturalHeight * 0.93;
+      const s = Math.max(cw / sw, ch / sh);
       ctx.clearRect(0, 0, cw, ch);
-      ctx.drawImage(
-        img,
-        (cw - img.naturalWidth * s) / 2,
-        (ch - img.naturalHeight * s) / 2,
-        img.naturalWidth * s,
-        img.naturalHeight * s
-      );
+      ctx.drawImage(img, 0, 0, sw, sh, (cw - sw * s) / 2, (ch - sh * s) / 2, sw * s, sh * s);
       drawnIndex = best;
       if (!posterHidden && posterRef.current) {
         posterRef.current.style.opacity = "0";

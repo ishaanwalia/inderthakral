@@ -5,12 +5,12 @@ import Footer from "@/components/Footer";
 import { insights } from "@/data/insights";
 
 export const metadata: Metadata = {
-  title: "Tricity Market Notes — Mohali & New Chandigarh Real Estate Insights",
+  title: "Tricity Market Notes — Real Estate Insights",
   description:
     "Ground-level commentary on the Mohali, New Chandigarh and Tricity land markets by Inder Thakral — growth corridors, buyer guides, and NRI investment know-how.",
   alternates: { canonical: "/insights/" },
   openGraph: {
-    title: "Tricity Market Notes — Mohali & New Chandigarh Real Estate Insights",
+    title: "Tricity Market Notes — Real Estate Insights",
     description:
       "Ground-level commentary on the Mohali, New Chandigarh and Tricity land markets by Inder Thakral.",
     url: "/insights/",

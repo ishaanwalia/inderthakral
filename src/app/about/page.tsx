@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import AboutClient from "./AboutClient";
 
 export const metadata: Metadata = {
-  title: "About Inder Thakral — Principal Advisor, Chandigarh Tricity",
+  title: "About — 38+ Years of Tricity Real Estate",
   description:
-    "Meet Inder Thakral — independent real estate advisor with 38+ years of Mohali market expertise, ₹450Cr+ in transactions, and 3000+ clients served. Visit our office at SCO 124, Thakral Towers, Sector 108, Emaar, Landran Banur Road, Mohali.",
+    "Independent advisor with 38+ years of Mohali expertise, ₹450Cr+ in transactions, 3000+ clients. Office: Thakral Towers, Sector 108, Mohali.",
   alternates: { canonical: "/about/" },
   openGraph: {
     title: "About Inder Thakral — Principal Advisor, Chandigarh Tricity",

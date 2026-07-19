@@ -24,10 +24,10 @@ export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
     default: "Inder Thakral — Property Consultants | Mohali, Chandigarh Tricity",
-    template: "%s | Inder Thakral Property Consultants",
+    template: "%s | Inder Thakral",
   },
   description:
-    "Verified residential plots and premium commercial showrooms across Mohali, New Chandigarh & Panchkula. Direct advisory by Inder Thakral — 38+ years of Tricity real estate expertise.",
+    "Verified plots and commercial showrooms across Mohali, New Chandigarh & Panchkula. Direct advisory by Inder Thakral — 38+ years of Tricity expertise.",
   keywords: [
     "Inder Thakral",
     "Mohali real estate",
