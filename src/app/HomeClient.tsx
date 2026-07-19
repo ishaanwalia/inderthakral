@@ -348,26 +348,6 @@ export default function HomePage() {
           </div>
         </div>
 
-        {/* Scroll indicator */}
-        <div style={{
-          position: "absolute",
-          bottom: "48px",
-          left: "50%",
-          transform: "translateX(-50%)",
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          gap: "12px",
-          color: "rgba(var(--accent-rgb),0.4)",
-          fontSize: "10px",
-          letterSpacing: "4px",
-          textTransform: "uppercase",
-          fontFamily: "var(--font-mono)",
-          fontWeight: 500,
-        }}>
-          <span>Scroll</span>
-          <div style={{ width: "1px", height: "50px", background: "linear-gradient(to bottom, rgba(var(--accent-rgb),0.5), transparent)", animation: "scrollPulse 2.5s ease-in-out infinite" }} />
-        </div>
       </section>
 
       {/* ===== KINETIC SCROLL TEXT (CSS animation, no RAF) ===== */}
