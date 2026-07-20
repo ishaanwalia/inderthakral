@@ -10,8 +10,6 @@ interface Property {
   title: string;
   type: string;
   size: string;
-  price: string;
-  priceValue: number;
   location: string;
   facing: string;
   status: string;
@@ -25,7 +23,7 @@ interface Property {
 export default function PropertyDetailClient({ property }: { property: Property }) {
   const [activeImage, setActiveImage] = useState(0);
 
-  const whatsappMessage = encodeURIComponent("Hi Inder, I am interested in: " + property.title + " (" + property.size + " at " + property.price + "). Please share details.");
+  const whatsappMessage = encodeURIComponent("Hi Inder, I am interested in: " + property.title + " (" + property.size + "). Please share details and pricing.");
   const whatsappLink = "https://wa.me/919815901234?text=" + whatsappMessage;
 
   return (
@@ -68,10 +66,10 @@ export default function PropertyDetailClient({ property }: { property: Property 
                 border: "1px solid rgba(var(--fg-rgb),0.06)",
                 marginBottom: "16px",
               }}>
-                <img 
-                  src={property.gallery[activeImage]} 
-                  alt={property.title} 
-                  style={{ width: "100%", height: "500px", objectFit: "cover", display: "block" }} 
+                <img
+                  src={property.gallery[activeImage]}
+                  alt={property.title}
+                  style={{ width: "100%", aspectRatio: "1/1", objectFit: "cover", display: "block" }}
                 />
                 <div style={{
                   position: "absolute",
@@ -185,8 +183,9 @@ export default function PropertyDetailClient({ property }: { property: Property 
                 <p style={{ color: "rgba(var(--fg-rgb),0.4)", fontSize: "13px", marginBottom: "32px" }}>{property.location}</p>
 
                 <div style={{ borderTop: "1px solid rgba(var(--fg-rgb),0.05)", borderBottom: "1px solid rgba(var(--fg-rgb),0.05)", padding: "24px 0", marginBottom: "28px" }}>
-                  <div style={{ color: "rgba(var(--fg-rgb),0.3)", fontSize: "10px", letterSpacing: "3px", textTransform: "uppercase", marginBottom: "10px", fontFamily: "var(--font-mono)", fontWeight: 500 }}>Asking Price</div>
-                  <div style={{ color: "var(--accent)", fontSize: "36px", fontWeight: 700, fontFamily: "var(--font-mono)", letterSpacing: "-1px" }}>{property.price}</div>
+                  <div style={{ color: "rgba(var(--fg-rgb),0.3)", fontSize: "10px", letterSpacing: "3px", textTransform: "uppercase", marginBottom: "10px", fontFamily: "var(--font-mono)", fontWeight: 500 }}>Price</div>
+                  <div style={{ color: "var(--accent)", fontSize: "26px", fontWeight: 700, fontFamily: "var(--font-mono)", letterSpacing: "-0.5px" }}>On Request</div>
+                  <p style={{ color: "rgba(var(--fg-rgb),0.4)", fontSize: "12px", marginTop: "8px", lineHeight: 1.6 }}>Pricing is discussed personally with Mr. Inder Thakral.</p>
                 </div>
 
                 <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "20px", marginBottom: "32px" }}>

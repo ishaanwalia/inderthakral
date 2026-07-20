@@ -44,12 +44,13 @@ const range = (folder: string, prefix: string, from: number, to: number, pad: nu
   );
 
 export const cineSequences = {
-  // Aerial view of a Tricity roundabout — a seamless traffic loop, played
-  // forward three times across the scroll.
+  // Aerial view of a Tricity roundabout — played as a boomerang (forward then
+  // backward), so every replay reverses direction and there is never a
+  // jump-cut back to frame 1.
   cityBeautiful: {
     id: "city-beautiful",
     frames: range("/frames/city-beautiful", "frame_", 1, 144, 4),
-    playback: { mode: "loop", cycles: 3 },
+    playback: { mode: "pingpong", cycles: 2 },
     poster: "/frames/city-beautiful/frame_0001.webp",
     heightVh: 380,
     overlays: [

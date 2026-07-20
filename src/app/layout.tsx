@@ -41,6 +41,13 @@ export const metadata: Metadata = {
     "Aerocity Mohali",
     "premium land advisory",
   ],
+  icons: {
+    icon: [
+      { url: "/icon-32.png", sizes: "32x32", type: "image/png" },
+      { url: "/icon-192.png", sizes: "192x192", type: "image/png" },
+    ],
+    apple: "/apple-icon.png",
+  },
   authors: [{ name: site.brand }],
   creator: site.brand,
   publisher: site.brand,
@@ -90,7 +97,7 @@ const jsonLd = {
   name: site.brand,
   url: SITE_URL,
   image: `${SITE_URL}/showroom-exterior.jpeg`,
-  logo: `${SITE_URL}/showroom-exterior.jpeg`,
+  logo: `${SITE_URL}/logo.png`,
   telephone: "+91-98159-01234",
   email: site.email,
   founder: { "@type": "Person", name: "Inder Thakral" },

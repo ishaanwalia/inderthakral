@@ -60,20 +60,18 @@ const overlayPositionStyle = (
   }
 };
 
-// Overlay copy inside a liquid-glass card — smoked glass keeps the type
-// legible over any footage, day or night.
+// Overlay copy inside a liquid-glass stat-style card — same glass recipe,
+// hairline border, and hover sheen as the service/stat cards, with the
+// accent-coloured headline the stats section uses.
 function OverlayCopy({ heading, caption }: { heading: string; caption?: string }) {
   return (
-    <div className="cine-glass-card">
+    <div className="service-card cine-glass-card tap-glow">
       <h2
         style={{
-          fontFamily: "var(--font-cine), serif",
-          fontSize: "clamp(28px, 4.2vw, 52px)",
-          fontWeight: 400,
-          letterSpacing: "0.5px",
-          lineHeight: 1.12,
-          marginBottom: caption ? "16px" : 0,
-          color: "var(--fg)",
+          fontSize: "clamp(20px, 2.1vw, 27px)",
+          lineHeight: 1.15,
+          marginBottom: caption ? "10px" : 0,
+          color: "var(--accent)",
         }}
       >
         {heading}
@@ -81,9 +79,9 @@ function OverlayCopy({ heading, caption }: { heading: string; caption?: string }
       {caption && (
         <p
           style={{
-            fontSize: "clamp(14px, 1.6vw, 17px)",
-            lineHeight: 1.8,
-            letterSpacing: "0.3px",
+            fontSize: "clamp(12px, 1.25vw, 14px)",
+            lineHeight: 1.6,
+            letterSpacing: "0.2px",
             color: "rgba(var(--fg-rgb),0.72)",
           }}
         >
@@ -132,6 +130,10 @@ export default function CineScroll({ sequence }: { sequence: CineSequence }) {
       const dpr = Math.min(window.devicePixelRatio || 1, 2);
       canvas.width = canvas.clientWidth * dpr;
       canvas.height = canvas.clientHeight * dpr;
+      // Resizing resets 2D context state, so re-apply the smoothing quality
+      // (browsers default to "low", which visibly softens upscaled frames).
+      ctx.imageSmoothingEnabled = true;
+      ctx.imageSmoothingQuality = "high";
     };
 
     const draw = (index: number) => {
@@ -145,10 +147,10 @@ export default function CineScroll({ sequence }: { sequence: CineSequence }) {
       const img = images[best]!;
       const cw = canvas.width;
       const ch = canvas.height;
-      // Crop the right/bottom edges of the source (hides the generator
-      // watermark in the footage corner), then cover-fit whats left.
-      const sw = img.naturalWidth * 0.93;
-      const sh = img.naturalHeight * 0.93;
+      // Frames are pre-cropped (watermark removed at build time), so just
+      // cover-fit the full image.
+      const sw = img.naturalWidth;
+      const sh = img.naturalHeight;
       const s = Math.max(cw / sw, ch / sh);
       ctx.clearRect(0, 0, cw, ch);
       ctx.drawImage(img, 0, 0, sw, sh, (cw - sw * s) / 2, (ch - sh * s) / 2, sw * s, sh * s);

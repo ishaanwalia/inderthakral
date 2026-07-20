@@ -19,7 +19,7 @@ export async function generateMetadata({
   if (!property) {
     return { title: "Property Not Found", robots: { index: false } };
   }
-  const title = `${property.title} — ${property.price}`;
+  const title = property.title;
   const description = `Representative ${property.type.toLowerCase()} listing: ${property.size} in ${property.location}. ${property.highlight}. Contact Inder Thakral for current verified inventory and availability.`;
   return {
     title,

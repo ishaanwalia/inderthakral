@@ -65,56 +65,42 @@ export default function PropertiesPage() {
             {filtered.map((property) => (
               <Link key={property.id} href={`/properties/${property.id}/`} style={{ textDecoration: "none" }}>
                 <div className="property-card card-3d tap-glow">
-                  <div style={{ position: "relative", overflow: "hidden", aspectRatio: "4/3" }}>
+                  <div style={{ position: "relative", overflow: "hidden", aspectRatio: "1/1" }}>
                     <img 
                       src={property.image} 
                       alt={property.title} 
                       className="property-card-img"
                       style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} 
                     />
-                    <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 50%)" }} />
-                    <div style={{
-                      position: "absolute",
-                      top: "20px",
-                      left: "20px",
-                      padding: "8px 16px",
-                      background: property.type === "Commercial" ? "var(--accent)" : "rgba(0,0,0,0.5)",
-                      color: property.type === "Commercial" ? "var(--on-accent)" : "var(--accent)",
-                      fontSize: "9px",
-                      letterSpacing: "3px",
-                      textTransform: "uppercase",
-                      fontWeight: 700,
-                      borderRadius: "4px",
-                      backdropFilter: "blur(10px)",
-                      fontFamily: "var(--font-mono)",
-                    }}>
-                      {property.type}
-                    </div>
-                    <div style={{
-                      position: "absolute",
-                      bottom: "20px",
-                      right: "20px",
-                      color: "var(--accent)",
-                      fontSize: "22px",
-                      fontWeight: 700,
-                      fontFamily: "var(--font-mono)",
-                      textShadow: "0 2px 20px rgba(0,0,0,0.5)",
-                    }}>
-                      {property.price}
-                    </div>
                   </div>
                   <div style={{ padding: "28px" }}>
-                    <p style={{ 
-                      color: "rgba(var(--fg-rgb),0.3)", 
-                      fontSize: "10px", 
-                      letterSpacing: "3px", 
-                      textTransform: "uppercase", 
-                      marginBottom: "10px", 
-                      fontFamily: "var(--font-mono)",
-                      fontWeight: 500,
-                    }}>
-                      {property.location}
-                    </p>
+                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: "12px", marginBottom: "10px" }}>
+                      <p style={{
+                        color: "rgba(var(--fg-rgb),0.3)",
+                        fontSize: "10px",
+                        letterSpacing: "3px",
+                        textTransform: "uppercase",
+                        fontFamily: "var(--font-mono)",
+                        fontWeight: 500,
+                        margin: 0,
+                      }}>
+                        {property.location}
+                      </p>
+                      <span style={{
+                        flexShrink: 0,
+                        padding: "6px 14px",
+                        background: property.type === "Commercial" ? "var(--accent)" : "rgba(var(--fg-rgb),0.06)",
+                        color: property.type === "Commercial" ? "var(--on-accent)" : "rgba(var(--fg-rgb),0.6)",
+                        fontSize: "9px",
+                        letterSpacing: "2px",
+                        textTransform: "uppercase",
+                        fontWeight: 700,
+                        borderRadius: "4px",
+                        fontFamily: "var(--font-mono)",
+                      }}>
+                        {property.type}
+                      </span>
+                    </div>
                     <h3 style={{ 
                       color: "var(--fg)", 
                       fontSize: "17px", 

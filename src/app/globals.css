@@ -285,8 +285,8 @@ body {
 
 /* ===== GALLERY THUMBNAILS ===== */
 .gallery-thumb {
-  width: 100px;
-  height: 70px;
+  width: 84px;
+  height: 84px;
   object-fit: cover;
   cursor: pointer;
   flex-shrink: 0;
@@ -556,6 +556,13 @@ body {
   --glass-a2: 0.02;
   --glass-edge: rgba(255, 255, 255, 0.35);
   --glass-shadow: 0 18px 50px rgba(0, 0, 0, 0.35);
+  /* Hero floating-particle alphas (dot fill + glow halo) */
+  --particle-a: 0.3;
+  --particle-a-bright: 0.6;
+  --particle-glow: 0.4;
+  --particle-glow-bright: 0.8;
+  /* Smoked underlay for cine overlay cards (keeps text legible over footage) */
+  --cine-card-smoke: rgba(10, 14, 20, 0.5);
 }
 
 :root[data-theme="day"] {
@@ -564,6 +571,12 @@ body {
   --glass-a2: 0.4;
   --glass-edge: rgba(255, 255, 255, 0.95);
   --glass-shadow: 0 18px 50px rgba(92, 70, 20, 0.12);
+  /* Gold dots on ivory need much stronger alpha to match the night theme's presence */
+  --particle-a: 0.6;
+  --particle-a-bright: 0.95;
+  --particle-glow: 0.5;
+  --particle-glow-bright: 0.9;
+  --cine-card-smoke: rgba(246, 240, 225, 0.6);
 }
 
 /* ===== PROPERTY CARD ===== */
@@ -970,53 +983,51 @@ body {
 }
 
 /* ===== CINE SCROLL ===== */
-/* Overlay headings keep the cinematic serif in both themes — the day theme
-   rebinds h2 to Cinzel with !important, so this must match its importance
-   (and out-rank it on specificity for the day case). */
+/* Overlay headings use the site's bold sans (matching the hero H1 and stat
+   numbers) instead of the thin cinematic serif — the day theme rebinds h2 to
+   Cinzel with !important, so this must match its importance (and out-rank it
+   on specificity for the day case) to actually override it. */
 .cine-glass-card h2,
 :root[data-theme="day"] .cine-glass-card h2 {
-  font-family: var(--font-cine), serif !important;
-  font-weight: 400 !important;
-  letter-spacing: 0.5px !important;
+  font-family: var(--font-sans) !important;
+  font-weight: 800 !important;
+  letter-spacing: -0.5px !important;
 }
 
-/* Cine overlay card — same liquid-glass recipe and theme tints as the
-   property cards, so overlays match the site's card language in both themes */
+/* Cine overlay card — reuses the .service-card liquid-glass recipe (the same
+   card used for the stats grid on the About page: glass gradient, hairline
+   border, hover sheen sweep, theme tints). This class only pins the size and
+   layout so every overlay renders as an identical card in one spot. */
 .cine-glass-card {
   position: relative;
-  max-width: 560px;
-  padding: clamp(22px, 3vw, 36px) clamp(26px, 3.5vw, 44px);
-  border-radius: 20px;
-  background: linear-gradient(
-    150deg,
-    rgba(var(--glass-rgb), calc(var(--glass-a1) + 0.06)) 0%,
-    rgba(var(--glass-rgb), calc(var(--glass-a2) + 0.06)) 55%,
-    rgba(var(--accent-rgb), 0.07) 100%
-  );
-  -webkit-backdrop-filter: blur(28px) saturate(170%);
-  backdrop-filter: blur(28px) saturate(170%);
-  border: 1px solid rgba(var(--fg-rgb), 0.05);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.16), var(--glass-shadow);
+  overflow: hidden;
+  /* Same glass gradient as the stat/service cards, over a smoked underlay so
+     copy stays legible against bright, busy footage. */
+  background:
+    linear-gradient(
+      150deg,
+      rgba(var(--glass-rgb), calc(var(--glass-a1) + 0.06)) 0%,
+      rgba(var(--glass-rgb), calc(var(--glass-a2) + 0.06)) 55%,
+      rgba(var(--accent-rgb), 0.07) 100%
+    ),
+    var(--cine-card-smoke);
+  width: min(420px, calc(100vw - 40px));
+  padding: clamp(20px, 2.4vw, 30px) clamp(22px, 2.8vw, 34px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  border-radius: 18px;
+  /* Parent overlay wrapper is pointer-events: none; re-enable on the card so
+     the hover sheen ("white light") fires like the property cards. */
+  pointer-events: auto;
+  cursor: default;
 }
 
-.cine-glass-card::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  padding: 1px;
-  background: linear-gradient(
-    150deg,
-    rgba(255, 255, 255, 0.4) 0%,
-    rgba(255, 255, 255, 0.07) 35%,
-    rgba(var(--accent-rgb), 0.25) 70%,
-    rgba(255, 255, 255, 0.18) 100%
-  );
-  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-  -webkit-mask-composite: xor;
-  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-  mask-composite: exclude;
-  pointer-events: none;
+.cine-glass-card:hover {
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.22),
+    0 24px 70px rgba(0, 0, 0, 0.35), 0 0 60px rgba(var(--accent-rgb), 0.12);
 }
 
 /* ===== REDUCED MOTION ===== */
