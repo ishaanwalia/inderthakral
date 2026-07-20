@@ -72,8 +72,8 @@ export const metadata: Metadata = {
     images: [
       {
         url: "/showroom-exterior.jpeg",
-        width: 1148,
-        height: 1400,
+        width: 1792,
+        height: 2400,
         alt: "Inder Thakral Property Consultants office — Thakral Towers, Sector 108, Mohali",
       },
     ],

@@ -11,12 +11,16 @@ export default function Carousel({ label, children }: { label: string; children:
   // correct before the ResizeObserver delivers the first measurement.
   const [atStart, setAtStart] = useState(true);
   const [atEnd, setAtEnd] = useState(false);
+  // Arrows are pointless clutter when every cell already fits in view —
+  // only show them once there's actually somewhere to scroll to.
+  const [canScroll, setCanScroll] = useState(false);
 
   const update = useCallback(() => {
     const el = trackRef.current;
     if (!el) return;
     setAtStart(el.scrollLeft <= 4);
     setAtEnd(el.scrollLeft >= el.scrollWidth - el.clientWidth - 4);
+    setCanScroll(el.scrollWidth > el.clientWidth + 4);
   }, []);
 
   useEffect(() => {
@@ -52,24 +56,28 @@ export default function Carousel({ label, children }: { label: string; children:
           <div className="carousel-cell">{child}</div>
         ))}
       </div>
-      <button
-        type="button"
-        className="carousel-btn carousel-btn-prev"
-        onClick={() => step(-1)}
-        disabled={atStart}
-        aria-label={`Previous ${label}`}
-      >
-        ←
-      </button>
-      <button
-        type="button"
-        className="carousel-btn carousel-btn-next"
-        onClick={() => step(1)}
-        disabled={atEnd}
-        aria-label={`Next ${label}`}
-      >
-        →
-      </button>
+      {canScroll && (
+        <>
+          <button
+            type="button"
+            className="carousel-btn carousel-btn-prev"
+            onClick={() => step(-1)}
+            disabled={atStart}
+            aria-label={`Previous ${label}`}
+          >
+            ←
+          </button>
+          <button
+            type="button"
+            className="carousel-btn carousel-btn-next"
+            onClick={() => step(1)}
+            disabled={atEnd}
+            aria-label={`Next ${label}`}
+          >
+            →
+          </button>
+        </>
+      )}
     </div>
   );
 }
