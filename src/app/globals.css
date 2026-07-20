@@ -657,13 +657,10 @@ body {
     0 32px 90px rgba(0, 0, 0, 0.45), 0 0 70px rgba(var(--accent-rgb), 0.1);
 }
 
-.property-card:hover .property-card-img {
-  transform: scale(1.05);
-}
-
-.property-card-img {
-  transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-}
+/* No hover zoom on the image itself — the card sits in an overflow:hidden,
+   fixed-aspect container, so scaling the photo up on hover clipped it against
+   the container edges. The card lift + sheen sweep above already carries the
+   hover feedback. */
 
 /* ===== SERVICE CARD ===== */
 .service-card {
