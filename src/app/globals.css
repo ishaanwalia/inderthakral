@@ -38,9 +38,11 @@
 
 /* overflow-x must be `clip`, not `hidden`, on html/body and any ancestor of a
    cine-scroll section: `hidden` turns the element into a scroll container,
-   which silently disables position:sticky pinning. */
+   which silently disables position:sticky pinning.
+   No `scroll-behavior: smooth` here — Lenis (SmoothScroll) owns all easing;
+   letting the native CSS smoothing run too would fight it on every anchor
+   jump and scroll-restoration. */
 html {
-  scroll-behavior: smooth;
   overflow-x: clip;
   background: var(--bg);
 }

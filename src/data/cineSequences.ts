@@ -2,13 +2,13 @@
 //
 // Each sequence is an ordered list of frame image paths under public/frames/.
 // `playback` controls how scroll progress maps onto the frames:
-//   - "scrub" (default): frame 0 at the top of the section, last frame at the bottom.
-//   - "loop": plays the frames forward `cycles` times across the scroll — for
-//     seamless loops (traffic circling a roundabout).
-//   - "pingpong": forward then backward `cycles` times — for non-loop clips.
+//   - "scrub" (default): frame 0 at the top of the section, last frame at the
+//     bottom — plays once, holds the final frame. Used for both sequences
+//     below since each is now a single long painted shot, not a short loop.
+//   - "loop": plays the frames forward `cycles` times across the scroll.
+//   - "pingpong": forward then backward `cycles` times.
 // `dayFrames`, when present, is used instead of `frames` while the site is in
-// the day theme (the Sukhna timelapse shows its daylight arc in day mode and
-// its sunset-to-night arc in night mode).
+// the day theme.
 //
 // If the frames list is empty or the first frame fails to load, the section
 // renders as a static cinematic panel with the overlay copy instead.
@@ -44,15 +44,13 @@ const range = (folder: string, prefix: string, from: number, to: number, pad: nu
   );
 
 export const cineSequences = {
-  // Aerial view of a Tricity roundabout — played as a boomerang (forward then
-  // backward), so every replay reverses direction and there is never a
-  // jump-cut back to frame 1.
+  // Aerial painting of a Tricity roundabout — a single long take, scrubbed
+  // once from top to bottom of the section and held on its final frame.
   cityBeautiful: {
     id: "city-beautiful",
-    frames: range("/frames/city-beautiful", "frame_", 1, 144, 4),
-    playback: { mode: "pingpong", cycles: 2 },
+    frames: range("/frames/city-beautiful", "frame_", 1, 220, 4),
     poster: "/frames/city-beautiful/frame_0001.webp",
-    heightVh: 380,
+    heightVh: 460,
     overlays: [
       {
         range: [0, 0.32],
@@ -77,36 +75,35 @@ export const cineSequences = {
       },
     ],
   },
-  // Sukhna Lake timelapse: one master shot spanning a full day. Day theme
-  // scrubs morning -> golden hour (frames 1-148); night theme scrubs
-  // sunset -> nightfall (frames 149-240).
-  sukhnaLake: {
+  // Cherry blossoms at the Open Hand — a single painted take. The footage
+  // carries its own "inderthakral.com" signature baked into the opening and
+  // closing stretch, so overlay copy lives top-left throughout rather than
+  // bottom-right, keeping the two brand marks from ever colliding.
+  cherryBlossom: {
     id: "lake",
-    frames: range("/frames/lake", "frame_", 149, 240, 4),
-    dayFrames: range("/frames/lake", "frame_", 1, 148, 4),
-    poster: "/frames/lake/frame_0160.webp",
-    heightVh: 420,
+    frames: range("/frames/lake", "frame_", 1, 220, 4),
+    poster: "/frames/lake/frame_0090.webp",
+    heightVh: 440,
     overlays: [
       {
         range: [0, 0.3],
-        heading: "The City's Still Heart",
+        heading: "When Chandigarh Blooms",
         caption:
-          "Sukhna Lake — where Chandigarh slows down. A city that planned its calm as carefully as its commerce.",
-        position: "bottom-right",
+          "Cherry blossoms along the sector boulevards — proof this city was planned for beauty as much as function.",
+        position: "top-left",
       },
       {
         range: [0.36, 0.64],
         heading: "Value Follows Quality of Life",
         caption:
-          "Lakes, gardens, wide skies — the Tricity's liveability is exactly why its land holds value. We help you own a piece of it.",
-        position: "bottom-right",
+          "Parks, tree-lined sectors, seasonal colour — the everyday beauty that keeps Tricity land in demand.",
+        position: "top-left",
       },
       {
         range: [0.7, 1],
-        heading: "From Sunrise to Skyline",
-        caption:
-          "Thirty-eight years watching this city change light. Personal advisory from Thakral Towers, Sector 108, Mohali.",
-        position: "bottom-right",
+        heading: "A City Worth Investing In",
+        caption: "Thirty-eight years watching this city bloom, season after season.",
+        position: "top-left",
       },
     ],
   },

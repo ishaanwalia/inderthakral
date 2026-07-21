@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Cinzel, Prata } from "next/font/google";
 import { site } from "@/data/site";
+import SmoothScroll from "@/components/SmoothScroll";
 import "./globals.css";
 
 const cinzel = Cinzel({
@@ -130,7 +131,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${cinzel.variable} ${prata.variable}`} data-scroll-behavior="smooth">
+    <html lang="en" className={`${cinzel.variable} ${prata.variable}`}>
       <body>
         <script
           dangerouslySetInnerHTML={{
@@ -142,6 +143,7 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
+        <SmoothScroll />
         {children}
       </body>
     </html>
