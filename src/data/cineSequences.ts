@@ -18,7 +18,7 @@ export type CineOverlay = {
   range: [number, number];
   heading: string;
   caption?: string;
-  position?: "top-left" | "center" | "bottom-left" | "bottom-right";
+  position?: "top-left" | "top-right" | "center" | "bottom-left" | "bottom-right";
 };
 
 export type CineSequence = {
@@ -29,6 +29,14 @@ export type CineSequence = {
   dayFrames?: string[];
   /** How scroll progress maps to frames. Default: linear scrub. */
   playback?: { mode: "pingpong" | "loop"; cycles?: number };
+  /**
+   * How the frame fills the canvas. "cover" (default) crops to fill —
+   * a full-bleed look, fine for footage with no edge-critical content.
+   * "contain" letterboxes instead, always showing the full frame — use it
+   * for footage that has essential content baked in near the edges (e.g.
+   * the cherry-blossom sequence's signature).
+   */
+  fit?: "cover" | "contain";
   /** Optional poster image shown before frames load / in fallback mode. */
   poster?: string;
   /** Total scroll height of the section in vh (100vh of it is the pinned stage). */
@@ -49,6 +57,9 @@ export const cineSequences = {
   cityBeautiful: {
     id: "city-beautiful",
     frames: range("/frames/city-beautiful", "frame_", 1, 220, 4),
+    // Cover-fit: full-bleed, cropped-to-fill — the aerial painting has no
+    // essential content near its edges, so a tight portrait-style crop on
+    // phones reads as more cinematic, not a loss.
     poster: "/frames/city-beautiful/frame_0001.webp",
     heightVh: 460,
     overlays: [
@@ -57,7 +68,7 @@ export const cineSequences = {
         heading: "The City Beautiful",
         caption:
           "Chandigarh — Le Corbusier's planned masterpiece, and North India's most disciplined real-estate story.",
-        position: "bottom-right",
+        position: "top-left",
       },
       {
         range: [0.34, 0.64],
@@ -71,17 +82,19 @@ export const cineSequences = {
         heading: "That Discipline Moves South",
         caption:
           "Mohali, New Chandigarh, Aerocity — the grid extends, and value follows it.",
-        position: "bottom-right",
+        position: "top-right",
       },
     ],
   },
   // Cherry blossoms at the Open Hand — a single painted take. The footage
   // carries its own "inderthakral.com" signature baked into the opening and
-  // closing stretch, so overlay copy lives top-left throughout rather than
-  // bottom-right, keeping the two brand marks from ever colliding.
+  // closing stretch, low and wide across the frame, so this sequence is
+  // always contain-fit (the full landscape frame stays visible, letterboxed
+  // rather than cropped) and every card lives in the top band, clear of it.
   cherryBlossom: {
     id: "lake",
     frames: range("/frames/lake", "frame_", 1, 220, 4),
+    fit: "contain",
     poster: "/frames/lake/frame_0090.webp",
     heightVh: 440,
     overlays: [
@@ -97,7 +110,7 @@ export const cineSequences = {
         heading: "Value Follows Quality of Life",
         caption:
           "Parks, tree-lined sectors, seasonal colour — the everyday beauty that keeps Tricity land in demand.",
-        position: "top-left",
+        position: "top-right",
       },
       {
         range: [0.7, 1],

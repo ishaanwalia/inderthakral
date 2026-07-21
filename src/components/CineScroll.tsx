@@ -43,11 +43,13 @@ const overlayPositionStyle = (
 ): React.CSSProperties => {
   switch (position) {
     case "top-left":
-      return { top: "120px", left: "clamp(24px, 5vw, 64px)", textAlign: "left" };
+      return { top: "140px", left: "clamp(24px, 5vw, 64px)", textAlign: "left" };
+    case "top-right":
+      return { top: "140px", right: "clamp(24px, 5vw, 64px)", textAlign: "right" };
     case "bottom-left":
-      return { bottom: "96px", left: "clamp(24px, 5vw, 64px)", textAlign: "left" };
+      return { bottom: "112px", left: "clamp(24px, 5vw, 64px)", textAlign: "left" };
     case "bottom-right":
-      return { bottom: "96px", right: "clamp(24px, 5vw, 64px)", textAlign: "right" };
+      return { bottom: "112px", right: "clamp(24px, 5vw, 64px)", textAlign: "right" };
     default:
       return {
         inset: 0,
@@ -149,14 +151,17 @@ export default function CineScroll({ sequence }: { sequence: CineSequence }) {
       const ch = canvas.height;
       const sw = img.naturalWidth;
       const sh = img.naturalHeight;
-      // Cover-fit on wide/landscape viewports (full-bleed cinematic feel).
-      // On tall/portrait viewports (phones), a landscape frame cover-fit into
-      // a much taller canvas crops most of its width away — on sequences
-      // with baked-in copy (e.g. the cherry-blossom "inderthakral.com" mark)
-      // that clips the text unreadably. Contain-fit there instead, letting
-      // the section background show as letterboxing, so the full frame is
-      // always visible.
-      const s = cw < ch ? Math.min(cw / sw, ch / sh) : Math.max(cw / sw, ch / sh);
+      // `sequence.fit` decides per-sequence, not per-viewport: "contain"
+      // (cherry-blossom) always shows the full frame, letterboxed if the
+      // canvas is a different aspect — needed because that footage bakes
+      // its "inderthakral.com" signature in low and wide, and cropping it
+      // on a portrait phone chopped the text down to "derthakral.co".
+      // "cover" (default, city-beautiful) crops to fill — fine since that
+      // footage has no essential content near the edges.
+      const s =
+        sequence.fit === "contain"
+          ? Math.min(cw / sw, ch / sh)
+          : Math.max(cw / sw, ch / sh);
       ctx.clearRect(0, 0, cw, ch);
       ctx.drawImage(img, 0, 0, sw, sh, (cw - sw * s) / 2, (ch - sh * s) / 2, sw * s, sh * s);
       drawnIndex = best;
@@ -343,7 +348,15 @@ export default function CineScroll({ sequence }: { sequence: CineSequence }) {
   return (
     <section
       ref={containerRef}
-      style={{ position: "relative", height: `${sequence.heightVh}vh`, background: "var(--bg)" }}
+      style={{
+        position: "relative",
+        height: `${sequence.heightVh}vh`,
+        // Same accent glow the poster fallback uses, layered over the base
+        // theme colour — this, not a flat panel, is what shows through
+        // during poster fade and in any contain-fit letterbox bars.
+        background:
+          "radial-gradient(ellipse at 50% 40%, rgba(var(--accent-rgb),0.08) 0%, transparent 65%), var(--bg)",
+      }}
     >
       <div style={{ position: "sticky", top: 0, height: "100vh", overflow: "hidden" }}>
         <div
@@ -382,6 +395,7 @@ export default function CineScroll({ sequence }: { sequence: CineSequence }) {
         {sequence.overlays.map((overlay, i) => (
           <div
             key={i}
+            className="cine-overlay-wrap"
             style={{
               position: "absolute",
               pointerEvents: "none",
