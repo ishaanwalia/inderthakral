@@ -65,9 +65,22 @@ const overlayPositionStyle = (
 // Overlay copy inside a liquid-glass stat-style card — same glass recipe,
 // hairline border, and hover sheen as the service/stat cards, with the
 // accent-coloured headline the stats section uses.
-function OverlayCopy({ heading, caption }: { heading: string; caption?: string }) {
+function OverlayCopy({
+  heading,
+  caption,
+  compact,
+}: {
+  heading: string;
+  caption?: string;
+  /** Narrower fixed width — used when cards sit three-across below the
+   * footage instead of floating full-size over it. */
+  compact?: boolean;
+}) {
   return (
-    <div className="service-card cine-glass-card tap-glow">
+    <div
+      className="service-card cine-glass-card tap-glow"
+      style={compact ? { width: "min(360px, calc(100vw - 64px))" } : undefined}
+    >
       <h2
         style={{
           fontSize: "clamp(26px, 3vw, 36px)",
@@ -127,6 +140,7 @@ export default function CineScroll({ sequence }: { sequence: CineSequence }) {
     let drawnIndex = -1;
     let posterHidden = false;
     let ticking = false;
+    let latestProgress = 0;
 
     const sizeCanvas = () => {
       const dpr = Math.min(window.devicePixelRatio || 1, 2);
@@ -145,25 +159,33 @@ export default function CineScroll({ sequence }: { sequence: CineSequence }) {
         if (images[index - d]) { best = index - d; break; }
         if (images[index + d]) { best = index + d; break; }
       }
-      if (best < 0 || best === drawnIndex) return;
+      // `mobilePan` (portrait canvas only): crop off the bottom of the frame
+      // — ground level, where the footage's own baked-in signature and prop
+      // clutter sit — then sweep the remaining strip left-to-right in sync
+      // with scroll progress, cover-filling the canvas throughout. On
+      // landscape/desktop, or sequences without mobilePan, the full frame
+      // is used, centred as normal. When panning, the frame must be
+      // redrawn every tick even if the index hasn't changed yet, since the
+      // pan offset itself keeps moving — so the "already drew this frame"
+      // shortcut only applies when there's no pan.
+      const usePan = canvas.width < canvas.height && !!sequence.mobilePan;
+      if (best < 0 || (best === drawnIndex && !usePan)) return;
       const img = images[best]!;
       const cw = canvas.width;
       const ch = canvas.height;
       const sw = img.naturalWidth;
       const sh = img.naturalHeight;
-      // `sequence.fit` decides per-sequence, not per-viewport: "contain"
-      // (cherry-blossom) always shows the full frame, letterboxed if the
-      // canvas is a different aspect — needed because that footage bakes
-      // its "inderthakral.com" signature in low and wide, and cropping it
-      // on a portrait phone chopped the text down to "derthakral.co".
-      // "cover" (default, city-beautiful) crops to fill — fine since that
-      // footage has no essential content near the edges.
+      const srcH = usePan ? Math.round(sh * sequence.mobilePan!.cropTop) : sh;
       const s =
         sequence.fit === "contain"
-          ? Math.min(cw / sw, ch / sh)
-          : Math.max(cw / sw, ch / sh);
+          ? Math.min(cw / sw, ch / srcH)
+          : Math.max(cw / sw, ch / srcH);
+      const drawW = sw * s;
+      const drawH = srcH * s;
+      const dy = (ch - drawH) / 2;
+      const dx = usePan ? latestProgress * (cw - drawW) : (cw - drawW) / 2;
       ctx.clearRect(0, 0, cw, ch);
-      ctx.drawImage(img, 0, 0, sw, sh, (cw - sw * s) / 2, (ch - sh * s) / 2, sw * s, sh * s);
+      ctx.drawImage(img, 0, 0, sw, srcH, dx, dy, drawW, drawH);
       drawnIndex = best;
       if (!posterHidden && posterRef.current) {
         posterRef.current.style.opacity = "0";
@@ -244,6 +266,7 @@ export default function CineScroll({ sequence }: { sequence: CineSequence }) {
       const scrollable = rect.height - window.innerHeight;
       const progress =
         scrollable > 0 ? Math.min(1, Math.max(0, -rect.top / scrollable)) : 0;
+      latestProgress = progress;
       if (sequence.playback?.mode === "pingpong") {
         // Triangle wave: each cycle plays the frames forward then back.
         const t = (progress * (sequence.playback.cycles ?? 3)) % 1;
@@ -344,8 +367,11 @@ export default function CineScroll({ sequence }: { sequence: CineSequence }) {
     );
   }
 
+  const cardsBelow = sequence.cardsPlacement === "below";
+
   // ----- Cine mode: tall section with a sticky scrub stage -----
   return (
+    <>
     <section
       ref={containerRef}
       style={{
@@ -353,7 +379,7 @@ export default function CineScroll({ sequence }: { sequence: CineSequence }) {
         height: `${sequence.heightVh}vh`,
         // Same accent glow the poster fallback uses, layered over the base
         // theme colour — this, not a flat panel, is what shows through
-        // during poster fade and in any contain-fit letterbox bars.
+        // during poster fade.
         background:
           "radial-gradient(ellipse at 50% 40%, rgba(var(--accent-rgb),0.08) 0%, transparent 65%), var(--bg)",
       }}
@@ -392,25 +418,45 @@ export default function CineScroll({ sequence }: { sequence: CineSequence }) {
               "linear-gradient(to top, rgba(0,0,0,0.45) 0%, transparent 35%, transparent 70%, rgba(0,0,0,0.3) 100%)",
           }}
         />
-        {sequence.overlays.map((overlay, i) => (
-          <div
-            key={i}
-            className="cine-overlay-wrap"
-            style={{
-              position: "absolute",
-              pointerEvents: "none",
-              ...overlayPositionStyle(overlay.position ?? "center"),
-            }}
-          >
+        {!cardsBelow &&
+          sequence.overlays.map((overlay, i) => (
             <div
-              ref={(el) => { overlayRefs.current[i] = el; }}
-              style={{ opacity: 0, transform: "translateY(16px)" }}
+              key={i}
+              className="cine-overlay-wrap"
+              style={{
+                position: "absolute",
+                pointerEvents: "none",
+                ...overlayPositionStyle(overlay.position ?? "center"),
+              }}
             >
-              <OverlayCopy heading={overlay.heading} caption={overlay.caption} />
+              <div
+                ref={(el) => { overlayRefs.current[i] = el; }}
+                style={{ opacity: 0, transform: "translateY(16px)" }}
+              >
+                <OverlayCopy heading={overlay.heading} caption={overlay.caption} />
+              </div>
             </div>
-          </div>
-        ))}
+          ))}
       </div>
     </section>
+    {cardsBelow && (
+      <section className="section-pad" style={{ padding: "48px 48px 64px" }}>
+        <div
+          style={{
+            maxWidth: "1200px",
+            margin: "0 auto",
+            display: "flex",
+            flexWrap: "wrap",
+            justifyContent: "center",
+            gap: "28px",
+          }}
+        >
+          {sequence.overlays.map((overlay, i) => (
+            <OverlayCopy key={i} heading={overlay.heading} caption={overlay.caption} compact />
+          ))}
+        </div>
+      </section>
+    )}
+    </>
   );
 }

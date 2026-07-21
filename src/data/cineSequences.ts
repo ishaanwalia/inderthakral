@@ -32,15 +32,27 @@ export type CineSequence = {
   /**
    * How the frame fills the canvas. "cover" (default) crops to fill —
    * a full-bleed look, fine for footage with no edge-critical content.
-   * "contain" letterboxes instead, always showing the full frame — use it
-   * for footage that has essential content baked in near the edges (e.g.
-   * the cherry-blossom sequence's signature).
+   * "contain" letterboxes instead, always showing the full frame.
    */
   fit?: "cover" | "contain";
+  /**
+   * Mobile-only (portrait canvas) treatment: crop to the top `cropTop`
+   * fraction of the frame's height — enough to lose ground-level clutter —
+   * then pan that cropped strip horizontally left-to-right as the section
+   * scrolls, cover-filling the canvas throughout. Ignored on landscape
+   * (desktop) viewports, where the full frame is used as normal.
+   */
+  mobilePan?: { cropTop: number };
   /** Optional poster image shown before frames load / in fallback mode. */
   poster?: string;
   /** Total scroll height of the section in vh (100vh of it is the pinned stage). */
   heightVh: number;
+  /**
+   * "overlay" (default): cards float over the footage, timed to `range`.
+   * "below": cards render as a plain static row under the pinned stage
+   * instead — for footage where floating copy over the image doesn't work.
+   */
+  cardsPlacement?: "overlay" | "below";
   overlays: CineOverlay[];
 };
 
@@ -86,37 +98,36 @@ export const cineSequences = {
       },
     ],
   },
-  // Cherry blossoms at the Open Hand — a single painted take. The footage
-  // carries its own "inderthakral.com" signature baked into the opening and
-  // closing stretch, low and wide across the frame, so this sequence is
-  // always contain-fit (the full landscape frame stays visible, letterboxed
-  // rather than cropped) and every card lives in the top band, clear of it.
+  // Cherry blossoms at the Open Hand — a single painted take. Ground level
+  // (grass, the bicycle prop, and the footage's own baked-in
+  // "inderthakral.com" signature) sits in the bottom ~28% of every frame, so
+  // the mobile pan crops that off entirely and sweeps left (tree) to right
+  // (hand sculpture) across what's left — never shows either element, no
+  // letterboxing needed. Cards render below the pinned stage, not over it.
   cherryBlossom: {
     id: "lake",
     frames: range("/frames/lake", "frame_", 1, 220, 4),
-    fit: "contain",
+    mobilePan: { cropTop: 0.72 },
     poster: "/frames/lake/frame_0090.webp",
-    heightVh: 440,
+    heightVh: 340,
+    cardsPlacement: "below",
     overlays: [
       {
         range: [0, 0.3],
         heading: "When Chandigarh Blooms",
         caption:
           "Cherry blossoms along the sector boulevards — proof this city was planned for beauty as much as function.",
-        position: "top-left",
       },
       {
         range: [0.36, 0.64],
         heading: "Value Follows Quality of Life",
         caption:
           "Parks, tree-lined sectors, seasonal colour — the everyday beauty that keeps Tricity land in demand.",
-        position: "top-right",
       },
       {
         range: [0.7, 1],
         heading: "A City Worth Investing In",
         caption: "Thirty-eight years watching this city bloom, season after season.",
-        position: "top-left",
       },
     ],
   },

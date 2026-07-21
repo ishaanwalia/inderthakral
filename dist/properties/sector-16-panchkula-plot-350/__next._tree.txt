@@ -1,4 +1,4 @@
 :HL["/_next/static/chunks/1og0f7okzquw4.css","style"]
 :HL["/_next/static/media/68019c21ced96fa9-s.p.0mhosx07nwlp0.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
 :HL["/_next/static/media/cc014fcb166cf364-s.p.2cu9iw-l3ih8o.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
-0:{"tree":{"name":"","param":null,"prefetchHints":16,"slots":{"children":{"name":"properties","param":null,"prefetchHints":0,"slots":{"children":{"name":"id","param":{"type":"d","key":"sector-16-panchkula-plot-350","siblings":null},"prefetchHints":0,"slots":{"children":{"name":"__PAGE__","param":null,"prefetchHints":0,"slots":null}}}}}}},"staleTime":300,"buildId":"XIhYgS18tVIn9laofskBH"}
+0:{"tree":{"name":"","param":null,"prefetchHints":16,"slots":{"children":{"name":"properties","param":null,"prefetchHints":0,"slots":{"children":{"name":"id","param":{"type":"d","key":"sector-16-panchkula-plot-350","siblings":null},"prefetchHints":0,"slots":{"children":{"name":"__PAGE__","param":null,"prefetchHints":0,"slots":null}}}}}}},"staleTime":300,"buildId":"DhVkgXeW5mmNykSD082Of"}
