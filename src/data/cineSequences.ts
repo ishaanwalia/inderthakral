@@ -100,38 +100,36 @@ export const cineSequences = {
   },
   // Cherry blossoms at the Open Hand — a single painted take. Ground level
   // (grass, the bicycle prop, and the footage's own baked-in
-  // "inderthakral.com" signature) sits in the bottom ~28% of every frame, so
-  // the mobile pan crops that off entirely and sweeps left (tree) to right
-  // (hand sculpture) across what's left — never shows either element, no
-  // letterboxing needed. Cards render below the pinned stage, not over it.
+  // "inderthakral.com" signature) sits in the bottom ~28% of every frame.
+  // Mobile pan crops that off entirely and sweeps left (tree) to right
+  // (hand sculpture) across what's left. Desktop still shows the full
+  // frame, so cards stay in the top band there too, clear of that text.
   cherryBlossom: {
     id: "lake",
     frames: range("/frames/lake", "frame_", 1, 220, 4),
     mobilePan: { cropTop: 0.72 },
     poster: "/frames/lake/frame_0090.webp",
-    // Generous scroll length so the 220-frame scrub plays out gracefully
-    // rather than racing past — cards no longer need to be timed to this
-    // range (they're below, static), so the whole length is free to just
-    // pace the footage well.
     heightVh: 460,
-    cardsPlacement: "below",
     overlays: [
       {
         range: [0, 0.3],
         heading: "When Chandigarh Blooms",
         caption:
           "Cherry blossoms along the sector boulevards — proof this city was planned for beauty as much as function.",
+        position: "top-left",
       },
       {
         range: [0.36, 0.64],
         heading: "Value Follows Quality of Life",
         caption:
           "Parks, tree-lined sectors, seasonal colour — the everyday beauty that keeps Tricity land in demand.",
+        position: "top-right",
       },
       {
         range: [0.7, 1],
         heading: "A City Worth Investing In",
         caption: "Thirty-eight years watching this city bloom, season after season.",
+        position: "top-left",
       },
     ],
   },
