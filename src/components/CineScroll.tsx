@@ -68,9 +68,9 @@ function OverlayCopy({ heading, caption }: { heading: string; caption?: string }
     <div className="service-card cine-glass-card tap-glow">
       <h2
         style={{
-          fontSize: "clamp(20px, 2.1vw, 27px)",
+          fontSize: "clamp(26px, 3vw, 36px)",
           lineHeight: 1.15,
-          marginBottom: caption ? "10px" : 0,
+          marginBottom: caption ? "14px" : 0,
           color: "var(--accent)",
         }}
       >
@@ -79,8 +79,8 @@ function OverlayCopy({ heading, caption }: { heading: string; caption?: string }
       {caption && (
         <p
           style={{
-            fontSize: "clamp(12px, 1.25vw, 14px)",
-            lineHeight: 1.6,
+            fontSize: "clamp(15px, 1.6vw, 18px)",
+            lineHeight: 1.65,
             letterSpacing: "0.2px",
             color: "rgba(var(--fg-rgb),0.72)",
           }}
@@ -147,11 +147,16 @@ export default function CineScroll({ sequence }: { sequence: CineSequence }) {
       const img = images[best]!;
       const cw = canvas.width;
       const ch = canvas.height;
-      // Frames are pre-cropped (watermark removed at build time), so just
-      // cover-fit the full image.
       const sw = img.naturalWidth;
       const sh = img.naturalHeight;
-      const s = Math.max(cw / sw, ch / sh);
+      // Cover-fit on wide/landscape viewports (full-bleed cinematic feel).
+      // On tall/portrait viewports (phones), a landscape frame cover-fit into
+      // a much taller canvas crops most of its width away — on sequences
+      // with baked-in copy (e.g. the cherry-blossom "inderthakral.com" mark)
+      // that clips the text unreadably. Contain-fit there instead, letting
+      // the section background show as letterboxing, so the full frame is
+      // always visible.
+      const s = cw < ch ? Math.min(cw / sw, ch / sh) : Math.max(cw / sw, ch / sh);
       ctx.clearRect(0, 0, cw, ch);
       ctx.drawImage(img, 0, 0, sw, sh, (cw - sw * s) / 2, (ch - sh * s) / 2, sw * s, sh * s);
       drawnIndex = best;
