@@ -109,7 +109,11 @@ export const cineSequences = {
     frames: range("/frames/lake", "frame_", 1, 220, 4),
     mobilePan: { cropTop: 0.72 },
     poster: "/frames/lake/frame_0090.webp",
-    heightVh: 340,
+    // Generous scroll length so the 220-frame scrub plays out gracefully
+    // rather than racing past — cards no longer need to be timed to this
+    // range (they're below, static), so the whole length is free to just
+    // pace the footage well.
+    heightVh: 460,
     cardsPlacement: "below",
     overlays: [
       {
