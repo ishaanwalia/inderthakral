@@ -102,34 +102,36 @@ export const cineSequences = {
   // (grass, the bicycle prop, and the footage's own baked-in
   // "inderthakral.com" signature) sits in the bottom ~28% of every frame.
   // Mobile pan crops that off entirely and sweeps left (tree) to right
-  // (hand sculpture) across what's left. Desktop still shows the full
-  // frame, so cards stay in the top band there too, clear of that text.
+  // (hand sculpture) across what's left, so cards can sit bottom-left
+  // there without ever meeting that text.
   cherryBlossom: {
     id: "lake",
     frames: range("/frames/lake", "frame_", 1, 220, 4),
     mobilePan: { cropTop: 0.72 },
     poster: "/frames/lake/frame_0090.webp",
     heightVh: 460,
+    // Bottom-left throughout: that's where the tree trunk sits in frame,
+    // grounding the cards in the scene instead of floating in open sky.
     overlays: [
       {
         range: [0, 0.3],
         heading: "When Chandigarh Blooms",
         caption:
           "Cherry blossoms along the sector boulevards — proof this city was planned for beauty as much as function.",
-        position: "top-left",
+        position: "bottom-left",
       },
       {
         range: [0.36, 0.64],
         heading: "Value Follows Quality of Life",
         caption:
           "Parks, tree-lined sectors, seasonal colour — the everyday beauty that keeps Tricity land in demand.",
-        position: "top-right",
+        position: "bottom-left",
       },
       {
         range: [0.7, 1],
         heading: "A City Worth Investing In",
         caption: "Thirty-eight years watching this city bloom, season after season.",
-        position: "top-left",
+        position: "bottom-left",
       },
     ],
   },
