@@ -6,6 +6,7 @@ import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import CineScroll from "@/components/CineScroll";
 import Carousel from "@/components/Carousel";
+import SectionLabel from "@/components/SectionLabel";
 import { properties } from "@/data/properties";
 import { insights } from "@/data/insights";
 import { site } from "@/data/site";
@@ -27,41 +28,9 @@ function useMediaQuery(query: string) {
   );
 }
 
-// ===== MOBILE COUNTER (auto-starts on mount) =====
-function MobileCounter({ end, suffix = "", duration = 2500 }: { end: number; suffix?: string; duration?: number }) {
-  const [count, setCount] = useState(0);
-  const hasAnimated = useRef(false);
-
-  useEffect(() => {
-    if (hasAnimated.current) return;
-    hasAnimated.current = true;
-    const startTime = Date.now();
-    const animate = () => {
-      const elapsed = Date.now() - startTime;
-      const progress = Math.min(elapsed / duration, 1);
-      const eased = 1 - Math.pow(1 - progress, 4);
-      setCount(Math.floor(eased * end));
-      if (progress < 1) requestAnimationFrame(animate);
-    };
-    requestAnimationFrame(animate);
-  }, [end, duration]);
-
-  return (
-    <div className="mobile-counter" style={{ 
-      color: "var(--accent)", 
-      fontSize: "clamp(40px, 5vw, 72px)", 
-      fontWeight: 700, 
-      fontFamily: "var(--font-mono)", 
-      letterSpacing: "-2px",
-      lineHeight: 1,
-    }}>
-      {count}{suffix}
-    </div>
-  );
-}
-
-// ===== DESKTOP COUNTER (IntersectionObserver) =====
-function DesktopCounter({ end, suffix = "", duration = 2500 }: { end: number; suffix?: string; duration?: number }) {
+// ===== ANIMATED COUNTER (IntersectionObserver — works on every device, no
+// separate mobile/desktop variant or viewport-width state needed) =====
+function Counter({ end, suffix = "", duration = 2500 }: { end: number; suffix?: string; duration?: number }) {
   const [count, setCount] = useState(0);
   const ref = useRef<HTMLDivElement>(null);
   const hasAnimated = useRef(false);
@@ -89,11 +58,11 @@ function DesktopCounter({ end, suffix = "", duration = 2500 }: { end: number; su
   }, [end, duration]);
 
   return (
-    <div ref={ref} style={{ 
-      color: "var(--accent)", 
-      fontSize: "clamp(40px, 5vw, 72px)", 
-      fontWeight: 700, 
-      fontFamily: "var(--font-mono)", 
+    <div ref={ref} className="mobile-counter" style={{
+      color: "var(--accent)",
+      fontSize: "clamp(40px, 5vw, 72px)",
+      fontWeight: 700,
+      fontFamily: "var(--font-mono)",
       letterSpacing: "-2px",
       lineHeight: 1,
     }}>
@@ -201,16 +170,8 @@ function CursorGlow() {
 export default function HomePage() {
   const revealRefs = useRef<(HTMLElement | null)[]>([]);
   const heroRef = useRef<HTMLDivElement>(null);
-  const [isMobile, setIsMobile] = useState(false);
   const prefersReducedMotion = useMediaQuery("(prefers-reduced-motion: reduce)");
   const hasFinePointer = useMediaQuery("(hover: hover) and (pointer: fine)");
-
-  useEffect(() => {
-    const checkMobile = () => setIsMobile(window.innerWidth < 768);
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
-  }, []);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -282,7 +243,6 @@ export default function HomePage() {
   }, []);
 
   const featuredProperties = properties.slice(0, 3);
-  const CounterComponent = isMobile ? MobileCounter : DesktopCounter;
   const scrollText = "Verified Land • Trusted Advisory • Personal Service • Mohali • Chandigarh • Panchkula • Premium Properties • Verified Land • Trusted Advisory • Personal Service • Mohali • Chandigarh • Panchkula • Premium Properties";
 
   return (
@@ -406,7 +366,7 @@ export default function HomePage() {
             <div key={i} ref={addRef} className="reveal stat-card" style={{ 
               borderRight: i < 3 ? "1px solid rgba(var(--fg-rgb),0.04)" : "none",
             }}>
-              <CounterComponent end={stat.end} suffix={stat.suffix} />
+              <Counter end={stat.end} suffix={stat.suffix} />
               <div style={{ 
                 color: "rgba(var(--fg-rgb),0.3)", 
                 fontSize: "10px", 
@@ -440,10 +400,7 @@ export default function HomePage() {
         <div style={{ maxWidth: "1200px", margin: "0 auto", position: "relative", zIndex: 1 }}>
           <div ref={addRef} className="reveal" style={{ marginBottom: "56px", display: "flex", justifyContent: "space-between", alignItems: "flex-end", flexWrap: "wrap", gap: "24px" }}>
             <div>
-              <p className="section-label" style={{ marginBottom: "20px" }}>
-                <span className="accent-line" />
-                Featured Listings
-              </p>
+              <SectionLabel style={{ marginBottom: "20px" }}>Featured Listings</SectionLabel>
               <h2 style={{ 
                 fontSize: "clamp(32px, 5vw, 56px)", 
                 fontWeight: 700, 
@@ -549,11 +506,7 @@ export default function HomePage() {
       }} className="section-pad">
         <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
           <div ref={addRef} className="reveal" style={{ textAlign: "center", marginBottom: "56px" }}>
-            <p className="section-label" style={{ marginBottom: "20px", justifyContent: "center" }}>
-              <span className="accent-line" />
-              What We Offer
-              <span className="accent-line" />
-            </p>
+            <SectionLabel centered style={{ marginBottom: "20px" }}>What We Offer</SectionLabel>
             <h2 style={{ 
               fontSize: "clamp(32px, 5vw, 56px)", 
               fontWeight: 700, 
@@ -644,10 +597,7 @@ export default function HomePage() {
             </div>
 
             <div ref={addRef} className="reveal">
-              <p className="section-label" style={{ marginBottom: "24px" }}>
-                <span className="accent-line" />
-                The Principal Advisor
-              </p>
+              <SectionLabel style={{ marginBottom: "24px" }}>The Principal Advisor</SectionLabel>
               <h2 style={{ 
                 fontSize: "clamp(28px, 4vw, 48px)", 
                 fontWeight: 700, 
@@ -684,11 +634,7 @@ export default function HomePage() {
       }} className="section-pad">
         <div style={{ maxWidth: "800px", margin: "0 auto", textAlign: "center" }}>
           <div ref={addRef} className="reveal">
-            <p className="section-label" style={{ marginBottom: "40px", justifyContent: "center" }}>
-              <span className="accent-line" />
-              Our Philosophy
-              <span className="accent-line" />
-            </p>
+            <SectionLabel centered style={{ marginBottom: "40px" }}>Our Philosophy</SectionLabel>
             <p style={{
               fontSize: "clamp(22px, 3vw, 34px)",
               fontWeight: 700,
@@ -717,10 +663,7 @@ export default function HomePage() {
         <div style={{ maxWidth: "1200px", margin: "0 auto", position: "relative", zIndex: 1 }}>
           <div ref={addRef} className="reveal" style={{ marginBottom: "48px", display: "flex", justifyContent: "space-between", alignItems: "flex-end", flexWrap: "wrap", gap: "24px" }}>
             <div>
-              <p className="section-label" style={{ marginBottom: "20px" }}>
-                <span className="accent-line" />
-                Tricity Market Notes
-              </p>
+              <SectionLabel style={{ marginBottom: "20px" }}>Tricity Market Notes</SectionLabel>
               <h2 style={{
                 fontSize: "clamp(32px, 5vw, 56px)",
                 fontWeight: 700,
@@ -786,11 +729,7 @@ export default function HomePage() {
         <div style={{ position: "absolute", inset: 0, background: "radial-gradient(ellipse at 50% 0%, rgba(var(--accent-rgb),0.06) 0%, transparent 60%)" }} />
         <div style={{ maxWidth: "1000px", margin: "0 auto", position: "relative" }}>
           <div ref={addRef} className="reveal" style={{ textAlign: "center", marginBottom: "56px" }}>
-            <p className="section-label" style={{ marginBottom: "20px", justifyContent: "center" }}>
-              <span className="accent-line" />
-              Get In Touch
-              <span className="accent-line" />
-            </p>
+            <SectionLabel centered style={{ marginBottom: "20px" }}>Get In Touch</SectionLabel>
             <h2 style={{ 
               fontSize: "clamp(32px, 5vw, 56px)", 
               fontWeight: 700, 

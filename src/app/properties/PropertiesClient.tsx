@@ -103,16 +103,16 @@ export default function PropertiesPage() {
                         {property.type}
                       </span>
                     </div>
-                    <h3 style={{ 
-                      color: "var(--fg)", 
-                      fontSize: "17px", 
-                      fontWeight: 600, 
-                      marginBottom: "12px", 
+                    <h2 style={{
+                      color: "var(--fg)",
+                      fontSize: "17px",
+                      fontWeight: 600,
+                      marginBottom: "12px",
                       lineHeight: 1.3,
                       letterSpacing: "-0.5px",
                     }}>
                       {property.title}
-                    </h3>
+                    </h2>
                     <p style={{ 
                       color: "rgba(var(--fg-rgb),0.4)", 
                       fontSize: "13px", 

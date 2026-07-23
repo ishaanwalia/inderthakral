@@ -3,6 +3,7 @@
 import Link from "next/link";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
+import SectionLabel from "@/components/SectionLabel";
 import { site } from "@/data/site";
 
 export default function AboutPage() {
@@ -22,10 +23,7 @@ export default function AboutPage() {
         background: "radial-gradient(ellipse at 30% 50%, rgba(var(--accent-rgb),0.03) 0%, transparent 60%)",
       }} className="section-pad">
         <div style={{ maxWidth: "1200px", margin: "0 auto", position: "relative" }}>
-          <p className="section-label" style={{ marginBottom: "24px" }}>
-            <span className="accent-line" />
-            The Principal Advisor
-          </p>
+          <SectionLabel style={{ marginBottom: "24px" }}>The Principal Advisor</SectionLabel>
           <h1 style={{ 
             fontSize: "clamp(48px, 8vw, 100px)", 
             fontWeight: 700, 
@@ -82,10 +80,7 @@ export default function AboutPage() {
             </div>
 
             <div>
-              <p className="section-label" style={{ marginBottom: "32px" }}>
-                <span className="accent-line" />
-                The Firm
-              </p>
+              <SectionLabel style={{ marginBottom: "32px" }}>The Firm</SectionLabel>
               <p style={{ color: "var(--fg)", fontSize: "20px", fontWeight: 600, lineHeight: 1.8, marginBottom: "28px", letterSpacing: "-0.5px" }}>
                 Independent expertise, personal service.
               </p>
@@ -100,10 +95,7 @@ export default function AboutPage() {
               </p>
 
               <div style={{ borderTop: "1px solid rgba(var(--fg-rgb),0.05)", paddingTop: "40px", marginBottom: "40px" }}>
-                <p className="section-label" style={{ marginBottom: "28px" }}>
-                  <span className="accent-line" />
-                  What We Help With
-                </p>
+                <SectionLabel style={{ marginBottom: "28px" }}>What We Help With</SectionLabel>
                 <div style={{ display: "flex", flexDirection: "column", gap: "14px" }}>
                   {[
                     "Residential plots — verified, legal, ready to register",
@@ -132,10 +124,7 @@ export default function AboutPage() {
       <section style={{ padding: "0 48px 72px" }} className="section-pad">
         <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
           <div style={{ borderTop: "1px solid rgba(var(--fg-rgb),0.04)", paddingTop: "72px" }}>
-            <p className="section-label" style={{ marginBottom: "24px" }}>
-              <span className="accent-line" />
-              Our Office
-            </p>
+            <SectionLabel style={{ marginBottom: "24px" }}>Our Office</SectionLabel>
             <h2 style={{ 
               fontSize: "clamp(28px, 4vw, 48px)", 
               fontWeight: 700, 
@@ -206,11 +195,7 @@ export default function AboutPage() {
         borderTop: "1px solid rgba(var(--fg-rgb),0.03)",
       }} className="section-pad">
         <div style={{ maxWidth: "800px", margin: "0 auto", textAlign: "center" }}>
-          <p className="section-label" style={{ marginBottom: "40px", justifyContent: "center" }}>
-            <span className="accent-line" />
-            Our Philosophy
-            <span className="accent-line" />
-          </p>
+          <SectionLabel centered style={{ marginBottom: "40px" }}>Our Philosophy</SectionLabel>
           <p style={{ 
             fontSize: "clamp(22px, 3vw, 34px)", 
             fontWeight: 700, 

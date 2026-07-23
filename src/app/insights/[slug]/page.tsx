@@ -53,6 +53,11 @@ export default async function InsightArticlePage({
     );
   }
 
+  const related = insights
+    .filter((a) => a.slug !== article.slug)
+    .sort((a, b) => (a.tag === article.tag ? -1 : 0) - (b.tag === article.tag ? -1 : 0))
+    .slice(0, 2);
+
   const articleJsonLd = {
     "@context": "https://schema.org",
     "@type": "Article",
@@ -172,6 +177,35 @@ export default async function InsightArticlePage({
               Discuss Your Requirement →
             </Link>
           </div>
+
+          {/* Related notes */}
+          {related.length > 0 && (
+            <div style={{ marginTop: "64px", borderTop: "1px solid rgba(var(--fg-rgb),0.06)", paddingTop: "40px" }}>
+              <p className="section-label" style={{ marginBottom: "24px" }}>
+                <span className="accent-line" />
+                Related Reading
+              </p>
+              <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+                {related.map((a) => (
+                  <Link
+                    key={a.slug}
+                    href={`/insights/${a.slug}/`}
+                    className="hover-line"
+                    style={{
+                      color: "var(--fg)",
+                      fontSize: "15px",
+                      fontWeight: 500,
+                      textDecoration: "none",
+                      padding: "12px 0",
+                      display: "block",
+                    }}
+                  >
+                    {a.title} →
+                  </Link>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
       </section>
 
