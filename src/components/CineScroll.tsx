@@ -302,6 +302,12 @@ export default function CineScroll({ sequence }: { sequence: CineSequence }) {
       draw(Math.round(current));
     };
 
+    // A generous rootMargin here is a real-world LCP bug: the city-beautiful
+    // sequence sits only ~1 viewport below the top of the page, so a 150%
+    // margin used to start pulling its ~220 frames (~20MB) immediately on
+    // page load — before the user had scrolled at all — starving the actual
+    // above-the-fold content of bandwidth. 30% only starts the fetch once
+    // the section is genuinely about to be scrolled into view.
     const io = new IntersectionObserver(
       (entries) => {
         if (entries.some((e) => e.isIntersecting)) {
@@ -309,7 +315,7 @@ export default function CineScroll({ sequence }: { sequence: CineSequence }) {
           io.disconnect();
         }
       },
-      { rootMargin: "150% 0px" }
+      { rootMargin: "30% 0px" }
     );
     io.observe(container);
 
