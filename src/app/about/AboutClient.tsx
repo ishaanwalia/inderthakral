@@ -55,7 +55,7 @@ export default function AboutPage() {
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "80px" }} className="about-grid-desktop">
             <div>
               <div style={{ position: "relative", borderRadius: "20px", overflow: "hidden", border: "1px solid rgba(var(--fg-rgb),0.06)", marginBottom: "32px" }} className="card-3d">
-                <img src="/inder.jpeg" alt="Inder Thakral" style={{ width: "100%", objectFit: "cover", objectPosition: "center", display: "block", filter: "grayscale(20%) contrast(1.05)" }} />
+                <img src="/inder.jpeg" alt="Inder Thakral" loading="lazy" decoding="async" style={{ width: "100%", objectFit: "cover", objectPosition: "center", display: "block", filter: "grayscale(20%) contrast(1.05)" }} />
                 <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 50%)" }} />
                 <div style={{ position: "absolute", bottom: "32px", left: "32px", right: "32px" }}>
                   <p style={{ color: "var(--accent)", fontSize: "11px", letterSpacing: "4px", textTransform: "uppercase", fontFamily: "var(--font-mono)", marginBottom: "8px", fontWeight: 500 }}>Inder Thakral</p>
@@ -150,6 +150,10 @@ export default function AboutPage() {
                 <img
                   src="/showroom-exterior.jpeg"
                   alt={`${site.brand} office building — ${site.address.oneLine}`}
+                  loading="lazy"
+                  decoding="async"
+                  width={1792}
+                  height={2400}
                   style={{ width: "100%", height: "auto", display: "block" }}
                 />
                 <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(0,0,0,0.75) 0%, transparent 40%)" }} />

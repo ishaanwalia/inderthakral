@@ -69,6 +69,9 @@ export default function PropertyDetailClient({ property }: { property: Property 
                 <img
                   src={property.gallery[activeImage]}
                   alt={property.title}
+                  loading="eager"
+                  fetchPriority="high"
+                  decoding="async"
                   style={{ width: "100%", aspectRatio: "1/1", objectFit: "cover", display: "block" }}
                 />
                 <div style={{
@@ -105,9 +108,11 @@ export default function PropertyDetailClient({ property }: { property: Property 
                       cursor: "pointer",
                     }}
                   >
-                    <img 
-                      src={img} 
-                      alt="" 
+                    <img
+                      src={img}
+                      alt=""
+                      loading="lazy"
+                      decoding="async"
                       style={{ width: "100%", height: "100%", objectFit: "cover", display: "block", pointerEvents: "none" }}
                     />
                   </div>

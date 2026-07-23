@@ -1,7 +1,10 @@
 import type { Metadata, Viewport } from "next";
 import { Cinzel, Prata } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
 import { site } from "@/data/site";
 import SmoothScroll from "@/components/SmoothScroll";
+import MagneticButtons from "@/components/MagneticButtons";
+import FloatingWhatsApp from "@/components/FloatingWhatsApp";
 import "./globals.css";
 
 const cinzel = Cinzel({
@@ -144,7 +147,10 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
         <SmoothScroll />
+        <MagneticButtons />
         {children}
+        <FloatingWhatsApp />
+        <Analytics />
       </body>
     </html>
   );

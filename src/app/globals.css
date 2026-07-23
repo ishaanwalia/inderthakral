@@ -826,6 +826,34 @@ body {
   background: rgba(var(--accent-rgb),0.01);
 }
 
+/* ===== VISUALLY HIDDEN (accessible labels) ===== */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ===== FOCUS VISIBLE ===== */
+.filter-btn:focus-visible,
+.carousel-btn:focus-visible,
+.form-input:focus-visible,
+.outline-btn:focus-visible,
+.cta-btn:focus-visible,
+.theme-toggle:focus-visible,
+.hamburger-toggle:focus-visible,
+.gallery-thumb:focus-visible,
+a:focus-visible,
+button:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
 /* ===== FORM INPUT ===== */
 .form-input {
   width: 100%;

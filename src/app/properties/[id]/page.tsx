@@ -1,7 +1,10 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { properties } from "@/data/properties";
+import { site } from "@/data/site";
 import PropertyDetailClient from "./PropertyDetailClient";
+
+const SITE_URL = "https://www.inderthakral.com";
 
 export function generateStaticParams() {
   return properties.map((property) => ({
@@ -54,5 +57,48 @@ export default async function PropertyDetailPage({
     );
   }
 
-  return <PropertyDetailClient property={property} />;
+  const listingJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "RealEstateListing",
+    name: property.title,
+    description: property.description,
+    url: `${SITE_URL}/properties/${property.id}/`,
+    image: `${SITE_URL}${property.image}`,
+    address: {
+      "@type": "PostalAddress",
+      addressLocality: property.location,
+      addressRegion: "Punjab",
+      addressCountry: "IN",
+    },
+    broker: {
+      "@type": "RealEstateAgent",
+      name: site.brand,
+      telephone: site.phoneE164,
+      url: SITE_URL,
+    },
+  };
+
+  const breadcrumbJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Home", item: `${SITE_URL}/` },
+      { "@type": "ListItem", position: 2, name: "Properties", item: `${SITE_URL}/properties/` },
+      { "@type": "ListItem", position: 3, name: property.title, item: `${SITE_URL}/properties/${property.id}/` },
+    ],
+  };
+
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(listingJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+      />
+      <PropertyDetailClient property={property} />
+    </>
+  );
 }

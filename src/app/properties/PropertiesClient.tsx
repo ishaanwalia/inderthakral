@@ -66,11 +66,13 @@ export default function PropertiesPage() {
               <Link key={property.id} href={`/properties/${property.id}/`} style={{ textDecoration: "none" }}>
                 <div className="property-card card-3d tap-glow">
                   <div style={{ position: "relative", overflow: "hidden", aspectRatio: "1/1" }}>
-                    <img 
-                      src={property.image} 
-                      alt={property.title} 
+                    <img
+                      src={property.image}
+                      alt={property.title}
                       className="property-card-img"
-                      style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} 
+                      loading="lazy"
+                      decoding="async"
+                      style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
                     />
                   </div>
                   <div style={{ padding: "28px" }}>

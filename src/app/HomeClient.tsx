@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState, useCallback } from "react";
+import { useEffect, useRef, useState, useCallback, useSyncExternalStore } from "react";
 import Link from "next/link";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
@@ -10,6 +10,22 @@ import { properties } from "@/data/properties";
 import { insights } from "@/data/insights";
 import { site } from "@/data/site";
 import { cineSequences } from "@/data/cineSequences";
+
+// ===== MEDIA QUERY HOOKS (reduced motion + fine pointer) =====
+// Reused to skip purely-decorative, always-on effects (particles, cursor
+// glow) for users who asked for less motion, and to skip the cursor-follow
+// glow entirely on touch devices where a "cursor" doesn't exist.
+function useMediaQuery(query: string) {
+  return useSyncExternalStore(
+    (onChange) => {
+      const mq = window.matchMedia(query);
+      mq.addEventListener("change", onChange);
+      return () => mq.removeEventListener("change", onChange);
+    },
+    () => window.matchMedia(query).matches,
+    () => false
+  );
+}
 
 // ===== MOBILE COUNTER (auto-starts on mount) =====
 function MobileCounter({ end, suffix = "", duration = 2500 }: { end: number; suffix?: string; duration?: number }) {
@@ -122,7 +138,7 @@ function KineticScrollText({ text }: { text: string }) {
   );
 }
 
-// ===== FLOATING PARTICLES (50 on all devices) =====
+// ===== FLOATING PARTICLES (50, skipped under prefers-reduced-motion) =====
 // Positions must be deterministic (not Math.random) so the server-rendered
 // HTML matches the client on hydration.
 function FloatingParticles() {
@@ -186,6 +202,8 @@ export default function HomePage() {
   const revealRefs = useRef<(HTMLElement | null)[]>([]);
   const heroRef = useRef<HTMLDivElement>(null);
   const [isMobile, setIsMobile] = useState(false);
+  const prefersReducedMotion = useMediaQuery("(prefers-reduced-motion: reduce)");
+  const hasFinePointer = useMediaQuery("(hover: hover) and (pointer: fine)");
 
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth < 768);
@@ -272,8 +290,9 @@ export default function HomePage() {
     // position:sticky, which the cine-scroll sections depend on.
     <main style={{ background: "var(--bg)", minHeight: "100vh", overflowX: "clip", width: "100%", color: "var(--fg)", fontFamily: "var(--font-sans)" }}>
 
-      {/* Dual Cursor Glow - 10x larger */}
-      <CursorGlow />
+      {/* Dual cursor glow: skipped on touch devices (no cursor to follow) and
+          when the user prefers reduced motion. */}
+      {hasFinePointer && !prefersReducedMotion && <CursorGlow />}
 
       <Nav />
 
@@ -303,8 +322,8 @@ export default function HomePage() {
           animation: "pulseGlow 6s ease-in-out infinite",
         }} />
 
-        {/* Floating particles - 150 on mobile, 6 on desktop */}
-        <FloatingParticles />
+        {/* Floating particles: skipped when the user prefers reduced motion */}
+        {!prefersReducedMotion && <FloatingParticles />}
 
         <div style={{ position: "relative", zIndex: 2, textAlign: "center", maxWidth: "1000px", padding: "0 24px", width: "100%" }}>
           {/* Tags */}
@@ -446,11 +465,13 @@ export default function HomePage() {
                 <div className="property-card card-3d tap-glow">
                   {/* Image container with overlay */}
                   <div style={{ position: "relative", overflow: "hidden", aspectRatio: "1/1" }}>
-                    <img 
-                      src={property.image} 
-                      alt={property.title} 
+                    <img
+                      src={property.image}
+                      alt={property.title}
                       className="property-card-img"
-                      style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} 
+                      loading="lazy"
+                      decoding="async"
+                      style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
                     />
                   </div>
                   <div style={{ padding: "32px", flex: 1, display: "flex", flexDirection: "column" }}>
@@ -603,7 +624,7 @@ export default function HomePage() {
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "100px", alignItems: "center" }} className="about-grid-desktop">
             <div ref={addRef} className="reveal">
               <div style={{ position: "relative", borderRadius: "20px", overflow: "hidden", border: "1px solid rgba(var(--fg-rgb),0.06)" }}>
-                <img src="/inder.jpeg" alt="Inder Thakral" style={{ width: "100%", aspectRatio: "3/4", objectFit: "cover", display: "block", filter: "grayscale(30%) contrast(1.05)" }} />
+                <img src="/inder.jpeg" alt="Inder Thakral" loading="lazy" decoding="async" style={{ width: "100%", aspectRatio: "3/4", objectFit: "cover", display: "block", filter: "grayscale(30%) contrast(1.05)" }} />
                 <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(0,0,0,0.95) 0%, transparent 50%)" }} />
                 <div style={{ position: "absolute", bottom: "40px", left: "40px", right: "40px" }}>
                   <p style={{ color: "var(--accent)", fontSize: "11px", letterSpacing: "4px", textTransform: "uppercase", fontFamily: "var(--font-mono)", marginBottom: "8px", fontWeight: 500 }}>Inder Thakral</p>
@@ -854,16 +875,25 @@ export default function HomePage() {
                 { type: "email", name: "email", placeholder: "Email Address", required: true },
                 { type: "tel", name: "phone", placeholder: "Phone Number", required: false },
               ].map((field) => (
-                <input key={field.name} type={field.type} name={field.name} placeholder={field.placeholder} required={field.required} className="form-input tap-glow" />
+                <div key={field.name}>
+                  <label htmlFor={`enquiry-${field.name}`} className="sr-only">{field.placeholder}</label>
+                  <input id={`enquiry-${field.name}`} type={field.type} name={field.name} placeholder={field.placeholder} required={field.required} className="form-input tap-glow" />
+                </div>
               ))}
-              <select name="interest" className="form-input tap-glow">
-                <option value="">What are you looking for?</option>
-                <option value="residential">Residential Plot / Home</option>
-                <option value="commercial">Commercial Showroom</option>
-                <option value="rental">To-Let / Rental</option>
-                <option value="nri">NRI Investment</option>
-              </select>
-              <textarea name="message" placeholder="Tell us about your requirements..." className="form-input tap-glow" style={{ minHeight: "140px", resize: "vertical" }} />
+              <div>
+                <label htmlFor="enquiry-interest" className="sr-only">What are you looking for?</label>
+                <select id="enquiry-interest" name="interest" className="form-input tap-glow">
+                  <option value="">What are you looking for?</option>
+                  <option value="residential">Residential Plot / Home</option>
+                  <option value="commercial">Commercial Showroom</option>
+                  <option value="rental">To-Let / Rental</option>
+                  <option value="nri">NRI Investment</option>
+                </select>
+              </div>
+              <div>
+                <label htmlFor="enquiry-message" className="sr-only">Tell us about your requirements</label>
+                <textarea id="enquiry-message" name="message" placeholder="Tell us about your requirements..." className="form-input tap-glow" style={{ minHeight: "140px", resize: "vertical", width: "100%" }} />
+              </div>
               <button
                 type="submit"
                 disabled={formStatus === "sending"}
