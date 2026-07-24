@@ -21,6 +21,15 @@
   --text-faint: rgba(var(--fg-rgb), 0.25);
   --text-ghost: rgba(var(--fg-rgb), 0.1);
 
+  /* WCAG-AA-safe alpha tiers for text color (not borders/backgrounds).
+     Night and day need very different alphas to hit the same 4.5:1 ratio --
+     blending a dark color toward a light background washes out contrast
+     faster than the reverse, so day needs much higher opacity for the same
+     visual "weight" tier. Computed against real bg/fg pairs, not guessed. */
+  --text-tertiary-a: 0.52;  /* ~5.0:1 on night — was scattered 0.2-0.35 literals */
+  --text-secondary-a: 0.6;  /* ~5.9:1 on night — was scattered 0.4-0.5 literals */
+  --text-muted-a: 0.7;      /* ~7.1:1 on night — was scattered 0.55-0.72 literals */
+
   --border-subtle: rgba(var(--fg-rgb), 0.06);
   --border-light: rgba(var(--fg-rgb), 0.1);
   --border-accent: rgba(var(--accent-rgb), 0.2);
@@ -1101,6 +1110,14 @@ button:focus-visible {
   --accent-rgb: 168, 126, 34;
   --accent-2: #D4AF37;
   --on-accent: #FFF9EA;
+
+  /* Dark-on-light needs much higher alpha than light-on-dark for the same
+     4.5:1 ratio -- 0.8 here is roughly equivalent in contrast to 0.52 on
+     the night theme above. There's genuinely less room for a graduated
+     "how faint" hierarchy on this theme and still stay accessible. */
+  --text-tertiary-a: 0.8;   /* ~4.76:1 on day */
+  --text-secondary-a: 0.83; /* ~5.3:1 on day */
+  --text-muted-a: 0.86;     /* ~6.0:1 on day */
 }
 
 /* Gold engraved display type for day-theme headlines */

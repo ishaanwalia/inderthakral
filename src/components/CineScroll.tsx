@@ -97,7 +97,7 @@ function OverlayCopy({
             fontSize: "clamp(15px, 1.6vw, 18px)",
             lineHeight: 1.65,
             letterSpacing: "0.2px",
-            color: "rgba(var(--fg-rgb),0.72)",
+            color: "rgba(var(--fg-rgb),var(--text-muted-a))",
           }}
         >
           {caption}

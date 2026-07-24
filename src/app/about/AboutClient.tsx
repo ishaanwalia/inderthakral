@@ -35,7 +35,7 @@ export default function AboutPage() {
             <span className="gradient-text">Thakral</span>
           </h1>
           <p style={{ 
-            color: "rgba(var(--fg-rgb),0.4)", 
+            color: "rgba(var(--fg-rgb),var(--text-secondary-a))", 
             fontSize: "18px", 
             marginTop: "32px", 
             maxWidth: "500px",
@@ -57,7 +57,7 @@ export default function AboutPage() {
                 <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 50%)" }} />
                 <div style={{ position: "absolute", bottom: "32px", left: "32px", right: "32px" }}>
                   <p style={{ color: "var(--accent)", fontSize: "11px", letterSpacing: "4px", textTransform: "uppercase", fontFamily: "var(--font-mono)", marginBottom: "8px", fontWeight: 500 }}>Inder Thakral</p>
-                  <p style={{ color: "rgba(var(--fg-rgb),0.5)", fontSize: "14px" }}>Principal Advisor · {site.stats.years}+ Years</p>
+                  <p style={{ color: "rgba(var(--fg-rgb),var(--text-secondary-a))", fontSize: "14px" }}>Principal Advisor · {site.stats.years}+ Years</p>
                 </div>
               </div>
               <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "2px" }}>
@@ -73,7 +73,7 @@ export default function AboutPage() {
                     cursor: "default",
                   }}>
                     <div style={{ color: "var(--accent)", fontSize: "26px", fontWeight: 700, marginBottom: "6px", fontFamily: "var(--font-mono)" }}>{stat.num}</div>
-                    <div style={{ color: "rgba(var(--fg-rgb),0.3)", fontSize: "9px", letterSpacing: "2px", textTransform: "uppercase", fontFamily: "var(--font-mono)", fontWeight: 500 }}>{stat.label}</div>
+                    <div style={{ color: "rgba(var(--fg-rgb),var(--text-tertiary-a))", fontSize: "9px", letterSpacing: "2px", textTransform: "uppercase", fontFamily: "var(--font-mono)", fontWeight: 500 }}>{stat.label}</div>
                   </div>
                 ))}
               </div>
@@ -84,13 +84,13 @@ export default function AboutPage() {
               <p style={{ color: "var(--fg)", fontSize: "20px", fontWeight: 600, lineHeight: 1.8, marginBottom: "28px", letterSpacing: "-0.5px" }}>
                 Independent expertise, personal service.
               </p>
-              <p style={{ color: "rgba(var(--fg-rgb),0.5)", fontSize: "15px", lineHeight: 1.9, marginBottom: "24px" }}>
+              <p style={{ color: "rgba(var(--fg-rgb),var(--text-secondary-a))", fontSize: "15px", lineHeight: 1.9, marginBottom: "24px" }}>
                 Inder Thakral is an independent real estate advisory serving the Chandigarh Tricity. Founded by Inder Thakral, the firm provides trusted guidance for buying, selling, leasing, and investing in residential and commercial properties.
               </p>
-              <p style={{ color: "rgba(var(--fg-rgb),0.5)", fontSize: "15px", lineHeight: 1.9, marginBottom: "24px" }}>
+              <p style={{ color: "rgba(var(--fg-rgb),var(--text-secondary-a))", fontSize: "15px", lineHeight: 1.9, marginBottom: "24px" }}>
                 Every transaction is personally overseen, every title is carefully verified, and every client receives direct attention backed by over {site.stats.years} years of local market expertise.
               </p>
-              <p style={{ color: "rgba(var(--fg-rgb),0.5)", fontSize: "15px", lineHeight: 1.9, marginBottom: "48px" }}>
+              <p style={{ color: "rgba(var(--fg-rgb),var(--text-secondary-a))", fontSize: "15px", lineHeight: 1.9, marginBottom: "48px" }}>
                 The firm also provides To-Let and rental placement services — helping property owners find the right tenants and helping tenants find the right space across Tricity.
               </p>
 
@@ -107,7 +107,7 @@ export default function AboutPage() {
                   ].map((item, i) => (
                     <div key={i} style={{ display: "flex", gap: "16px", alignItems: "flex-start" }}>
                       <span style={{ color: "var(--accent)", marginTop: "2px", flexShrink: 0, fontSize: "12px" }}>◈</span>
-                      <span style={{ color: "rgba(var(--fg-rgb),0.5)", fontSize: "14px", lineHeight: 1.6, fontWeight: 500 }}>{item}</span>
+                      <span style={{ color: "rgba(var(--fg-rgb),var(--text-secondary-a))", fontSize: "14px", lineHeight: 1.6, fontWeight: 500 }}>{item}</span>
                     </div>
                   ))}
                 </div>
@@ -168,9 +168,9 @@ export default function AboutPage() {
                 </div>
                 <div>
                   <p style={{ color: "var(--accent)", fontSize: "10px", letterSpacing: "4px", textTransform: "uppercase", fontFamily: "var(--font-mono)", marginBottom: "12px", fontWeight: 500 }}>Contact</p>
-                  <p style={{ color: "rgba(var(--fg-rgb),0.7)", fontSize: "15px", lineHeight: 1.9 }}>
-                    <a href={`tel:${site.phoneE164}`} className="hover-line" style={{ color: "rgba(var(--fg-rgb),0.7)", textDecoration: "none" }}>{site.phoneDisplay}</a><br />
-                    <a href={`mailto:${site.email}`} className="hover-line" style={{ color: "rgba(var(--fg-rgb),0.7)", textDecoration: "none" }}>{site.email}</a>
+                  <p style={{ color: "rgba(var(--fg-rgb),var(--text-muted-a))", fontSize: "15px", lineHeight: 1.9 }}>
+                    <a href={`tel:${site.phoneE164}`} className="hover-line" style={{ color: "rgba(var(--fg-rgb),var(--text-muted-a))", textDecoration: "none" }}>{site.phoneDisplay}</a><br />
+                    <a href={`mailto:${site.email}`} className="hover-line" style={{ color: "rgba(var(--fg-rgb),var(--text-muted-a))", textDecoration: "none" }}>{site.email}</a>
                   </p>
                 </div>
                 <a

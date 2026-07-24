@@ -40,7 +40,7 @@ const labelStyle: React.CSSProperties = {
 
 const linkStyle: React.CSSProperties = {
   display: "block",
-  color: "rgba(var(--fg-rgb),0.5)",
+  color: "rgba(var(--fg-rgb),var(--text-secondary-a))",
   fontSize: "13px",
   textDecoration: "none",
   padding: "6px 0",
@@ -76,7 +76,7 @@ export default function Footer() {
           }}>
             {site.brandShort}
           </div>
-          <p style={{ color: "rgba(var(--fg-rgb),0.35)", fontSize: "12px", lineHeight: 1.8, maxWidth: "260px" }}>
+          <p style={{ color: "rgba(var(--fg-rgb),var(--text-tertiary-a))", fontSize: "12px", lineHeight: 1.8, maxWidth: "260px" }}>
             {site.address.oneLine}
           </p>
         </div>
@@ -102,11 +102,11 @@ export default function Footer() {
         flexWrap: "wrap",
         gap: "16px",
       }} className="section-pad">
-        <div style={{ color: "rgba(var(--fg-rgb),0.3)", fontSize: "11px", letterSpacing: "0.5px" }}>
+        <div style={{ color: "rgba(var(--fg-rgb),var(--text-tertiary-a))", fontSize: "11px", letterSpacing: "0.5px" }}>
           © {new Date().getFullYear()} {site.brand}
         </div>
         <div style={{
-          color: "rgba(var(--fg-rgb),0.2)",
+          color: "rgba(var(--fg-rgb),var(--text-tertiary-a))",
           fontSize: "10px",
           letterSpacing: "3px",
           textTransform: "uppercase",

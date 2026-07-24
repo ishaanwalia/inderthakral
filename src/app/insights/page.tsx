@@ -49,7 +49,7 @@ export default function InsightsPage() {
             <span className="gradient-text">Insights</span>
           </h1>
           <p style={{
-            color: "rgba(var(--fg-rgb),0.4)",
+            color: "rgba(var(--fg-rgb),var(--text-secondary-a))",
             fontSize: "18px",
             marginTop: "32px",
             maxWidth: "540px",
@@ -80,7 +80,7 @@ export default function InsightsPage() {
                   }}>
                     {article.tag}
                   </span>
-                  <span style={{ color: "rgba(var(--fg-rgb),0.3)", fontSize: "11px", letterSpacing: "2px", textTransform: "uppercase", fontFamily: "var(--font-mono)", fontWeight: 500 }}>
+                  <span style={{ color: "rgba(var(--fg-rgb),var(--text-tertiary-a))", fontSize: "11px", letterSpacing: "2px", textTransform: "uppercase", fontFamily: "var(--font-mono)", fontWeight: 500 }}>
                     {article.displayDate} · {article.readTime}
                   </span>
                 </div>
@@ -94,7 +94,7 @@ export default function InsightsPage() {
                 }}>
                   {article.title}
                 </h2>
-                <p style={{ color: "rgba(var(--fg-rgb),0.45)", fontSize: "15px", lineHeight: 1.8, maxWidth: "760px", marginBottom: "20px" }}>
+                <p style={{ color: "rgba(var(--fg-rgb),var(--text-secondary-a))", fontSize: "15px", lineHeight: 1.8, maxWidth: "760px", marginBottom: "20px" }}>
                   {article.dek}
                 </p>
                 <span style={{ color: "var(--accent)", fontSize: "11px", letterSpacing: "3px", textTransform: "uppercase", fontFamily: "var(--font-mono)", fontWeight: 600 }}>

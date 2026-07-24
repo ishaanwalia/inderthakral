@@ -47,7 +47,7 @@ export default async function InsightArticlePage({
       <main style={{ background: "var(--bg)", minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", color: "var(--fg)" }}>
         <div style={{ textAlign: "center" }}>
           <p style={{ color: "var(--accent)", letterSpacing: "4px", textTransform: "uppercase", marginBottom: "24px", fontFamily: "var(--font-mono)", fontSize: "11px", fontWeight: 500 }}>Note Not Found</p>
-          <Link href="/insights/" style={{ color: "rgba(var(--fg-rgb),0.4)", textDecoration: "none", fontSize: "11px", letterSpacing: "2px", textTransform: "uppercase", fontFamily: "var(--font-mono)", fontWeight: 500 }}>← Back to Insights</Link>
+          <Link href="/insights/" style={{ color: "rgba(var(--fg-rgb),var(--text-secondary-a))", textDecoration: "none", fontSize: "11px", letterSpacing: "2px", textTransform: "uppercase", fontFamily: "var(--font-mono)", fontWeight: 500 }}>← Back to Insights</Link>
         </div>
       </main>
     );
@@ -85,7 +85,7 @@ export default async function InsightArticlePage({
       }} className="section-pad">
         <div style={{ maxWidth: "760px", margin: "0 auto" }}>
           <Link href="/insights/" className="hover-line" style={{
-            color: "rgba(var(--fg-rgb),0.4)",
+            color: "rgba(var(--fg-rgb),var(--text-secondary-a))",
             fontSize: "11px",
             letterSpacing: "2px",
             textTransform: "uppercase",
@@ -113,7 +113,7 @@ export default async function InsightArticlePage({
             }}>
               {article.tag}
             </span>
-            <span style={{ color: "rgba(var(--fg-rgb),0.3)", fontSize: "11px", letterSpacing: "2px", textTransform: "uppercase", fontFamily: "var(--font-mono)", fontWeight: 500 }}>
+            <span style={{ color: "rgba(var(--fg-rgb),var(--text-tertiary-a))", fontSize: "11px", letterSpacing: "2px", textTransform: "uppercase", fontFamily: "var(--font-mono)", fontWeight: 500 }}>
               {article.displayDate} · {article.readTime}
             </span>
           </div>
@@ -127,7 +127,7 @@ export default async function InsightArticlePage({
           }}>
             {article.title}
           </h1>
-          <p style={{ color: "rgba(var(--fg-rgb),0.5)", fontSize: "17px", lineHeight: 1.8 }}>
+          <p style={{ color: "rgba(var(--fg-rgb),var(--text-secondary-a))", fontSize: "17px", lineHeight: 1.8 }}>
             {article.dek}
           </p>
         </div>
@@ -152,7 +152,7 @@ export default async function InsightArticlePage({
                 </h2>
               )}
               {section.paragraphs.map((paragraph, j) => (
-                <p key={j} style={{ color: "rgba(var(--fg-rgb),0.55)", fontSize: "16px", lineHeight: 1.95, marginBottom: "20px" }}>
+                <p key={j} style={{ color: "rgba(var(--fg-rgb),var(--text-muted-a))", fontSize: "16px", lineHeight: 1.95, marginBottom: "20px" }}>
                   {paragraph}
                 </p>
               ))}
@@ -170,7 +170,7 @@ export default async function InsightArticlePage({
             <p style={{ color: "var(--accent)", fontSize: "10px", letterSpacing: "4px", textTransform: "uppercase", fontFamily: "var(--font-mono)", marginBottom: "12px", fontWeight: 600 }}>
               Written by Inder Thakral
             </p>
-            <p style={{ color: "rgba(var(--fg-rgb),0.5)", fontSize: "14px", lineHeight: 1.8, marginBottom: "28px" }}>
+            <p style={{ color: "rgba(var(--fg-rgb),var(--text-secondary-a))", fontSize: "14px", lineHeight: 1.8, marginBottom: "28px" }}>
               Principal Advisor — {site.stats.years}+ years in Tricity real estate. Every property recommendation is personally verified, every title checked.
             </p>
             <Link href="/#contact" className="cta-btn magnetic-btn tap-glow">

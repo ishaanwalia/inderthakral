@@ -20,7 +20,7 @@ const sectionLabelStyle = {
   display: "block",
 };
 
-const bodyStyle = { color: "rgba(var(--fg-rgb),0.6)", fontSize: "15px", lineHeight: 1.9, marginBottom: "24px" };
+const bodyStyle = { color: "rgba(var(--fg-rgb),var(--text-muted-a))", fontSize: "15px", lineHeight: 1.9, marginBottom: "24px" };
 const headingStyle = { color: "var(--fg)", fontSize: "20px", fontWeight: 600, marginTop: "48px", marginBottom: "16px", letterSpacing: "-0.3px" };
 
 export default function TermsPage() {

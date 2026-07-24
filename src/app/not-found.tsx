@@ -40,7 +40,7 @@ export default function NotFound() {
           }}>
             This page doesn&apos;t exist.
           </h1>
-          <p style={{ color: "rgba(var(--fg-rgb),0.4)", fontSize: "15px", marginBottom: "40px" }}>
+          <p style={{ color: "rgba(var(--fg-rgb),var(--text-secondary-a))", fontSize: "15px", marginBottom: "40px" }}>
             The page you&apos;re looking for may have moved or the link may be out of date.
           </p>
           <Link href="/" className="cta-btn magnetic-btn tap-glow">

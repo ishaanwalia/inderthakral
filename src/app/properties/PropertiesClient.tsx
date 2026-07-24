@@ -78,7 +78,7 @@ export default function PropertiesPage() {
                   <div style={{ padding: "28px" }}>
                     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: "12px", marginBottom: "10px" }}>
                       <p style={{
-                        color: "rgba(var(--fg-rgb),0.3)",
+                        color: "rgba(var(--fg-rgb),var(--text-tertiary-a))",
                         fontSize: "10px",
                         letterSpacing: "3px",
                         textTransform: "uppercase",
@@ -114,7 +114,7 @@ export default function PropertiesPage() {
                       {property.title}
                     </h2>
                     <p style={{ 
-                      color: "rgba(var(--fg-rgb),0.4)", 
+                      color: "rgba(var(--fg-rgb),var(--text-secondary-a))", 
                       fontSize: "13px", 
                       marginBottom: "24px", 
                       lineHeight: 1.6,
@@ -123,11 +123,11 @@ export default function PropertiesPage() {
                     </p>
                     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", borderTop: "1px solid rgba(var(--fg-rgb),0.05)", paddingTop: "20px" }}>
                       <div>
-                        <div style={{ color: "rgba(var(--fg-rgb),0.2)", fontSize: "9px", letterSpacing: "2px", textTransform: "uppercase", marginBottom: "6px", fontFamily: "var(--font-mono)", fontWeight: 500 }}>Size</div>
-                        <div style={{ color: "rgba(var(--fg-rgb),0.7)", fontSize: "13px", fontFamily: "var(--font-mono)", fontWeight: 500 }}>{property.size}</div>
+                        <div style={{ color: "rgba(var(--fg-rgb),var(--text-tertiary-a))", fontSize: "9px", letterSpacing: "2px", textTransform: "uppercase", marginBottom: "6px", fontFamily: "var(--font-mono)", fontWeight: 500 }}>Size</div>
+                        <div style={{ color: "rgba(var(--fg-rgb),var(--text-muted-a))", fontSize: "13px", fontFamily: "var(--font-mono)", fontWeight: 500 }}>{property.size}</div>
                       </div>
                       <div style={{ textAlign: "right" }}>
-                        <div style={{ color: "rgba(var(--fg-rgb),0.2)", fontSize: "9px", letterSpacing: "2px", textTransform: "uppercase", marginBottom: "6px", fontFamily: "var(--font-mono)", fontWeight: 500 }}>Status</div>
+                        <div style={{ color: "rgba(var(--fg-rgb),var(--text-tertiary-a))", fontSize: "9px", letterSpacing: "2px", textTransform: "uppercase", marginBottom: "6px", fontFamily: "var(--font-mono)", fontWeight: 500 }}>Status</div>
                         <div style={{ color: "var(--accent)", fontSize: "13px", fontFamily: "var(--font-mono)", fontWeight: 600 }}>{property.status}</div>
                       </div>
                     </div>

@@ -310,7 +310,7 @@ export default function HomePage() {
 
           {/* Subtitle */}
           <p style={{
-            color: "rgba(var(--fg-rgb),0.4)",
+            color: "rgba(var(--fg-rgb),var(--text-secondary-a))",
             fontSize: "clamp(15px, 2vw, 18px)",
             lineHeight: 1.8,
             maxWidth: "560px",
@@ -368,7 +368,7 @@ export default function HomePage() {
             }}>
               <Counter end={stat.end} suffix={stat.suffix} />
               <div style={{ 
-                color: "rgba(var(--fg-rgb),0.3)", 
+                color: "rgba(var(--fg-rgb),var(--text-tertiary-a))", 
                 fontSize: "10px", 
                 letterSpacing: "4px", 
                 textTransform: "uppercase", 
@@ -434,7 +434,7 @@ export default function HomePage() {
                   <div style={{ padding: "32px", flex: 1, display: "flex", flexDirection: "column" }}>
                     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: "12px", marginBottom: "10px" }}>
                       <p style={{
-                        color: "rgba(var(--fg-rgb),0.3)",
+                        color: "rgba(var(--fg-rgb),var(--text-tertiary-a))",
                         fontSize: "10px",
                         letterSpacing: "3px",
                         textTransform: "uppercase",
@@ -470,7 +470,7 @@ export default function HomePage() {
                       {property.title}
                     </h3>
                     <p style={{ 
-                      color: "rgba(var(--fg-rgb),0.4)", 
+                      color: "rgba(var(--fg-rgb),var(--text-secondary-a))", 
                       fontSize: "14px", 
                       marginBottom: "24px", 
                       lineHeight: 1.6, 
@@ -480,11 +480,11 @@ export default function HomePage() {
                     </p>
                     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", paddingTop: "20px", borderTop: "1px solid rgba(var(--fg-rgb),0.05)" }}>
                       <div>
-                        <div style={{ color: "rgba(var(--fg-rgb),0.2)", fontSize: "9px", letterSpacing: "2px", textTransform: "uppercase", marginBottom: "6px", fontFamily: "var(--font-mono)", fontWeight: 500 }}>Size</div>
-                        <div style={{ color: "rgba(var(--fg-rgb),0.7)", fontSize: "13px", fontFamily: "var(--font-mono)", fontWeight: 500 }}>{property.size}</div>
+                        <div style={{ color: "rgba(var(--fg-rgb),var(--text-tertiary-a))", fontSize: "9px", letterSpacing: "2px", textTransform: "uppercase", marginBottom: "6px", fontFamily: "var(--font-mono)", fontWeight: 500 }}>Size</div>
+                        <div style={{ color: "rgba(var(--fg-rgb),var(--text-muted-a))", fontSize: "13px", fontFamily: "var(--font-mono)", fontWeight: 500 }}>{property.size}</div>
                       </div>
                       <div style={{ textAlign: "right" }}>
-                        <div style={{ color: "rgba(var(--fg-rgb),0.2)", fontSize: "9px", letterSpacing: "2px", textTransform: "uppercase", marginBottom: "6px", fontFamily: "var(--font-mono)", fontWeight: 500 }}>Status</div>
+                        <div style={{ color: "rgba(var(--fg-rgb),var(--text-tertiary-a))", fontSize: "9px", letterSpacing: "2px", textTransform: "uppercase", marginBottom: "6px", fontFamily: "var(--font-mono)", fontWeight: 500 }}>Status</div>
                         <div style={{ color: "var(--accent)", fontSize: "13px", fontFamily: "var(--font-mono)", fontWeight: 600 }}>{property.status}</div>
                       </div>
                     </div>
@@ -518,7 +518,7 @@ export default function HomePage() {
               Advisory <span style={{ color: "var(--accent)", fontWeight: 700 }}>Services</span>
             </h2>
             <p style={{ 
-              color: "rgba(var(--fg-rgb),0.4)", 
+              color: "rgba(var(--fg-rgb),var(--text-secondary-a))", 
               fontSize: "16px", 
               lineHeight: 1.8, 
               maxWidth: "560px", 
@@ -559,7 +559,7 @@ export default function HomePage() {
                   {service.title}
                 </h3>
                 <p style={{ 
-                  color: "rgba(var(--fg-rgb),0.4)", 
+                  color: "rgba(var(--fg-rgb),var(--text-secondary-a))", 
                   fontSize: "15px", 
                   lineHeight: 1.7,
                 }}>
@@ -581,7 +581,7 @@ export default function HomePage() {
                 <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(0,0,0,0.95) 0%, transparent 50%)" }} />
                 <div style={{ position: "absolute", bottom: "40px", left: "40px", right: "40px" }}>
                   <p style={{ color: "var(--accent)", fontSize: "11px", letterSpacing: "4px", textTransform: "uppercase", fontFamily: "var(--font-mono)", marginBottom: "8px", fontWeight: 500 }}>Inder Thakral</p>
-                  <p style={{ color: "rgba(var(--fg-rgb),0.5)", fontSize: "14px" }}>Principal Advisor · {site.stats.years}+ Years</p>
+                  <p style={{ color: "rgba(var(--fg-rgb),var(--text-secondary-a))", fontSize: "14px" }}>Principal Advisor · {site.stats.years}+ Years</p>
                 </div>
                 {/* Accent corner */}
                 <div style={{
@@ -610,10 +610,10 @@ export default function HomePage() {
                 <br />
                 <span style={{ color: "var(--accent)", fontWeight: 700 }}>Verified Results.</span>
               </h2>
-              <p style={{ color: "rgba(var(--fg-rgb),0.5)", fontSize: "16px", lineHeight: 1.9, marginBottom: "24px" }}>
+              <p style={{ color: "rgba(var(--fg-rgb),var(--text-secondary-a))", fontSize: "16px", lineHeight: 1.9, marginBottom: "24px" }}>
                 Inder Thakral is an independent real estate advisory serving the Chandigarh Tricity. Every transaction is personally overseen, every title is carefully verified.
               </p>
-              <p style={{ color: "rgba(var(--fg-rgb),0.5)", fontSize: "16px", lineHeight: 1.9, marginBottom: "40px" }}>
+              <p style={{ color: "rgba(var(--fg-rgb),var(--text-secondary-a))", fontSize: "16px", lineHeight: 1.9, marginBottom: "40px" }}>
                 The firm provides trusted guidance for buying, selling, leasing, and investing — with a simple promise: never show a property that would not be recommended to family.
               </p>
               <Link href="/about/" className="cta-btn magnetic-btn tap-glow">
@@ -697,7 +697,7 @@ export default function HomePage() {
                     }}>
                       {article.tag}
                     </span>
-                    <span style={{ color: "rgba(var(--fg-rgb),0.25)", fontSize: "10px", letterSpacing: "2px", textTransform: "uppercase", fontFamily: "var(--font-mono)", fontWeight: 500 }}>
+                    <span style={{ color: "rgba(var(--fg-rgb),var(--text-tertiary-a))", fontSize: "10px", letterSpacing: "2px", textTransform: "uppercase", fontFamily: "var(--font-mono)", fontWeight: 500 }}>
                       {article.displayDate}
                     </span>
                   </div>
@@ -711,7 +711,7 @@ export default function HomePage() {
                   }}>
                     {article.title}
                   </h3>
-                  <p style={{ color: "rgba(var(--fg-rgb),0.4)", fontSize: "14px", lineHeight: 1.7, flex: 1, marginBottom: "24px" }}>
+                  <p style={{ color: "rgba(var(--fg-rgb),var(--text-secondary-a))", fontSize: "14px", lineHeight: 1.7, flex: 1, marginBottom: "24px" }}>
                     {article.dek.length > 140 ? article.dek.slice(0, 140).trimEnd() + "…" : article.dek}
                   </p>
                   <span style={{ color: "var(--accent)", fontSize: "10px", letterSpacing: "3px", textTransform: "uppercase", fontFamily: "var(--font-mono)", fontWeight: 600 }}>
@@ -741,7 +741,7 @@ export default function HomePage() {
               Ready to <span style={{ color: "var(--accent)", fontWeight: 700 }}>Invest?</span>
             </h2>
             <p style={{ 
-              color: "rgba(var(--fg-rgb),0.4)", 
+              color: "rgba(var(--fg-rgb),var(--text-secondary-a))", 
               fontSize: "16px", 
               lineHeight: 1.8, 
               maxWidth: "500px", 
@@ -846,11 +846,11 @@ export default function HomePage() {
                   Enquiry sent — Inder will get back to you within 24 hours.
                 </p>
               ) : formStatus === "error" ? (
-                <p style={{ color: "rgba(var(--fg-rgb),0.4)", fontSize: "12px", lineHeight: 1.6, textAlign: "center" }}>
+                <p style={{ color: "rgba(var(--fg-rgb),var(--text-secondary-a))", fontSize: "12px", lineHeight: 1.6, textAlign: "center" }}>
                   Email delivery hit a snag, so we opened your enquiry in WhatsApp instead.
                 </p>
               ) : (
-                <p style={{ color: "rgba(var(--fg-rgb),0.3)", fontSize: "12px", lineHeight: 1.6, textAlign: "center" }}>
+                <p style={{ color: "rgba(var(--fg-rgb),var(--text-tertiary-a))", fontSize: "12px", lineHeight: 1.6, textAlign: "center" }}>
                   Delivered directly to care@inderthakral.com — replies within 24 hours.
                 </p>
               )}

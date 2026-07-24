@@ -34,7 +34,7 @@ export default function PropertyDetailClient({ property }: { property: Property 
       <div style={{ paddingTop: "120px", paddingLeft: "48px", paddingRight: "48px", paddingBottom: "16px" }} className="section-pad">
         <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
           <Link href="/properties/" className="hover-line" style={{ 
-            color: "rgba(var(--fg-rgb),0.4)", 
+            color: "rgba(var(--fg-rgb),var(--text-secondary-a))", 
             fontSize: "11px", 
             letterSpacing: "2px", 
             textTransform: "uppercase", 
@@ -125,7 +125,7 @@ export default function PropertyDetailClient({ property }: { property: Property 
                   <span className="accent-line" />
                   About This Property
                 </p>
-                <p style={{ color: "rgba(var(--fg-rgb),0.5)", fontSize: "15px", lineHeight: 1.9 }}>{property.description}</p>
+                <p style={{ color: "rgba(var(--fg-rgb),var(--text-secondary-a))", fontSize: "15px", lineHeight: 1.9 }}>{property.description}</p>
               </div>
 
               {/* Features */}
@@ -144,7 +144,7 @@ export default function PropertyDetailClient({ property }: { property: Property 
                       cursor: "default",
                     }}>
                       <span style={{ color: "var(--accent)", fontSize: "14px" }}>◈</span>
-                      <span style={{ color: "rgba(var(--fg-rgb),0.7)", fontSize: "13px", fontWeight: 500 }}>{feature}</span>
+                      <span style={{ color: "rgba(var(--fg-rgb),var(--text-muted-a))", fontSize: "13px", fontWeight: 500 }}>{feature}</span>
                     </div>
                   ))}
                 </div>
@@ -185,12 +185,12 @@ export default function PropertyDetailClient({ property }: { property: Property 
                 }}>
                   {property.title}
                 </h1>
-                <p style={{ color: "rgba(var(--fg-rgb),0.4)", fontSize: "13px", marginBottom: "32px" }}>{property.location}</p>
+                <p style={{ color: "rgba(var(--fg-rgb),var(--text-secondary-a))", fontSize: "13px", marginBottom: "32px" }}>{property.location}</p>
 
                 <div style={{ borderTop: "1px solid rgba(var(--fg-rgb),0.05)", borderBottom: "1px solid rgba(var(--fg-rgb),0.05)", padding: "24px 0", marginBottom: "28px" }}>
-                  <div style={{ color: "rgba(var(--fg-rgb),0.3)", fontSize: "10px", letterSpacing: "3px", textTransform: "uppercase", marginBottom: "10px", fontFamily: "var(--font-mono)", fontWeight: 500 }}>Price</div>
+                  <div style={{ color: "rgba(var(--fg-rgb),var(--text-tertiary-a))", fontSize: "10px", letterSpacing: "3px", textTransform: "uppercase", marginBottom: "10px", fontFamily: "var(--font-mono)", fontWeight: 500 }}>Price</div>
                   <div style={{ color: "var(--accent)", fontSize: "26px", fontWeight: 700, fontFamily: "var(--font-mono)", letterSpacing: "-0.5px" }}>On Request</div>
-                  <p style={{ color: "rgba(var(--fg-rgb),0.4)", fontSize: "12px", marginTop: "8px", lineHeight: 1.6 }}>Pricing is discussed personally with Mr. Inder Thakral.</p>
+                  <p style={{ color: "rgba(var(--fg-rgb),var(--text-secondary-a))", fontSize: "12px", marginTop: "8px", lineHeight: 1.6 }}>Pricing is discussed personally with Mr. Inder Thakral.</p>
                 </div>
 
                 <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "20px", marginBottom: "32px" }}>
@@ -201,7 +201,7 @@ export default function PropertyDetailClient({ property }: { property: Property 
                     { label: "Type", value: property.type },
                   ].map((item, i) => (
                     <div key={i}>
-                      <div style={{ color: "rgba(var(--fg-rgb),0.3)", fontSize: "9px", letterSpacing: "2px", textTransform: "uppercase", marginBottom: "6px", fontFamily: "var(--font-mono)", fontWeight: 500 }}>{item.label}</div>
+                      <div style={{ color: "rgba(var(--fg-rgb),var(--text-tertiary-a))", fontSize: "9px", letterSpacing: "2px", textTransform: "uppercase", marginBottom: "6px", fontFamily: "var(--font-mono)", fontWeight: 500 }}>{item.label}</div>
                       <div style={{ color: "rgba(var(--fg-rgb),0.8)", fontSize: "14px", fontWeight: 500 }}>{item.value}</div>
                     </div>
                   ))}
@@ -244,7 +244,7 @@ export default function PropertyDetailClient({ property }: { property: Property 
                   border: "1px solid rgba(var(--accent-rgb),0.08)",
                   borderRadius: "8px",
                 }}>
-                  <p style={{ color: "rgba(var(--fg-rgb),0.4)", fontSize: "12px", lineHeight: 1.7 }}>
+                  <p style={{ color: "rgba(var(--fg-rgb),var(--text-secondary-a))", fontSize: "12px", lineHeight: 1.7 }}>
                     Every property is personally verified by <span style={{ color: "var(--accent)", fontWeight: 600 }}>Inder Thakral</span>. 100% clear title deeds guaranteed.
                   </p>
                 </div>

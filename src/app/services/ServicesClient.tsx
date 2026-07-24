@@ -36,7 +36,7 @@ export default function ServicesPage() {
             <span className="gradient-text">Services</span>
           </h1>
           <p style={{ 
-            color: "rgba(var(--fg-rgb),0.4)", 
+            color: "rgba(var(--fg-rgb),var(--text-secondary-a))", 
             fontSize: "18px", 
             marginTop: "32px", 
             maxWidth: "500px",
@@ -105,14 +105,14 @@ export default function ServicesPage() {
                   }}>
                     {service.title}
                   </h2>
-                  <p style={{ color: "rgba(var(--fg-rgb),0.5)", fontSize: "15px", lineHeight: 1.9, marginBottom: "36px" }}>
+                  <p style={{ color: "rgba(var(--fg-rgb),var(--text-secondary-a))", fontSize: "15px", lineHeight: 1.9, marginBottom: "36px" }}>
                     {service.desc}
                   </p>
                   <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px", marginBottom: "36px" }}>
                     {service.features.map((f, j) => (
                       <div key={j} style={{ display: "flex", gap: "12px", alignItems: "flex-start" }}>
                         <span style={{ color: "var(--accent)", flexShrink: 0, marginTop: "2px", fontSize: "12px" }}>◈</span>
-                        <span style={{ color: "rgba(var(--fg-rgb),0.5)", fontSize: "13px", lineHeight: 1.6, fontWeight: 500 }}>{f}</span>
+                        <span style={{ color: "rgba(var(--fg-rgb),var(--text-secondary-a))", fontSize: "13px", lineHeight: 1.6, fontWeight: 500 }}>{f}</span>
                       </div>
                     ))}
                   </div>
@@ -180,7 +180,7 @@ export default function ServicesPage() {
             Let us find your<br />
             <span style={{ color: "var(--accent)", fontWeight: 700 }}>perfect asset</span>
           </h2>
-          <p style={{ color: "rgba(var(--fg-rgb),0.4)", fontSize: "15px", lineHeight: 1.8, marginBottom: "40px" }}>
+          <p style={{ color: "rgba(var(--fg-rgb),var(--text-secondary-a))", fontSize: "15px", lineHeight: 1.8, marginBottom: "40px" }}>
             Every engagement begins with a personal conversation with Inder Thakral — no junior agents, no generic advice.
           </p>
           <Link href="/#contact" className="cta-btn magnetic-btn tap-glow">
